@@ -15,8 +15,9 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from views.booking import BookingList
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^db/', include('Back_Source.urls'))
+    url(r'^bookings/$', BookingList.as_view()),
+    url(r'^bookings/(?P<pk>[0-9]+)/$$', BookingList.as_view()),
 ]
