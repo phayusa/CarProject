@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'Back_Source.apps.ConfigBack',
+    'Connections.apps.ConnectionsConfig',
     'phonenumber_field',
     'rest_framework',
     'django.contrib.admin',
@@ -121,3 +122,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Login routes
+LOGIN_REDIRECT_URL = '/db/bookings/'
+LOGIN_URL = '/user/login/'
+TEMPLATE_DIRS = (
+    BASE_DIR + '/templates/',
+)
