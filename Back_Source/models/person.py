@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from phonenumber_field.modelfields import PhoneNumberField
 
 
@@ -10,9 +11,13 @@ class Person(models.Model):
     gender = models.CharField(max_length=10)
     mail = models.EmailField(blank=True)
     phone_number = PhoneNumberField()
+    user = models.OneToOneField(User)
 
     def __str__(self):
         return self.last_name + ' ' + self.first_name
+
+    class Meta:
+        abstract = True
 
 
 # Client information
