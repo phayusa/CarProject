@@ -20,6 +20,5 @@ from views.user import LoginView, LogoutView
 
 urlpatterns = [
     url(r'^login/$', LoginView.as_view()),
-    url(r'^logout/$', LogoutView.as_view()),
-    # url(r'^backoffice/$', login_required(TemplateView.as_view(template_name='backoffice/index.html'))),
+    url(r'^logout/$', login_required(LogoutView.as_view())),
 ]
