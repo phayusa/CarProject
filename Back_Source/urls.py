@@ -16,9 +16,9 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
 
-from views.booking import BookingList
+from views.booking import BookingList, BookingDetail
 
 urlpatterns = [
     url(r'^bookings/$', login_required(BookingList.as_view())),
-    url(r'^bookings/(?P<pk>[0-9]+)/$', login_required(BookingList.as_view())),
+    url(r'^bookings/(?P<pk>[0-9]+)/$', login_required(BookingDetail.as_view())),
 ]

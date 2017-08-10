@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     'Connections.apps.ConnectionsConfig',
     'phonenumber_field',
     'rest_framework',
+    'braces',
+    'django_filters',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -129,3 +131,10 @@ LOGIN_URL = '/user/login/'
 TEMPLATE_DIRS = (
     BASE_DIR + '/templates/',
 )
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+}

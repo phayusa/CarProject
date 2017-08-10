@@ -19,6 +19,10 @@ class Person(models.Model):
     class Meta:
         abstract = True
 
+        permissions = (
+            ("can_see_its_booking", "Can drive"),
+        )
+
 
 # Client information
 class Client(Person):
