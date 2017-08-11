@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'rest_framework',
     'braces',
+    'djangosecure',
+    'sslserver',
     'django_filters',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -60,7 +62,7 @@ ROOT_URLCONF = 'Back.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR + '/templates/', ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -128,9 +130,7 @@ STATIC_URL = '/static/'
 # Login routes
 LOGIN_REDIRECT_URL = '/db/bookings/'
 LOGIN_URL = '/user/login/'
-TEMPLATE_DIRS = (
-    BASE_DIR + '/templates/',
-)
+
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
@@ -138,3 +138,29 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
 }
+
+
+# SECURE_SSL_REDIRECT = True
+# In dev let it at False
+
+# SECURE_SSL_HOST = 'https://user/login/'
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+# In development
+# SECURE_SSL_REDIRECT = False
+# # Secure cookies
+# SESSION_COOKIE_SECURE = False
+# CSRF_COOKIE_SECURE = False
+
+# In Production
+SECURE_SSL_REDIRECT = True
+# Secure cookies
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_HTTPONLY = True
+
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
