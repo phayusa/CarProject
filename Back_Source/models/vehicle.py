@@ -1,5 +1,6 @@
 from django.db import models
 from person import Driver
+from geoposition.fields import GeopositionField
 
 
 # Vehicle information
@@ -18,8 +19,7 @@ class Vehicle(models.Model):
     luggage_number = models.IntegerField()
 
     # Position fields
-    lat = models.FloatField(blank=True, null=True)
-    long = models.FloatField(blank=True, null=True)
+    pos = GeopositionField(blank=True)
 
     # File or photos to upload
     insurance = models.FileField()

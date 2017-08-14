@@ -33,9 +33,11 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'Back_Source.apps.ConfigBack',
     'Connections.apps.ConnectionsConfig',
+    'Localisation.apps.LocalisationConfig',
     'phonenumber_field',
     'rest_framework',
     'braces',
+    'geoposition',
     'djangosecure',
     'sslserver',
     'django_filters',
@@ -164,3 +166,4 @@ CSRF_COOKIE_SECURE = False
 # SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 # SECURE_HSTS_PRELOAD = True
 
+GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyBXfBFzhg0-fVZcIno2kX-ZBSbqibk_-RE'

@@ -21,5 +21,4 @@ from views.user import LoginView, LogoutView, test
 urlpatterns = [
     url(r'^login/$', LoginView.as_view()),
     url(r'^logout/$', login_required(LogoutView.as_view())),
-    url(r'^test/$',  test.as_view()),
 ]

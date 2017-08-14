@@ -6,7 +6,10 @@ class ClientPermission(permissions.BasePermission):
 
     def has_permission(self, request, view):
         if request.user.groups.filter(name='Clients').exists():
-            if request.method == "GET":
+            # The clients can not delete it's account
+            if request.method == "DELETE":
+                return False
+            else:
                 return True
         elif request.user.groups.filter(name='Collaborators').exists():
             return True
