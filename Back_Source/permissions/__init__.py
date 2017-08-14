@@ -1,1 +1,1 @@
-from booking import BookingPermissions
+from person import ClientPermission

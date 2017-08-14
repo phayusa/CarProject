@@ -16,9 +16,36 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
 
-from views.booking import BookingList, BookingDetail
+from views.booking import BookingCreate, BookingList, BookingDetail
+from views.vehicle import VehicleCreate, VehicleList, VehicleDetail
+from views.client import ClientCreate, ClientDetail, ClientList
+from views.driver import DriverCreate, DriverDetail, DriverList
+from views.travel import TravelCreate, TravelDetail, TravelList
 
 urlpatterns = [
+    # bookings URL
     url(r'^bookings/$', login_required(BookingList.as_view())),
-    url(r'^bookings/(?P<pk>[0-9]+)/$', login_required(BookingDetail.as_view())),
+    url(r'^booking/create/$', login_required(BookingCreate.as_view())),
+    url(r'^booking/(?P<pk>[0-9]+)/$', login_required(BookingDetail.as_view())),
+
+    # vehicle URL
+    url(r'^vehicles/$', login_required(VehicleList.as_view())),
+    url(r'^vehicle/create/$', login_required(VehicleCreate.as_view())),
+    url(r'^vehicle/(?P<pk>[0-9]+)/$', login_required(VehicleDetail.as_view())),
+
+    # clients URL
+    url(r'^clients/$', ClientList.as_view()),
+    url(r'^client/create/$', ClientCreate.as_view()),
+    url(r'^client/(?P<pk>[0-9]+)/$', login_required(ClientDetail.as_view())),
+
+    # driver URL
+    url(r'^drivers/$', login_required(DriverList.as_view())),
+    url(r'^driver/create/$', login_required(DriverCreate.as_view())),
+    url(r'^driver/(?P<pk>[0-9]+)/$', login_required(DriverDetail.as_view())),
+
+    # travel URL
+    url(r'^travels/$', login_required(TravelList.as_view())),
+    url(r'^travel/create/$', login_required(TravelCreate.as_view())),
+    url(r'^travel/(?P<pk>[0-9]+)/$', login_required(TravelDetail.as_view())),
+
 ]

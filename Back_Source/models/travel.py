@@ -7,7 +7,7 @@ from person import Driver
 class Travel(models.Model):
     departure = models.CharField(max_length=500)
     destination = models.CharField(max_length=500)
-    car = models.ForeignKey(Vehicle, on_delete=models.CASCADE, null=True)
+    car = models.OneToOneField(Vehicle, on_delete=models.CASCADE, null=True, blank=True)
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):

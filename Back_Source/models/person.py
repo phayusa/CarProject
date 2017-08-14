@@ -26,7 +26,7 @@ class Person(models.Model):
 
 # Client information
 class Client(Person):
-    payment = models.CharField(max_length=5)
+    payment = models.CharField(max_length=5, blank=True)
 
 
 # Driver information

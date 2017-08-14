@@ -2,19 +2,18 @@ from braces.views import RecentLoginRequiredMixin
 from rest_framework import generics
 
 from Back_Source.models import Booking, Client
-from Back_Source.permissions.booking import BookingPermissions
+from Back_Source.permissions.person import ClientPermission
 from Back_Source.serializers import BookingSerializer
 
 
-class BookingList(RecentLoginRequiredMixin, generics.ListAPIView):
+class BookingBase(RecentLoginRequiredMixin, generics.GenericAPIView):
     # Require a login within the last 10 minutes
     max_last_login_delta = 600
 
     serializer_class = BookingSerializer
     redirect_unauthenticated_users = False
-    permission_classes = [BookingPermissions, ]
+    permission_classes = [ClientPermission, ]
     raise_exception = True
-    filter_fields = ('date', 'travel', 'client')
 
     # Return only the booking of the connected client
     def get_queryset(self):
@@ -23,13 +22,15 @@ class BookingList(RecentLoginRequiredMixin, generics.ListAPIView):
         return Booking.objects.all()
 
 
-class BookingDetail(RecentLoginRequiredMixin, generics.RetrieveUpdateDestroyAPIView):
-    # Require a login within the last 10 minutes
-    max_last_login_delta = 600
+class BookingList(BookingBase, generics.ListAPIView):
+    filter_fields = ('date', 'travel', 'client')
 
-    queryset = Booking.objects.all()
-    serializer_class = BookingSerializer
-    permission_classes = [BookingPermissions, ]
-    redirect_field_name = '.'
-    redirect_unauthenticated_users = False
-    raise_exception = True
+
+class BookingCreate(BookingBase, generics.CreateAPIView):
+    pass
+
+
+class BookingDetail(BookingBase, generics.RetrieveUpdateDestroyAPIView):
+    pass
+    # redirect_field_name = '.'
+

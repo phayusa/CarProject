@@ -24,3 +24,11 @@ class LogoutView(TemplateView):
     def get(self, request, **kwargs):
         logout(request)
         return render(request, self.template_name)
+
+class test(TemplateView):
+    template_name = 'front/booking.html'
+
+    def get(self, request, **kwargs):
+        return render(request, self.template_name)
+
+

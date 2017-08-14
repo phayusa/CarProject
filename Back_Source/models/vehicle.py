@@ -1,4 +1,5 @@
 from django.db import models
+from person import Driver
 
 
 # Vehicle information
@@ -29,6 +30,9 @@ class Vehicle(models.Model):
 
     # Buisness field
     revenues = models.IntegerField()
+
+    # Foreign Key
+    driver = models.OneToOneField(Driver, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.brand + ' '+self.model
