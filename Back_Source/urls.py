@@ -29,9 +29,9 @@ urlpatterns = [
     url(r'^booking/(?P<pk>[0-9]+)/$', login_required(BookingDetail.as_view())),
 
     # vehicle URL
-    url(r'^vehicles/$', login_required(VehicleList.as_view())),
+    url(r'^vehicles/$', VehicleList.as_view()),
     url(r'^vehicle/create/$', login_required(VehicleCreate.as_view())),
-    url(r'^vehicle/(?P<pk>[0-9]+)/$', login_required(VehicleDetail.as_view())),
+    url(r'^vehicle/(?P<pk>[0-9]+)/$', VehicleDetail.as_view()),
 
     # clients URL
     url(r'^clients/$', ClientList.as_view()),

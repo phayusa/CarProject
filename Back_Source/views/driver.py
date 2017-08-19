@@ -1,5 +1,6 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAdminUser
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from Back_Source.models import Driver
 from Back_Source.permissions.person import DriverPermission
@@ -11,6 +12,7 @@ class DriverBase(generics.GenericAPIView):
 
     redirect_unauthenticated_users = False
     permission_classes = [DriverPermission, ]
+    authentication_classes = [JSONWebTokenAuthentication, ]
     raise_exception = True
 
     # Return only the booking of the connected client

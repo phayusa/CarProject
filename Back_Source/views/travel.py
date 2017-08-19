@@ -1,7 +1,9 @@
-from Back_Source.models import Travel, Driver
-from Back_Source.serializers import TravelSerializer
-from Back_Source.permissions.person import DriverPermission, ClientPermission
 from rest_framework import generics
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+
+from Back_Source.models import Travel, Driver
+from Back_Source.permissions.person import DriverPermission, ClientPermission
+from Back_Source.serializers import TravelSerializer
 
 
 class TravelBase(generics.GenericAPIView):
@@ -9,6 +11,7 @@ class TravelBase(generics.GenericAPIView):
 
     redirect_unauthenticated_users = False
     permission_classes = [DriverPermission, ClientPermission]
+    authentication_classes = [JSONWebTokenAuthentication, ]
     raise_exception = True
 
     # Return only the booking of the connected client

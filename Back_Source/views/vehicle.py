@@ -1,5 +1,6 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAdminUser
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from Back_Source.models import Vehicle, Driver
 from Back_Source.permissions.person import DriverPermission
@@ -11,6 +12,7 @@ class VehicleBase(generics.GenericAPIView):
     serializer_class = VehicleSerializer
     redirect_unauthenticated_users = False
     permission_classes = [DriverPermission, ]
+    authentication_classes = [JSONWebTokenAuthentication, ]
     raise_exception = True
 
     # Return only the booking of the connected client
@@ -29,5 +31,8 @@ class VehicleCreate(VehicleBase, generics.CreateAPIView):
 
 
 class VehicleDetail(VehicleBase, generics.RetrieveUpdateDestroyAPIView):
-    pass
+    def partial_update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        return self.update(request, *args, **kwargs)
+
 

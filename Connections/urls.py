@@ -16,9 +16,12 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
-from views.user import LoginView, LogoutView, test
+from views.user import LoginView, LogoutView, LoginViewWeb
+from rest_framework_jwt.views import obtain_jwt_token, verify_jwt_token
 
 urlpatterns = [
     url(r'^login/$', LoginView.as_view()),
     url(r'^logout/$', login_required(LogoutView.as_view())),
+    url(r'^login_view/$', LoginViewWeb.as_view()),
+    url(r'^check/$', verify_jwt_token),
 ]

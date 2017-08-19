@@ -5,6 +5,8 @@ from Back_Source.models import Booking, Client
 from Back_Source.permissions.person import ClientPermission
 from Back_Source.serializers import BookingSerializer
 
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+
 
 class BookingBase(RecentLoginRequiredMixin, generics.GenericAPIView):
     # Require a login within the last 10 minutes
@@ -12,10 +14,10 @@ class BookingBase(RecentLoginRequiredMixin, generics.GenericAPIView):
 
     serializer_class = BookingSerializer
     redirect_unauthenticated_users = False
-    permission_classes = [ClientPermission, ]
+    permission_classes = (ClientPermission, )
+    authentication_classes = (JSONWebTokenAuthentication, )
     raise_exception = True
 
-    # Return only the booking of the connected client
     def get_queryset(self):
         if self.request.user.groups.filter(name='Clients').exists():
             return Booking.objects.filter(client=Client.objects.filter(user=self.request.user))
