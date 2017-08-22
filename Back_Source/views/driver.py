@@ -22,13 +22,13 @@ class DriverBase(generics.GenericAPIView):
         return Driver.objects.all()
 
 
-class DriverList(DriverBase):
+class DriverList(DriverBase, generics.ListAPIView):
     pass
 
 
-class DriverDetail(DriverBase):
+class DriverDetail(DriverBase, generics.CreateAPIView):
     pass
 
 
-class DriverCreate(DriverBase):
+class DriverCreate(DriverBase, generics.RetrieveUpdateDestroyAPIView):
     permission_classes = IsAdminUser
