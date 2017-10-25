@@ -26,7 +26,7 @@ SECRET_KEY = 'gio=g00#o6)c7$y#!84@+_*=_pro+h7&=6+!$u=1q6*n^w6-*f'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    u"192.168.0.105",
+    u"192.168.0.105", u'172.24.1.135', u'127.0.0.1', u'176.31.99.139',
 ]
 
 
@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'braces',
     'geoposition',
-    'djangosecure',
+    # 'djangosecure',
     'sslserver',
     'django_filters',
     'django.contrib.admin',

@@ -11,4 +11,4 @@ class Travel(models.Model):
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return self.destination
+        return self.departure+"-"+self.destination

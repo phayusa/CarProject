@@ -6,6 +6,9 @@ class Point(object):
     def __str__(self):
         return "({},{})".format(self.x, self.y)
 
+    class Meta:
+        abstract = True
+
 
 class Rectangle(object):
     def __init__(self, posn, w, h):
@@ -20,4 +23,6 @@ class Rectangle(object):
         return (self.corner.x <= point.x <= self.corner.x + self.width and
                 self.corner.y <= point.y <= self.corner.y + self.height)
 
+    class Meta:
+        abstract = True
 

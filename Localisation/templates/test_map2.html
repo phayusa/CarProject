@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Rectangle Events</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      // This example adds a user-editable rectangle to the map.
+      // When the user changes the bounds of the rectangle,
+      // an info window pops up displaying the new bounds.
+
+      var rectangleHighLeft;
+      var rectangleHighRight;
+      var rectangleBottomLeft;
+      var rectangleBottomRight;
+      var map;
+      var infoWindow;
+
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 48.863350, lng: 2.344559},
+          zoom: 9
+        });
+
+        var boundsHighLeft = {
+          south: 48.86154310878869,
+          north: 48.943690596399286,
+          west:  2.1310128671875646,
+          east:  2.343872354492305
+        };
+
+        var boundsHighRight = {
+          north: 48.943690596399286,
+          south: 48.86154310878869,
+          east: 2.55947904394543,
+          west: 2.3449029428711583
+        };
+
+        var boundsBottomLeft = {
+          south: 48.749388429349025,
+          north: 48.861317212887506,
+          west:  2.130326221679752,
+          east:  2.343185708984606
+        };
+
+        var boundsBottomRight = {
+          north: 48.860865477853,
+          south: 48.74893568495699,
+          east: 2.5581057529299187,
+          west:  2.3452462656250646
+        };
+
+        // Define the rectangle and set its editable property to true.
+        rectangleHighLeft = new google.maps.Rectangle({
+          bounds: boundsHighLeft,
+          editable: true,
+          draggable: true
+        });
+
+        rectangleHighLeft.setMap(map);
+
+        // Add an event listener on the rectangle.
+        rectangleHighLeft.addListener('bounds_changed', showNewRectHighLeft);
+
+        // Define the rectangle and set its editable property to true.
+        rectangleHighRight = new google.maps.Rectangle({
+          bounds: boundsHighRight,
+          editable: true,
+          draggable: true
+        });
+
+        rectangleHighRight.setMap(map);
+
+        // Add an event listener on the rectangle.
+        rectangleHighRight.addListener('bounds_changed', showNewRectHighRight);
+
+        // Define the rectangle and set its editable property to true.
+        rectangleBottomLeft = new google.maps.Rectangle({
+          bounds: boundsBottomLeft,
+          editable: true,
+          draggable: true
+        });
+
+        rectangleBottomLeft.setMap(map);
+
+        // Add an event listener on the rectangle.
+        rectangleBottomLeft.addListener('bounds_changed', showNewRectBottomLeft);
+
+        // Define the rectangle and set its editable property to true.
+        rectangleBottomRight = new google.maps.Rectangle({
+          bounds: boundsBottomRight,
+          editable: true,
+          draggable: true
+        });
+
+        rectangleBottomRight.setMap(map);
+
+        // Add an event listener on the rectangle.
+        rectangleBottomRight.addListener('bounds_changed', showNewRectBottomRight);
+
+        // Define an info window on the map.
+        infoWindow = new google.maps.InfoWindow();
+      }
+      // Show the new coordinates for the rectangle in an info window.
+
+      /** @this {google.maps.Rectangle} */
+      function showNewRectHighLeft(event) {
+        var ne = rectangleHighLeft.getBounds().getNorthEast();
+        var sw = rectangleHighLeft.getBounds().getSouthWest();
+
+        var contentString = '<b>Rectangle moved.</b><br>' +
+            'New north-east corner: ' + ne.lat() + ', ' + ne.lng() + '<br>' +
+            'New south-west corner: ' + sw.lat() + ', ' + sw.lng();
+
+        // Set the info window's content and position.
+        infoWindow.setContent(contentString);
+        infoWindow.setPosition(ne);
+
+        infoWindow.open(map);
+      }
+
+      /** @this {google.maps.Rectangle} */
+      function showNewRectHighRight(event) {
+        var ne = rectangleHighRight.getBounds().getNorthEast();
+        var sw = rectangleHighRight.getBounds().getSouthWest();
+
+        var contentString = '<b>Rectangle moved.</b><br>' +
+            'New north-east corner: ' + ne.lat() + ', ' + ne.lng() + '<br>' +
+            'New south-west corner: ' + sw.lat() + ', ' + sw.lng();
+
+        // Set the info window's content and position.
+        infoWindow.setContent(contentString);
+        infoWindow.setPosition(ne);
+
+        infoWindow.open(map);
+      }
+
+      function showNewRectBottomLeft(event) {
+        var ne = rectangleBottomLeft.getBounds().getNorthEast();
+        var sw = rectangleBottomLeft.getBounds().getSouthWest();
+
+        var contentString = '<b>Rectangle moved.</b><br>' +
+            'New north-east corner: ' + ne.lat() + ', ' + ne.lng() + '<br>' +
+            'New south-west corner: ' + sw.lat() + ', ' + sw.lng();
+
+        // Set the info window's content and position.
+        infoWindow.setContent(contentString);
+        infoWindow.setPosition(ne);
+
+        infoWindow.open(map);
+      }
+
+      function showNewRectBottomRight(event) {
+        var ne = rectangleBottomRight.getBounds().getNorthEast();
+        var sw = rectangleBottomRight.getBounds().getSouthWest();
+
+        var contentString = '<b>Rectangle moved.</b><br>' +
+            'New north-east corner: ' + ne.lat() + ', ' + ne.lng() + '<br>' +
+            'New south-west corner: ' + sw.lat() + ', ' + sw.lng();
+
+        // Set the info window's content and position.
+        infoWindow.setContent(contentString);
+        infoWindow.setPosition(ne);
+
+        infoWindow.open(map);
+      }
+
+
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBXfBFzhg0-fVZcIno2kX-ZBSbqibk_-RE&callback=initMap">
+    </script>
+  </body>
+</html>

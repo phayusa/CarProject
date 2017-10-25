@@ -1,5 +1,6 @@
 from django.db import models
 from person import Driver
+from area import Area
 from geoposition.fields import GeopositionField
 
 
@@ -34,5 +35,12 @@ class Vehicle(models.Model):
     # Foreign Key
     driver = models.OneToOneField(Driver, on_delete=models.CASCADE, null=True, blank=True)
 
+    # Processing attributes
+    # Busy car
+    empty = models.BooleanField(default=False, blank=True)
+
+    # Link area to car
+    area = models.ForeignKey(Area, default=None, null=True, blank=True)
+
     def __str__(self):
-        return self.brand + ' '+self.model
+        return self.brand + ' ' + self.model
