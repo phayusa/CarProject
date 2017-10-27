@@ -18,4 +18,4 @@ class Booking(models.Model):
     arrive_time = models.DateTimeField(blank=True)
 
     def __str__(self):
-        return self.date.strftime('%m/%d/%Y')+' '+self.travel.destination
+        return self.date.strftime('%m/%d/%Y') + ' ' + self.travel.destination

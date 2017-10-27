@@ -1,9 +1,10 @@
 from django.http import HttpResponse
 
 from django.shortcuts import render
-from Back_Source.models import Vehicle
+from Back_Source.models import Vehicle, Area
 from django.shortcuts import render
 from Back_Source.models import Travel, Booking
+from Localisation.models.primitives import Rectangle, Point
 from rest_framework.views import APIView
 import datetime
 from django.utils import timezone
@@ -24,6 +25,12 @@ def mapView(request):
 def mapView2(request):
     pois = Vehicle.objects.all()
     return render(request, 'test_map2.html', {'pois': pois})
+
+
+def set_booking_driver(booking):
+    for area in Area.objects.all():
+        object_area = Rectangle(Point(area.east, area.south), area.west - area.east, area.north - area.south)
+        # if (object_area.contains())
 
 
 def set_driver(request):

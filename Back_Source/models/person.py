@@ -31,5 +31,5 @@ class Client(Person):
 
 # Driver information
 class Driver(Person):
-    revenues = models.IntegerField(default=None, blank=True)
-    remuneration = models.IntegerField(default=None, blank=True)
+    revenues = models.IntegerField(default=0, blank=True, null=True)
+    remuneration = models.IntegerField(default=0, blank=True, null=True)
