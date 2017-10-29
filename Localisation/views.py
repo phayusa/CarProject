@@ -12,6 +12,8 @@ from Back_Source.models import Driver, Travel
 
 from django.conf import settings
 
+from math import hypot
+
 
 # Create your views here.
 def mapView(request):

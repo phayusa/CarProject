@@ -23,7 +23,7 @@ class Booking(models.Model):
     # Processing value
     vehicle_choose = models.ForeignKey(Vehicle, blank=True, null=True)
     # To know the nth booking selected for the travel
-    order_choose = models.IntegerField(blank=True, null=True)
+    distance = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return self.date.strftime('%m/%d/%Y') + ' ' + self.destination
