@@ -8,7 +8,7 @@ from django.utils import timezone
 
 from Back_Source.models import Booking
 from Back_Source.models import Vehicle, Area
-from Back_Source.models import Driver
+from Back_Source.models import Driver, Travel
 
 from django.conf import settings
 
@@ -26,8 +26,8 @@ def mapView2(request):
 
 def get_area(booking):
     url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=' + \
-          booking.travel.destination.replace(" ",
-                                             "+") + '&key=' + getattr(settings, "GEOPOSITION_GOOGLE_MAPS_API_KEY", None)
+          booking.destination.replace(" ",
+                                      "+") + '&key=' + getattr(settings, "GEOPOSITION_GOOGLE_MAPS_API_KEY", None)
     serialized_data = urllib2.urlopen(url).read()
 
     data = json.loads(serialized_data)["results"][0]["geometry"]["location"]
@@ -55,9 +55,13 @@ def set_booking_driver(booking):
     area_vehicle.save()
 
     booking.vehicle_choose = area_vehicle
-    booking.travel.car = area_vehicle
-    booking.travel.driver = area_vehicle.driver
+    # booking.travel.car = area_vehicle
+    # booking.travel.driver = area_vehicle.driver
     booking.save()
+
+    travel, _ = Travel.objects.get_or_create(car=area_vehicle)
+    travel.bookings.add(booking)
+    travel.save()
 
 
 def upload_bookings_vehicle(request):
@@ -76,9 +80,9 @@ def end_driver(request):
     if not driver:
         return HttpResponse("Unauthorized")
 
-    vehicle = Vehicle.objects.filter(driver=driver)
+    vehicle = Vehicle.objects.filter(driver=driver)[0]
     if not vehicle:
         return HttpResponse("Bad Request")
     vehicle.area = None
     vehicle.driver = None
-    ve
+    vehicle.save()
