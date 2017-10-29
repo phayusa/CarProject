@@ -1,6 +1,7 @@
 from django.db import models
 from travel import Travel
 from person import Client
+from vehicle import Vehicle
 
 
 # One booking made by a client
@@ -16,6 +17,9 @@ class Booking(models.Model):
     # Flight info
     flight = models.CharField(max_length=200)
     arrive_time = models.DateTimeField(blank=True)
+
+    # Processing value
+    vehicle_choose = models.ForeignKey(Vehicle, blank=True, null=True)
 
     def __str__(self):
         return self.date.strftime('%m/%d/%Y') + ' ' + self.travel.destination

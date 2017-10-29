@@ -1,19 +1,16 @@
-from django.http import HttpResponse
-
-from django.shortcuts import render
-from Back_Source.models import Vehicle, Area
-from django.shortcuts import render
-from Back_Source.models import Travel, Booking
-from Localisation.models.primitives import Rectangle, Point
-from rest_framework.views import APIView
 import datetime
+import json
+import urllib2
+
+from django.http import HttpResponse
+from django.shortcuts import render
 from django.utils import timezone
 
+from Back_Source.models import Booking
+from Back_Source.models import Vehicle, Area
+from Back_Source.models import Driver
 
-# Point 1 48.868319 2.146119 (haut gauche)
-# Point 2 48.863350 2.344559 (haut droite)
-# Point 3 48.765232 2.126893 (bas gauche)
-# Point 4 48.746219 2.345933 (bas droite)
+from django.conf import settings
 
 
 # Create your views here.
@@ -27,22 +24,61 @@ def mapView2(request):
     return render(request, 'test_map2.html', {'pois': pois})
 
 
-def set_booking_driver(booking):
+def get_area(booking):
+    url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=' + \
+          booking.travel.destination.replace(" ",
+                                             "+") + '&key=' + getattr(settings, "GEOPOSITION_GOOGLE_MAPS_API_KEY", None)
+    serialized_data = urllib2.urlopen(url).read()
+
+    data = json.loads(serialized_data)["results"][0]["geometry"]["location"]
+    # print data
     for area in Area.objects.all():
-        object_area = Rectangle(Point(area.east, area.south), area.west - area.east, area.north - area.south)
-        # if (object_area.contains())
+        if (area.south < data['lat'] < area.north) and (area.west < data['lng'] < area.east):
+            return area
 
 
-def set_driver(request):
-    if not request.user.is_superuser:
-        return HttpResponse('The user is not superuser')
+def set_booking_driver(booking):
+    area = get_area(booking)
+    area_vehicles = Vehicle.objects.filter(travelling=False, empty_places__gte=booking.passengers,
+                                           empty_luggages__gte=booking.luggage_number, area=area)
+    # print "1 "+str(area_vehicles)
+    if not area_vehicles:
+        area_vehicles = Vehicle.objects.filter(travelling=False, empty_places__gte=booking.passengers,
+                                               empty_luggages__gte=booking.luggage_number, area=None)
+        if not area_vehicles:
+            return
+            # return HttpResponse('Error no vehicle available')
+    area_vehicle = area_vehicles[0]
+    area_vehicle.area = area
+    area_vehicle.empty_places -= booking.passengers
+    # area_vehicle.
+    area_vehicle.save()
+
+    booking.vehicle_choose = area_vehicle
+    booking.travel.car = area_vehicle
+    booking.travel.driver = area_vehicle.driver
+    booking.save()
+
+
+def upload_bookings_vehicle(request):
+    # if not request.user.is_superuser:
+    #     return HttpResponse('The user is not superuser')
     bookings_to_assigned = Booking.objects.filter(arrive_time__lte=(timezone.now() + datetime.timedelta(hours=1)),
-                                                  arrive_time__gte=timezone.now())
+                                                  arrive_time__gte=timezone.now(), vehicle_choose=None)
     for booking in bookings_to_assigned:
-        print booking.client
-    # for booking in Booking.objects.all():
-    #     print booking.arrive_time
-    # print "now " + str((timezone.now() + datetime.timedelta(hours=1)))
-    # print timezone.now()
-    # print to_see
-    return HttpResponse(bookings_to_assigned[0].client)
+        set_booking_driver(booking)
+
+    return HttpResponse("OK")
+
+
+def end_driver(request):
+    driver = Driver.objects.filter(user=request.user)
+    if not driver:
+        return HttpResponse("Unauthorized")
+
+    vehicle = Vehicle.objects.filter(driver=driver)
+    if not vehicle:
+        return HttpResponse("Bad Request")
+    vehicle.area = None
+    vehicle.driver = None
+    ve

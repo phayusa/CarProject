@@ -19,7 +19,7 @@ class VehicleModel(models.Model):
     category = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.category + ' : ' + self.brand + ' ' + self.model + ' ' + self.year
+        return self.category + ' : ' + self.brand + ' ' + self.model + ' ' + str(self.year)
 
 
 # Vehicle information
@@ -50,6 +50,7 @@ class Vehicle(models.Model):
     # Processing attributes
     # Busy car
     empty_places = models.IntegerField()
+    empty_luggages = models.IntegerField()
     travelling = models.BooleanField(default=False, blank=True)
 
     # Link area to car

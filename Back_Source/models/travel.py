@@ -10,5 +10,9 @@ class Travel(models.Model):
     car = models.OneToOneField(Vehicle, on_delete=models.CASCADE, null=True, blank=True)
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE, null=True, blank=True)
 
-    def __str__(self):
-        return self.departure + "-" + self.destination
+    # Fill before and before the travel
+    start = models.DateField()
+    end = models.DateField()
+
+    def __unicode__(self):
+        return u'%s - %s' % (self.departure, self.destination)
