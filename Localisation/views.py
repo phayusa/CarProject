@@ -1,18 +1,16 @@
 import datetime
 import json
+import math
 import urllib2
 
+from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.utils import timezone
 
 from Back_Source.models import Booking
-from Back_Source.models import Vehicle, Area
 from Back_Source.models import Driver, Travel
-
-from django.conf import settings
-
-from math import hypot
+from Back_Source.models import Vehicle, Area
 
 
 # Create your views here.
@@ -27,12 +25,18 @@ def mapView2(request):
 
 
 def get_area(booking):
-    url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=' + \
-          booking.destination.replace(" ",
-                                      "+") + '&key=' + getattr(settings, "GEOPOSITION_GOOGLE_MAPS_API_KEY", None)
-    serialized_data = urllib2.urlopen(url).read()
+    if not len(booking.destination.split()) == 2:
+        url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=' + \
+              booking.destination.replace(" ",
+                                          "+") + '&key=' + getattr(settings, "GEOPOSITION_GOOGLE_MAPS_API_KEY", None)
+        serialized_data = urllib2.urlopen(url).read()
 
-    data = json.loads(serialized_data)["results"][0]["geometry"]["location"]
+        data = json.loads(serialized_data)["results"][0]["geometry"]["location"]
+        booking.destination = str(data['lat']) + " " + str(data['lng'])
+    else:
+        data = {}
+        data["lat"] = float(booking.destination.split()[0])
+        data["lng"] = float(booking.destination.split()[1])
     # print data
     for area in Area.objects.all():
         if (area.south < data['lat'] < area.north) and (area.west < data['lng'] < area.east):
@@ -53,6 +57,7 @@ def set_booking_driver(booking):
     area_vehicle = area_vehicles[0]
     area_vehicle.area = area
     area_vehicle.empty_places -= booking.passengers
+    area_vehicle.empty_luggages -= booking.luggage_number
     # area_vehicle.
     area_vehicle.save()
 
@@ -64,6 +69,21 @@ def set_booking_driver(booking):
     travel, _ = Travel.objects.get_or_create(car=area_vehicle)
     travel.bookings.add(booking)
     travel.save()
+
+
+def give_order_booking(request):
+    if not request.user:
+        return
+    driver = Driver.objects.filter(user=request.user)[0]
+    if not driver:
+        return
+    vehicle = Vehicle.objects.filter(driver=driver)[0]
+    if not vehicle:
+        return
+    travel = Travel.objects.filter(vehicle=vehicle, driver=driver)[0]
+    if not travel:
+        return
+    return travel.bookings.order_by('distance')
 
 
 def upload_bookings_vehicle(request):
@@ -88,3 +108,13 @@ def end_driver(request):
     vehicle.area = None
     vehicle.driver = None
     vehicle.save()
+
+
+def upload_distance():
+    for booking in Booking.objects.all():
+        if not booking.distance:
+            points_destination = booking.destination.split()
+            points_depart = booking.departure.split()
+            booking.distance = math.hypot(points_destination[0] - points_depart[0],
+                                          points_destination[1] - points_depart[1])
+            booking.save()
