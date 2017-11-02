@@ -7,7 +7,10 @@ from django.test import TestCase
 from django.utils import timezone
 
 from Back_Source.models import Client, Travel, Booking, Area, Driver, Vehicle, VehicleModel
-from Localisation.views import get_area, set_booking_driver, end_driver
+from Localisation.views import get_area, set_booking_car, end_driver
+from Localisation.views import upload_distance, give_order_booking
+
+from geoposition import Geoposition
 
 
 class SetterAreaTestCase(TestCase):
@@ -46,8 +49,8 @@ class SetterAreaTestCase(TestCase):
         booking.flight = "18070-12324"
         # booking.departure = "Aéroport Charles de Gaulle (T3-Roissypole), Tremblay-en-France"
         # booking.destination = "Champ de Mars, 5 Avenue Anatole France, 75007 Paris""
-        booking.departure = "49.010247 2.547678"
-        booking.destination = "48.858956 2.294512"
+        booking.departure = Geoposition(49.010247, 2.547678)
+        booking.destination = Geoposition(48.858956, 2.294512)
         booking.distance = math.hypot(48.858956 - 49.010247, 2.294512 - 2.547678)
 
         self.assertFalse(booking is None)
@@ -63,8 +66,8 @@ class SetterAreaTestCase(TestCase):
         booking.flight = "18070-12324"
         # booking.departure = "Aéroport Charles de Gaulle (T3-Roissypole), Tremblay-en-France"
         # booking.destination = "Place Charles de Gaulle, 75008 Paris"
-        booking.departure = "49.010247 2.547678"
-        booking.destination = "48.873959 2.295825"
+        booking.departure = Geoposition(49.010247, 2.547678)
+        booking.destination = Geoposition(48.873959, 2.295825)
         booking.distance = math.hypot(48.873959 - 49.010247, 2.295825 - 2.547678)
 
         self.assertFalse(booking is None)
@@ -80,8 +83,8 @@ class SetterAreaTestCase(TestCase):
         booking.flight = "18070-12324"
         # booking.departure = "Aéroport Charles de Gaulle (T3-Roissypole), Tremblay-en-France"
         # booking.destination = "23 Rue Madeleine Vionnet, 93300 Aubervilliers"
-        booking.departure = "49.010247 2.547678"
-        booking.destination = "48.903194 2.374365"
+        booking.departure = Geoposition(49.010247, 2.547678)
+        booking.destination = Geoposition(48.903194, 2.374365)
         booking.distance = math.hypot(48.903194 - 49.010247, 2.374365 - 2.547678)
 
         self.assertFalse(booking is None)
@@ -95,8 +98,8 @@ class SetterAreaTestCase(TestCase):
         booking.passengers = 1
         booking.luggage_number = 2
         booking.flight = "18070-12324"
-        booking.departure = "49.010247 2.547678"
-        booking.destination = "48.792502 2.386336"
+        booking.departure = Geoposition(49.010247, 2.547678)
+        booking.destination = Geoposition(48.792502, 2.386336)
         booking.distance = math.hypot(48.792502 - 49.010247, 2.386336 - 2.547678)
         # booking.destination = "Place de la Libération, 94400 Vitry-sur-Seine"
 
@@ -146,8 +149,9 @@ class SetterVehicleBookingTestCase(TestCase):
         self.booking.luggage_number = 2
         self.booking.flight = "18070-12324"
         self.booking.arrive_time = timezone.now() + datetime.timedelta(minutes=1)
-        self.booking.departure = "49.010247 2.547678"
-        self.booking.destination = "48.903194 2.374365"
+        self.booking.departure = Geoposition(49.010247, 2.547678)
+        self.booking.destination = Geoposition(48.903194, 2.374365)
+        self.booking.distance = "2"
 
         self.booking.save()
 
@@ -157,8 +161,9 @@ class SetterVehicleBookingTestCase(TestCase):
         self.booking_bis.luggage_number = 4
         self.booking_bis.flight = "18070-12324"
         self.booking_bis.arrive_time = timezone.now() + datetime.timedelta(minutes=1)
-        self.booking_bis.departure = "49.010247 2.547678"
-        self.booking_bis.destination = "48.890109 2.393358"
+        self.booking_bis.departure = Geoposition(49.010247, 2.547678)
+        self.booking_bis.destination = Geoposition(48.890109, 2.393358)
+        self.booking_bis.distance = "1"
         self.booking_bis.save()
 
         self.userB = User.objects.create_user(username='Chauffeur du dimanche',
@@ -192,7 +197,7 @@ class SetterVehicleBookingTestCase(TestCase):
     #     self.assertEqual(upload_bookings_vehicle(None).status_code, 200)
 
     def test_bookings_driver(self):
-        set_booking_driver(self.booking)
+        set_booking_car(self.booking)
         self.assertEqual(self.vehicle, Vehicle.objects.all()[0])
         travel = Travel.objects.all()[0]
         self.assertEqual(self.vehicle, travel.car)
@@ -201,7 +206,7 @@ class SetterVehicleBookingTestCase(TestCase):
         self.assertEqual(self.booking.vehicle_choose.empty_luggages, 48)
         self.assertEqual(travel.bookings.last(), self.booking)
 
-        set_booking_driver(self.booking_bis)
+        set_booking_car(self.booking_bis)
         self.assertEqual(self.vehicle, Vehicle.objects.all()[0])
         travel = Travel.objects.all()[0]
         self.assertEqual(self.vehicle, travel.car)
@@ -209,6 +214,28 @@ class SetterVehicleBookingTestCase(TestCase):
         self.assertEqual(self.booking_bis.vehicle_choose.empty_places, 2)
         self.assertEqual(self.booking_bis.vehicle_choose.empty_luggages, 44)
         self.assertEqual(travel.bookings.last(), self.booking_bis)
+
+    def test_distance_driver(self):
+        self.vehicle.driver = self.driver
+        self.vehicle.save()
+
+        upload_distance(self.booking)
+        upload_distance(self.booking_bis)
+        self.assertEqual(self.booking.distance, 0.2037099427568522)
+        self.assertEqual(self.booking_bis.distance, 0.19557045135704934)
+
+    def test_order_distance(self):
+        class Request(object):
+            def __init__(self, user):
+                self.user = user
+
+        set_booking_car(self.booking)
+        set_booking_car(self.booking_bis)
+
+        request = Request(user=self.userB)
+        tab = give_order_booking(request)
+        self.assertEqual(tab[0], self.booking_bis)
+        self.assertEqual(tab[1], self.booking)
 
     def test_end_driver(self):
         class Request(object):
@@ -219,3 +246,4 @@ class SetterVehicleBookingTestCase(TestCase):
         end_driver(request)
         self.assertEqual(self.vehicle.area, None)
         # self.assertEqual(self.vehicle.driver, None)
+        print self.booking

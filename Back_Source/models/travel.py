@@ -17,4 +17,4 @@ class Travel(models.Model):
     end = models.DateField(blank=True, null=True)
 
     def __unicode__(self):
-        return u'%s - %s' % (self.departure, self.destination)
+        return u'%s - %s' % (self.car, self.driver)

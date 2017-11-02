@@ -1,6 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
 from Back_Source.models import *
 
 admin.site.register(Client)

@@ -1,12 +1,13 @@
 from django.db import models
 from person import Client
 from vehicle import Vehicle
+from geoposition.fields import GeopositionField
 
 
 # One booking made by a client
 class Booking(models.Model):
-    departure = models.CharField(max_length=500)
-    destination = models.CharField(max_length=500)
+    departure = GeopositionField()
+    destination = GeopositionField()
 
     date = models.DateField(auto_now=True)
     # travel = models.ForeignKey(Travel, on_delete=models.CASCADE, null=True)
@@ -26,4 +27,5 @@ class Booking(models.Model):
     distance = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return self.date.strftime('%m/%d/%Y') + ' ' + self.destination
+        return str(self.client) + ' ' + self.date.strftime('%m/%d/%Y') + ' for ' + self.arrive_time.strftime(
+            '%m/%d/%Y %Hh%M')
