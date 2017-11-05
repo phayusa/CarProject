@@ -26,7 +26,7 @@ SECRET_KEY = 'gio=g00#o6)c7$y#!84@+_*=_pro+h7&=6+!$u=1q6*n^w6-*f'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    u"192.168.0.105", u'172.24.1.135', u'127.0.0.1', u'176.31.99.139',
+    u"192.168.0.105", u'127.0.0.1', u'176.31.99.139',
 ]
 
 
@@ -115,9 +115,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+# LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fr-fr'
 
-TIME_ZONE = 'UTC'
+# TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Paris'
 
 USE_I18N = True
 
@@ -171,7 +173,7 @@ CSRF_COOKIE_SECURE = False
 #
 # SECURE_HSTS_SECONDS = 31536000
 # SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-# SECURE_HSTS_PRELOAD = True
+    # SECURE_HSTS_PRELOAD = True
 
 GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyAb1NNSLUT7vzTIezPAqKumMB7wNXa2hMg'
 
