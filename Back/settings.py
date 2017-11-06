@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'Back_Source.apps.ConfigBack',
     'Connections.apps.ConnectionsConfig',
     'Localisation.apps.LocalisationConfig',
+    'Front.apps.FrontConfig',
     'phonenumber_field',
     'rest_framework',
     'braces',
