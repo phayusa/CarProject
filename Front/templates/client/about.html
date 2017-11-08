@@ -48,8 +48,9 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-3">
-                        <a class="logo" href="index.html">
-                            <img src="{% static "img/logo-invert.png"%}" alt="Image Alternative text" title="Image Title"/>
+                        <a class="logo" href="/">
+                            <img src="{% static "img/logo-invert.png" %}" alt="Image Alternative text"
+                                 title="Image Title"/>
                         </a>
                     </div>
                     <div class="col-md-3 col-md-offset-2">
@@ -64,8 +65,9 @@
                         <div class="top-user-area clearfix">
                             <ul class="top-user-area-list list list-horizontal list-border">
                                 <li class="top-user-area-avatar">
-                                    <a href="user-profile.html">
-                                        <img class="origin round" src="{%  static "img/40x40.png"%}" alt="Image Alternative text"
+                                    <a href="/register">
+                                        <img class="origin round" src="{% static "img/40x40.png" %}"
+                                             alt="Image Alternative text"
                                              title="AMaze"/>Hi, John</a>
                                 </li>
                                 <li><a href="#">Sign Out</a>
@@ -145,254 +147,11 @@
         <div class="container">
             <div class="nav">
                 <ul class="slimmenu" id="slimmenu">
-                    <li><a href="/">Accueil</a>
-                        {#                            <ul>#}
-                        {#                                <li><a href="index.html">Default</a>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="index-1.html">Layout 1</a>#}
-                        {#                                </li>#}
-                        {#                                <li class="active"><a href="index-2.html">Layout 2</a>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="index-3.html">Layout 3</a>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="index-4.html">Layout 4</a>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="index-5.html">Layout 5</a>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="index-6.html">Layout 6</a>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="index-7.html">Layout 7</a>#}
-                        {#                                </li>#}
-                        {#                            </ul>#}
-                    </li>
-                    <li class="active"><a href="/about">A propos</a>
-                        {#                            <ul>#}
-                        {#                                <li><a href="success-payment.html">Success Payment</a>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="user-profile.html">User Profile</a>#}
-                        {#                                    <ul>#}
-                        {#                                        <li><a href="user-profile.html">Overview</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="user-profile-settings.html">Settings</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="user-profile-photos.html">Photos</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="user-profile-booking-history.html">Booking History</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="user-profile-cards.html">Cards</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="user-profile-wishlist.html">Wishlist</a>#}
-                        {#                                        </li>#}
-                        {#                                    </ul>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="blog.html">Blog</a>#}
-                        {#                                    <ul>#}
-                        {#                                        <li><a href="blog.html">Sidebar Right</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="blog-sidebar-left.html">Sidebar Left</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="blog-full-width.html">Full Width</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="blog-post.html">Post</a>#}
-                        {#                                            <ul>#}
-                        {#                                                <li><a href="blog-post.html">Sidebar Right</a>#}
-                        {#                                                </li>#}
-                        {#                                                <li><a href="blog-post-sidebar-left.html">Sidebar Left</a>#}
-                        {#                                                </li>#}
-                        {#                                                <li><a href="blog-post-full-width.html">Full Width</a>#}
-                        {#                                                </li>#}
-                        {#                                            </ul>#}
-                        {#                                        </li>#}
-                        {#                                    </ul>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="404.html">404 page</a>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="contact-us.html">Contact Us</a>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="about.html">About</a>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="login-register.html">Login/Register</a>#}
-                        {#                                    <ul>#}
-                        {#                                        <li><a href="login-register.html">Full Page</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="login-register-normal.html">Normal</a>#}
-                        {#                                        </li>#}
-                        {#                                    </ul>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="loading.html">Loading</a>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="comming-soon.html">Comming Soon</a>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="gallery.html">Gallery</a>#}
-                        {#                                    <ul>#}
-                        {#                                        <li><a href="gallery.html">4 Columns</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="gallery-3-col.html">3 columns</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="gallery-2-col.html">2 columns</a>#}
-                        {#                                        </li>#}
-                        {#                                    </ul>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="page-full-width.html">Full Width</a>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="page-sidebar-right.html">Sidebar Right</a>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="page-sidebar-left.html">Sidebar Left</a>#}
-                        {#                                </li>#}
-                        {#                            </ul>#}
-                    </li>
-                    <li><a href="feature-typography.html">Villes</a>
-                        {#                            <ul>#}
-                        {#                                <li><a href="feature-typography.html">Typography</a>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="feature-icons.html">Icons</a>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="feature-forms.html">Forms</a>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="feature-icon-effects.html">Icon Effects</a>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="feature-elements.html">Elements</a>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="feature-grid.html">Grid</a>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="feature-hovers.html">Hover effects</a>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="feature-lightbox.html">Lightbox</a>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="feature-media.html">Media</a>#}
-                        {#                                </li>#}
-                        {#                            </ul>#}
-                    </li>
-                    <li><a href="hotels.html">Tarifs</a>
-                        {#                            <ul>#}
-                        {#                                <li><a href="hotel-details.html">Details</a>#}
-                        {#                                    <ul>#}
-                        {#                                        <li><a href="hotel-details.html">Layout 1</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="hotel-details-2.html">Layout 2</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="hotel-details-3.html">Layout 3</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="hotel-details-4.html">Layout 4</a>#}
-                        {#                                        </li>#}
-                        {#                                    </ul>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="hotel-payment.html">Payment</a>#}
-                        {#                                    <ul>#}
-                        {#                                        <li><a href="hotel-payment.html">Registered</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="hotel-payment-registered-card.html">Existed Cards</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="hotel-payment-unregistered.html">Unregistered</a>#}
-                        {#                                        </li>#}
-                        {#                                    </ul>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="hotel-search.html">Search</a>#}
-                        {#                                    <ul>#}
-                        {#                                        <li><a href="hotel-search.html">Layout 1</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="hotel-search-2.html">Layout 2</a>#}
-                        {#                                        </li>#}
-                        {#                                    </ul>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="hotels.html">Results</a>#}
-                        {#                                    <ul>#}
-                        {#                                        <li><a href="hotels.html">Layout 1</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="hotels-search-results-2.html">Layout 2</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="hotels-search-results-3.html">Layout 3</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="hotels-search-results-4.html">Layout 4</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="hotel-search-results-5.html">Layout 5</a>#}
-                        {#                                        </li>#}
-                        {#                                    </ul>#}
-                        {#                                </li>#}
-                        {#                            </ul>#}
-                    </li>
-                    <li><a href="flights.html">Réservation</a>
-                        {#                            <ul>#}
-                        {#                                <li><a href="flight-payment.html">Payment</a>#}
-                        {#                                    <ul>#}
-                        {#                                        <li><a href="flight-payment.html">Registered</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="flight-payment-registered-card.html">Existed Cards</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="flight-payment-unregistered.html">Unregistered</a>#}
-                        {#                                        </li>#}
-                        {#                                    </ul>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="flight-search.html">Search</a>#}
-                        {#                                    <ul>#}
-                        {#                                        <li><a href="flight-search.html">Layout 1</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="flight-search-2.html">Layout 2</a>#}
-                        {#                                        </li>#}
-                        {#                                    </ul>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="flights.html">List</a>#}
-                        {#                                    <ul>#}
-                        {#                                        <li><a href="flights.html">Layout 1</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="flights-search-results-2.html">Layout 2</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="flights-search-results-3.html">Layout 3</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="flights-search-results-4.html">Layout 4</a>#}
-                        {#                                        </li>#}
-                        {#                                    </ul>#}
-                        {#                                </li>#}
-                        {#                            </ul>#}
-                        {#                        </li>#}
-                        {#                        <li><a href="rentals.html">Contact</a>#}
-                        {#                            <ul>#}
-                        {#                                <li><a href="rentals-details.html">Details</a>#}
-                        {#                                    <ul>#}
-                        {#                                        <li><a href="rentals-details.html">Layout 1</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="rentals-details-2.html">Layout 2</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="rentals-details-3.html">Layout 3</a>#}
-                        {#                                        </li>#}
-                        {#                                    </ul>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="rental-payment.html">Payment</a>#}
-                        {#                                    <ul>#}
-                        {#                                        <li><a href="rental-payment.html">Registered</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="rental-payment-registered-card.html">Existed Cards</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="rental-payment-unregistered.html">Unregistered</a>#}
-                        {#                                        </li>#}
-                        {#                                    </ul>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="rentals-search.html">Search</a>#}
-                        {#                                    <ul>#}
-                        {#                                        <li><a href="rentals-search.html">Layout 1</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="rentals-search-2.html">Layout 2</a>#}
-                        {#                                        </li>#}
-                        {#                                    </ul>#}
-                        {#                                </li>#}
-                        {#                                <li><a href="rentals.html">Results</a>#}
-                        {#                                    <ul>#}
-                        {#                                        <li><a href="rentals.html">Layout 1</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="rentals-search-results-2.html">Layout 2</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="rentals-search-results-3.html">Layout 3</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="rentals-search-results-4.html">Layout 4</a>#}
-                        {#                                        </li>#}
-                        {#                                        <li><a href="rentals-search-results-5.html">Layout 5</a>#}
-                        {#                                        </li>#}
-                        {#                                    </ul>#}
-                        {#                                </li>#}
-                        {#                            </ul>#}
-                        {#                        </li>#}
-                        {#                    </ul>#}
-                    </li>
+                    <li><a href="/">Accueil</a></li>
+                    <li class="active"><a href="/about">A propos</a></li>
+{#                    <li><a href="feature-typography.html">Villes</a></li>#}
+                    <li><a href="/prices">Tarifs</a></li>
+                    <li><a href="flights.html">Réservation</a></li>
                 </ul>
             </div>
         </div>
@@ -473,126 +232,136 @@
         <h2>Nos objectifs</h2>
         <div class="row">
             <div class="col-md-10">
-{#                <p class="text-bigger mb30">Auctor sit parturient aenean sodales maecenas fusce potenti tristique lectus#}
-{#                    dapibus hendrerit habitant tristique vulputate vehicula quisque nisl curabitur varius enim quam#}
-{#                    maecenas facilisis inceptos auctor gravida massa facilisis risus</p>#}
+                {#                <p class="text-bigger mb30">Auctor sit parturient aenean sodales maecenas fusce potenti tristique lectus#}
+                {#                    dapibus hendrerit habitant tristique vulputate vehicula quisque nisl curabitur varius enim quam#}
+                {#                    maecenas facilisis inceptos auctor gravida massa facilisis risus</p>#}
                 <ul class="list list-horizontal list-space">
-                    <li>Une offre de prestations sur-mesure pour correspondre au plus proche des attentes de nos clients</li>
-                    <li>Une exigence de tous les instants, où qualités et professionnalisme se lient pour offrir une expérience optimale dans le transport de personne</li>
-                    <li>Une recherche d’innovations et la volonté de toujours se développer afin de perfectionner notre chartre de qualités </li>
-                    <li>Une optimisation dans les tarifs, ainsi que dans les délais de transport et le confort du véhicule </li>
-                    <li>Une sécurité irréprochable et un accompagnement de tous les instants, de l’accueil de nos clients jusqu’à leur arrivée devant leur résidence ou leur hôtel </li>
-                    <li>Un service simple, sans aucun délai d’attente puisque tout se fait instantanément. </li>
+                    <li>Une offre de prestations sur-mesure pour correspondre au plus proche des attentes de nos
+                        clients
+                    </li>
+                    <li>Une exigence de tous les instants, où qualités et professionnalisme se lient pour offrir une
+                        expérience optimale dans le transport de personne
+                    </li>
+                    <li>Une recherche d’innovations et la volonté de toujours se développer afin de perfectionner notre
+                        chartre de qualités
+                    </li>
+                    <li>Une optimisation dans les tarifs, ainsi que dans les délais de transport et le confort du
+                        véhicule
+                    </li>
+                    <li>Une sécurité irréprochable et un accompagnement de tous les instants, de l’accueil de nos
+                        clients jusqu’à leur arrivée devant leur résidence ou leur hôtel
+                    </li>
+                    <li>Un service simple, sans aucun délai d’attente puisque tout se fait instantanément.</li>
                 </ul>
             </div>
         </div>
-{#        <div class="row row-wrap" data-gutter="60">#}
-{#            <div class="col-md-3">#}
-{#                <div class="thumb text-center">#}
-{#                    <header class="thumb-header">#}
-{#                        <img class="round" src="{% static "img/300x300.png" %}" alt="Image Alternative text"#}
-{#                             title="AMaze"/>#}
-{#                    </header>#}
-{#                    <div class="thumb-caption">#}
-{#                        <h5 class="thumb-title">Joseph Hudson</h5>#}
-{#                        <p class="thumb-meta text-small">Project Manager</p>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#            <div class="col-md-3">#}
-{#                <div class="thumb text-center">#}
-{#                    <header class="thumb-header">#}
-{#                        <img class="round" src="{% static "img/300x300.png" %}" alt="Image Alternative text"#}
-{#                             title="Chiara"/>#}
-{#                    </header>#}
-{#                    <div class="thumb-caption">#}
-{#                        <h5 class="thumb-title">Leah Kerr</h5>#}
-{#                        <p class="thumb-meta text-small">Product Designer</p>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#            <div class="col-md-3">#}
-{#                <div class="thumb text-center">#}
-{#                    <header class="thumb-header">#}
-{#                        <img class="round" src="{% static "img/300x300.png" %}" alt="Image Alternative text"#}
-{#                             title="Bubbles"/>#}
-{#                    </header>#}
-{#                    <div class="thumb-caption">#}
-{#                        <h5 class="thumb-title">Cheryl Gustin</h5>#}
-{#                        <p class="thumb-meta text-small">Producer</p>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#            <div class="col-md-3">#}
-{#                <div class="thumb text-center">#}
-{#                    <header class="thumb-header">#}
-{#                        <img class="round" src="{% static "img/300x300.png" %}" alt="Image Alternative text"#}
-{#                             title="Gamer Chick"/>#}
-{#                    </header>#}
-{#                    <div class="thumb-caption">#}
-{#                        <h5 class="thumb-title">Sarah Slater</h5>#}
-{#                        <p class="thumb-meta text-small">CEO</p>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#            <div class="col-md-3">#}
-{#                <div class="thumb text-center">#}
-{#                    <header class="thumb-header">#}
-{#                        <img class="round" src="{% static "img/300x300.png" %}" alt="Image Alternative text"#}
-{#                             title="Afro"/>#}
-{#                    </header>#}
-{#                    <div class="thumb-caption">#}
-{#                        <h5 class="thumb-title">Oliver Ross</h5>#}
-{#                        <p class="thumb-meta text-small">Office Manager</p>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#            <div class="col-md-3">#}
-{#                <div class="thumb text-center">#}
-{#                    <header class="thumb-header">#}
-{#                        <img class="round" src="{% static "img/300x300.png" %}" alt="Image Alternative text"#}
-{#                             title="Me with the Uke"/>#}
-{#                    </header>#}
-{#                    <div class="thumb-caption">#}
-{#                        <h5 class="thumb-title">John Mathis</h5>#}
-{#                        <p class="thumb-meta text-small">Product Designer</p>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#            <div class="col-md-3">#}
-{#                <div class="thumb text-center">#}
-{#                    <header class="thumb-header">#}
-{#                        <img class="round" src="{% static "img/300x300.png" %}" alt="Image Alternative text"#}
-{#                             title="Andrea"/>#}
-{#                    </header>#}
-{#                    <div class="thumb-caption">#}
-{#                        <h5 class="thumb-title">Neil Davidson</h5>#}
-{#                        <p class="thumb-meta text-small">Project Manager</p>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#            <div class="col-md-3">#}
-{#                <div class="thumb text-center">#}
-{#                    <header class="thumb-header">#}
-{#                        <img class="round" src="{% static "img/300x300.png" %}" alt="Image Alternative text"#}
-{#                             title="Spidy"/>#}
-{#                    </header>#}
-{#                    <div class="thumb-caption">#}
-{#                        <h5 class="thumb-title">Oliver Ross</h5>#}
-{#                        <p class="thumb-meta text-small">Office Manager</p>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#        <h4>Want to Join Our Team</h4>#}
-{#        <div class="row">#}
-{#            <div class="col-md-10">#}
-{#                <p>Nascetur metus morbi nibh magnis semper elit proin vivamus hac vivamus ultricies hac nulla sodales#}
-{#                    himenaeos luctus nascetur lacus sed placerat penatibus sociosqu lectus semper tincidunt pellentesque#}
-{#                    volutpat egestas porttitor</p>#}
-{#                <a href="#">Explore open positions</a>#}
-{#            </div>#}
-{#        </div>#}
+        {#        <div class="row row-wrap" data-gutter="60">#}
+        {#            <div class="col-md-3">#}
+        {#                <div class="thumb text-center">#}
+        {#                    <header class="thumb-header">#}
+        {#                        <img class="round" src="{% static "img/300x300.png" %}" alt="Image Alternative text"#}
+        {#                             title="AMaze"/>#}
+        {#                    </header>#}
+        {#                    <div class="thumb-caption">#}
+        {#                        <h5 class="thumb-title">Joseph Hudson</h5>#}
+        {#                        <p class="thumb-meta text-small">Project Manager</p>#}
+        {#                    </div>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#            <div class="col-md-3">#}
+        {#                <div class="thumb text-center">#}
+        {#                    <header class="thumb-header">#}
+        {#                        <img class="round" src="{% static "img/300x300.png" %}" alt="Image Alternative text"#}
+        {#                             title="Chiara"/>#}
+        {#                    </header>#}
+        {#                    <div class="thumb-caption">#}
+        {#                        <h5 class="thumb-title">Leah Kerr</h5>#}
+        {#                        <p class="thumb-meta text-small">Product Designer</p>#}
+        {#                    </div>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#            <div class="col-md-3">#}
+        {#                <div class="thumb text-center">#}
+        {#                    <header class="thumb-header">#}
+        {#                        <img class="round" src="{% static "img/300x300.png" %}" alt="Image Alternative text"#}
+        {#                             title="Bubbles"/>#}
+        {#                    </header>#}
+        {#                    <div class="thumb-caption">#}
+        {#                        <h5 class="thumb-title">Cheryl Gustin</h5>#}
+        {#                        <p class="thumb-meta text-small">Producer</p>#}
+        {#                    </div>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#            <div class="col-md-3">#}
+        {#                <div class="thumb text-center">#}
+        {#                    <header class="thumb-header">#}
+        {#                        <img class="round" src="{% static "img/300x300.png" %}" alt="Image Alternative text"#}
+        {#                             title="Gamer Chick"/>#}
+        {#                    </header>#}
+        {#                    <div class="thumb-caption">#}
+        {#                        <h5 class="thumb-title">Sarah Slater</h5>#}
+        {#                        <p class="thumb-meta text-small">CEO</p>#}
+        {#                    </div>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#            <div class="col-md-3">#}
+        {#                <div class="thumb text-center">#}
+        {#                    <header class="thumb-header">#}
+        {#                        <img class="round" src="{% static "img/300x300.png" %}" alt="Image Alternative text"#}
+        {#                             title="Afro"/>#}
+        {#                    </header>#}
+        {#                    <div class="thumb-caption">#}
+        {#                        <h5 class="thumb-title">Oliver Ross</h5>#}
+        {#                        <p class="thumb-meta text-small">Office Manager</p>#}
+        {#                    </div>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#            <div class="col-md-3">#}
+        {#                <div class="thumb text-center">#}
+        {#                    <header class="thumb-header">#}
+        {#                        <img class="round" src="{% static "img/300x300.png" %}" alt="Image Alternative text"#}
+        {#                             title="Me with the Uke"/>#}
+        {#                    </header>#}
+        {#                    <div class="thumb-caption">#}
+        {#                        <h5 class="thumb-title">John Mathis</h5>#}
+        {#                        <p class="thumb-meta text-small">Product Designer</p>#}
+        {#                    </div>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#            <div class="col-md-3">#}
+        {#                <div class="thumb text-center">#}
+        {#                    <header class="thumb-header">#}
+        {#                        <img class="round" src="{% static "img/300x300.png" %}" alt="Image Alternative text"#}
+        {#                             title="Andrea"/>#}
+        {#                    </header>#}
+        {#                    <div class="thumb-caption">#}
+        {#                        <h5 class="thumb-title">Neil Davidson</h5>#}
+        {#                        <p class="thumb-meta text-small">Project Manager</p>#}
+        {#                    </div>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#            <div class="col-md-3">#}
+        {#                <div class="thumb text-center">#}
+        {#                    <header class="thumb-header">#}
+        {#                        <img class="round" src="{% static "img/300x300.png" %}" alt="Image Alternative text"#}
+        {#                             title="Spidy"/>#}
+        {#                    </header>#}
+        {#                    <div class="thumb-caption">#}
+        {#                        <h5 class="thumb-title">Oliver Ross</h5>#}
+        {#                        <p class="thumb-meta text-small">Office Manager</p>#}
+        {#                    </div>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#        </div>#}
+        {#        <h4>Want to Join Our Team</h4>#}
+        {#        <div class="row">#}
+        {#            <div class="col-md-10">#}
+        {#                <p>Nascetur metus morbi nibh magnis semper elit proin vivamus hac vivamus ultricies hac nulla sodales#}
+        {#                    himenaeos luctus nascetur lacus sed placerat penatibus sociosqu lectus semper tincidunt pellentesque#}
+        {#                    volutpat egestas porttitor</p>#}
+        {#                <a href="#">Explore open positions</a>#}
+        {#            </div>#}
+        {#        </div>#}
         <div class="gap"></div>
         {#        <h2 class="mb20">Behing the Scenes</h2>#}
     </div>
@@ -632,7 +401,7 @@
             <div class="row row-wrap">
                 <div class="col-md-3">
                     <a class="logo" href="index.html">
-                        <img src="{% static "img/logo-invert.png"%}" alt="Image Alternative text" title="Image Title"/>
+                        <img src="{% static "img/logo-invert.png" %}" alt="Image Alternative text" title="Image Title"/>
                     </a>
                     <p class="mb20">Booking, reviews and advices on hotels, resorts, flights, vacation rentals, travel
                         packages, and lots more!</p>
@@ -687,10 +456,10 @@
                     </ul>
                 </div>
                 <div class="col-md-4">
-                    <h4>Have Questions?</h4>
-                    <h4 class="text-color">+1-202-555-0173</h4>
-                    <h4><a href="#" class="text-color">support@traveler.com</a></h4>
-                    <p>24/7 Dedicated Customer Support</p>
+                    <h4>Question ?</h4>
+                    <h4 class="text-color">+33(0)6 26 51 51 36</h4>
+                    <h4><a href="#" class="text-color">info@blacklineservices.fr</a></h4>
+                    <p>17 Rue Belfort, 92110 Clichy CEDEX</p>
                 </div>
 
             </div>
