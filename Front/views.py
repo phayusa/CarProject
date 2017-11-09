@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from Back_Source.models import VehicleModel
+
 
 # Create your views here.
 
@@ -20,4 +22,5 @@ def register(request):
 
 
 def prices(request):
-    return render(request, 'client/prices.html')
+    models = VehicleModel.objects.all()
+    return render(request, 'client/prices.html', {'models': models})

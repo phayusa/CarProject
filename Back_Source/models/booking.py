@@ -33,5 +33,5 @@ class Booking(models.Model):
             '%m/%d/%Y %Hh%M')
 
     class Meta:
-        verbose_name = "Réservation"
+        verbose_name = u'Réservation'
 

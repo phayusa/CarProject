@@ -4,157 +4,17 @@
 <head>
     <title>BlackLine Services | Acceuil </title>
 
-
-    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-    <meta name="keywords" content="Template, html, premium, themeforest"/>
-    <meta name="description" content="Traveler - Premium template for travel companies">
-    <meta name="author" content="Tsoy">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- GOOGLE FONTS -->
-    <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,600' rel='stylesheet'
-          type='text/css'>
+    {% include 'client/head.html' %}
     {% load static %}
-    <!-- /GOOGLE FONTS -->
-    <link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
-    <link rel="stylesheet" href="{% static "css/font-awesome.css" %}">
-    <link rel="stylesheet" href="{% static "css/icomoon.css" %}">
-    <link rel="stylesheet" href="{% static "css/styles.css" %}">
-    <link rel="stylesheet" href="{% static "css/mystyles.css" %}">
-    <script src="{% static "js/modernizr.js" %}"></script>
-
 
 </head>
 
 <body>
 
-<!-- FACEBOOK WIDGET -->
-<div id="fb-root"></div>
-<script>
-    (function (d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s);
-        js.id = id;
-        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-</script>
-<!-- /FACEBOOK WIDGET -->
+{% include 'client/facebook_widget.html' %}
+
 <div class="global-wrap">
-    <header id="main-header">
-        <div class="header-top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-3">
-                        <a class="logo" href="/">
-                            <img src="{% static "img/logo-invert.png" %}" alt="Image Alternative text"
-                                 title="Image Title"/>
-                        </a>
-                    </div>
-                    <div class="col-md-3 col-md-offset-2">
-                        <form class="main-header-search">
-                            <div class="form-group form-group-icon-left">
-                                <i class="fa fa-search input-icon"></i>
-                                <input type="text" class="form-control">
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="top-user-area clearfix">
-                            <ul class="top-user-area-list list list-horizontal list-border">
-                                <li class="top-user-area-avatar">
-                                    <a href="/register">
-                                        <img class="origin round" src="{% static "img/40x40.png" %}"
-                                             alt="Image Alternative text" title="AMaze"/>Hi, John</a>
-                                </li>
-                                <li><a href="#">Sign Out</a>
-                                </li>
-                                <li class="nav-drop"><a href="#">USD $<i class="fa fa-angle-down"></i><i
-                                        class="fa fa-angle-up"></i></a>
-                                    <ul class="list nav-drop-menu">
-                                        <li><a href="#">EUR<span class="right">€</span></a>
-                                        </li>
-                                        <li><a href="#">GBP<span class="right">£</span></a>
-                                        </li>
-                                        <li><a href="#">JPY<span class="right">円</span></a>
-                                        </li>
-                                        <li><a href="#">CAD<span class="right">$</span></a>
-                                        </li>
-                                        <li><a href="#">AUD<span class="right">A$</span></a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="top-user-area-lang nav-drop">
-                                    <a href="#">
-                                        <img src="{% static "img/flags/32/uk.png" %}" alt="Image Alternative text"
-                                             title="Image Title"/>ENG<i class="fa fa-angle-down"></i><i
-                                            class="fa fa-angle-up"></i>
-                                    </a>
-                                    <ul class="list nav-drop-menu">
-                                        <li>
-                                            <a title="German" href="#">
-                                                <img src="{% static "img/flags/32/de.png" %}"
-                                                     alt="Image Alternative text" title="Image Title"/><span
-                                                    class="right">GER</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a title="Japanise" href="#">
-                                                <img src="{% static "img/flags/32/jp.png" %}"
-                                                     alt="Image Alternative text" title="Image Title"/><span
-                                                    class="right">JAP</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a title="Italian" href="#">
-                                                <img src="{% static "img/flags/32/it.png" %}"
-                                                     alt="Image Alternative text" title="Image Title"/><span
-                                                    class="right">ITA</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a title="French" href="#">
-                                                <img src="{% static "img/flags/32/fr.png" %}"
-                                                     alt="Image Alternative text" title="Image Title"/><span
-                                                    class="right">FRE</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a title="Russian" href="#">
-                                                <img src="{% static "img/flags/32/ru.png" %}"
-                                                     alt="Image Alternative text" title="Image Title"/><span
-                                                    class="right">RUS</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a title="Korean" href="#">
-                                                <img src="{% static "img/flags/32/kr.png" %}"
-                                                     alt="Image Alternative text" title="Image Title"/><span
-                                                    class="right">KOR</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="nav">
-                <ul class="slimmenu" id="slimmenu">
-                    <li class="active"><a href="/">Accueil</a></li>
-                    <li><a href="/about">A propos</a></li>
-                    {#                    <li><a href="feature-typography.html">Villes</a></li>#}
-                    <li><a href="/prices">Tarifs</a></li>
-                    <li><a href="flights.html">Réservation</a></li>
-                </ul>
-            </div>
-        </div>
-    </header>
+    {% include 'client/header.html' with active=1 %}
 
     <!-- TOP AREA -->
     <div class="top-area show-onload">
@@ -386,99 +246,9 @@
     <div class="gap gap-small"></div>
 </div>
 
+    {% include 'client/footer.html' %}
 
-<footer id="main-footer">
-    <div class="container">
-        <div class="row row-wrap">
-            <div class="col-md-3">
-                <a class="logo" href="index.html">
-                    <img src="{% static "img/logo.png" %}" alt="Image Alternative text" title="Image Title"/>
-                </a>
-                <p class="mb20">Booking, reviews and advices on hotels, resorts, flights, vacation rentals, travel
-                    packages, and lots more!</p>
-                <ul class="list list-horizontal list-space">
-                    <li>
-                        <a class="fa fa-facebook box-icon-normal round animate-icon-bottom-to-top" href="#"></a>
-                    </li>
-                    <li>
-                        <a class="fa fa-twitter box-icon-normal round animate-icon-bottom-to-top" href="#"></a>
-                    </li>
-                    <li>
-                        <a class="fa fa-google-plus box-icon-normal round animate-icon-bottom-to-top" href="#"></a>
-                    </li>
-                    <li>
-                        <a class="fa fa-linkedin box-icon-normal round animate-icon-bottom-to-top" href="#"></a>
-                    </li>
-                    <li>
-                        <a class="fa fa-pinterest box-icon-normal round animate-icon-bottom-to-top" href="#"></a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="col-md-3">
-                <h4>Newsletter</h4>
-                <form>
-                    <label>Enter your E-mail Address</label>
-                    <input type="text" class="form-control">
-                    <p class="mt5">
-                        <small>*We Never Send Spam</small>
-                    </p>
-                    <input type="submit" class="btn btn-primary" value="Subscribe">
-                </form>
-            </div>
-            <div class="col-md-2">
-                <ul class="list list-footer">
-                    <li><a href="/about">About US</a>
-                    </li>
-                    <li><a href="#">Press Centre</a>
-                    </li>
-                    <li><a href="#">Best Price Guarantee</a>
-                    </li>
-                    <li><a href="#">Travel News</a>
-                    </li>
-                    <li><a href="#">Jobs</a>
-                    </li>
-                    <li><a href="#">Privacy Policy</a>
-                    </li>
-                    <li><a href="#">Terms of Use</a>
-                    </li>
-                    <li><a href="#">Feedback</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="col-md-4">
-                <h4>Question ?</h4>
-                <h4 class="text-color">+33(0)6 26 51 51 36</h4>
-                <h4><a href="#" class="text-color">info@blacklineservices.fr</a></h4>
-                <p>17 Rue Belfort, 92110 Clichy CEDEX</p>
-            </div>
-
-        </div>
-    </div>
-</footer>
-
-<script src="{% static "js/jquery.js" %}"></script>
-<script src="{% static "js/bootstrap.js" %}"></script>
-<script src="{% static "js/slimmenu.js" %}"></script>
-<script src="{% static "js/bootstrap-datepicker.js" %}"></script>
-<script src="{% static "js/bootstrap-timepicker.js" %}"></script>
-<script src="{% static "js/nicescroll.js" %}"></script>
-<script src="{% static "js/dropit.js" %}"></script>
-<script src="{% static "js/ionrangeslider.js" %}"></script>
-<script src="{% static "js/icheck.js" %}"></script>
-<script src="{% static "js/fotorama.js" %}"></script>
-{#        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBXfBFzhg0-fVZcIno2kX-ZBSbqibk_-RE&v=3.exp&sensor=false"></script>#}
-<script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBXfBFzhg0-fVZcIno2kX-ZBSbqibk_-RE"></script>
-<script src="{% static "js/typeahead.js" %}"></script>
-<script src="{% static "js/card-payment.js" %}"></script>
-<script src="{% static "js/magnific.js" %}"></script>
-<script src="{% static "js/owl-carousel.js" %}"></script>
-<script src="{% static "js/fitvids.js" %}"></script>
-<script src="{% static "js/tweet.js" %}"></script>
-<script src="{% static "js/countdown.js" %}"></script>
-<script src="{% static "js/gridrotator.js" %}"></script>
-<script src="{% static "js/custom.js" %}"></script>
+    {% include 'client/scriptLoading.html' %}
 </div>
 </body>
 

@@ -3,7 +3,6 @@ from rest_framework import permissions
 
 # Permission which can access Client
 class ClientPermission(permissions.BasePermission):
-
     def has_permission(self, request, view):
         if request.user.groups.filter(name='Clients').exists():
             # The clients can not delete it's account
@@ -29,7 +28,6 @@ class ClientPermission(permissions.BasePermission):
 
 # Permission which can access drivers
 class DriverPermission(permissions.BasePermission):
-
     def has_permission(self, request, view):
         if request.user.groups.filter(name='Drivers').exists():
             return True
@@ -42,3 +40,13 @@ class DriverPermission(permissions.BasePermission):
             return True
         return False
 
+
+class GeneralPermission(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if request.method == "GET":
+            return True
+        else:
+            if request.user.is_superuser:
+                return True
+            else:
+                return False

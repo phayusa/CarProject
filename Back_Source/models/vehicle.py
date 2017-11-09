@@ -20,6 +20,11 @@ class VehicleModel(models.Model):
     # Category of the vehicle
     category = models.CharField(max_length=100, verbose_name="Catégorie")
 
+    doors = models.IntegerField(default=5, verbose_name="Portes")
+
+    # Name of the image
+    image_default = models.URLField(null=True, blank=True, verbose_name="Image")
+
     def __str__(self):
         return self.category + ' : ' + self.brand + ' ' + self.model + ' ' + str(self.year)
 
