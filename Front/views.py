@@ -24,3 +24,7 @@ def register(request):
 def prices(request):
     models = VehicleModel.objects.all()
     return render(request, 'client/prices.html', {'models': models})
+
+
+def contact(request):
+    return render(request, 'client/contact-us.html')

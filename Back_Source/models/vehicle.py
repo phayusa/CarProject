@@ -25,6 +25,9 @@ class VehicleModel(models.Model):
     # Name of the image
     image_default = models.URLField(null=True, blank=True, verbose_name="Image")
 
+    # Price of this selection car
+    price = models.IntegerField(default=0)
+
     def __str__(self):
         return self.category + ' : ' + self.brand + ' ' + self.model + ' ' + str(self.year)
 

@@ -6,17 +6,17 @@
             <div class="row">
                 <div class="col-md-3">
                     <a class="logo" href="/">
-                        <img src="{% static "img/logo-invert.png" %}" alt="Image Alternative text"
+                        <img src="{% static "img/logo-invert.png" %}" alt="BlackLine Services"
                              title="Image Title"/>
                     </a>
                 </div>
                 <div class="col-md-3 col-md-offset-2">
-                    <form class="main-header-search">
-                        <div class="form-group form-group-icon-left">
-                            <i class="fa fa-search input-icon"></i>
-                            <input type="text" class="form-control">
-                        </div>
-                    </form>
+{#                    <form class="main-header-search">#}
+{#                        <div class="form-group form-group-icon-left">#}
+{#                            <i class="fa fa-search input-icon"></i>#}
+{#                            <input type="text" class="form-control">#}
+{#                        </div>#}
+{#                    </form>#}
                 </div>
                 <div class="col-md-4">
                     <div class="top-user-area clearfix">
@@ -115,6 +115,7 @@
                 {#                    <li><a href="feature-typography.html">Villes</a></li>#}
                 <li {% if active == 3 %} class="active" {% endif %}><a href="/prices">Tarifs</a></li>
                 <li {% if active == 4 %} class="active" {% endif %}><a href="flights.html">Réservation</a></li>
+                <li {% if active == 5 %} class="active" {% endif %}><a href="/contact">Contact</a></li>
             </ul>
         </div>
     </div>
