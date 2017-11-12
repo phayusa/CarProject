@@ -21,6 +21,7 @@ from rest_framework_jwt.views import obtain_jwt_token, verify_jwt_token
 
 urlpatterns = [
     url(r'^login/$', LoginView.as_view()),
+    # url(r'^logout/$', login_required(LogoutView.as_view())),
     url(r'^logout/$', login_required(LogoutView.as_view())),
     url(r'^login_view/$', LoginViewWeb.as_view()),
     url(r'^check/$', verify_jwt_token),

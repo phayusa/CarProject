@@ -3,6 +3,7 @@
 from django.db import models
 from person import Client
 from vehicle import Vehicle
+from vehicle import VehicleModel
 from geoposition.fields import GeopositionField
 
 
@@ -21,7 +22,10 @@ class Booking(models.Model):
 
     # Flight info
     flight = models.CharField(max_length=200, verbose_name="Vol")
-    arrive_time = models.DateTimeField(blank=True, verbose_name="Date Réservé")
+    arrive_time = models.DateTimeField(blank=True, verbose_name="Date d\'Arrivée")
+
+    # Wanted model
+    model_choose = models.ForeignKey(VehicleModel, blank=True, null=True, verbose_name="Modèle souhaitée")
 
     # Processing value
     vehicle_choose = models.ForeignKey(Vehicle, blank=True, null=True, verbose_name="Voiture")

@@ -55,19 +55,24 @@ class LoginView(APIView):
 
             response = {'user': username}
             response.update({'token': token})
-            return Response(response, status=status.HTTP_202_ACCEPTED)
+            # return Response(response, status=status.HTTP_202_ACCEPTED)
 
-            #return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+            return HttpResponseRedirect('/')
+        return HttpResponseRedirect('/register')
+        # return Response(status=status.HTTP_400_BAD_REQUEST)
         #return render(request, self.template_name)
+
+    def get(self, request, **kwargs):
+        return HttpResponseRedirect('/register')
 
 
 class LogoutView(TemplateView):
-    template_name = 'front/index.html'
+    # template_name = '/'
 
     def get(self, request, **kwargs):
         logout(request)
-        return render(request, self.template_name)
+        # return render(request, self.template_name)
+        return HttpResponseRedirect('/')
 
 
 class test(TemplateView):

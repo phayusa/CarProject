@@ -6,6 +6,7 @@ from Back_Source.permissions.person import ClientPermission
 from Back_Source.serializers import BookingSerializer
 
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
 class BookingBase(RecentLoginRequiredMixin, generics.GenericAPIView):
@@ -14,8 +15,9 @@ class BookingBase(RecentLoginRequiredMixin, generics.GenericAPIView):
 
     serializer_class = BookingSerializer
     redirect_unauthenticated_users = False
-    permission_classes = (ClientPermission, )
-    authentication_classes = (JSONWebTokenAuthentication, )
+    # permission_classes = (ClientPermission, )
+    permission_classes = (IsAuthenticated, )
+    # authentication_classes = (JSONWebTokenAuthentication, )
     raise_exception = True
 
     def get_queryset(self):
@@ -35,4 +37,5 @@ class BookingCreate(BookingBase, generics.CreateAPIView):
 class BookingDetail(BookingBase, generics.RetrieveUpdateDestroyAPIView):
     pass
     # redirect_field_name = '.'
+
 

@@ -32,7 +32,7 @@ urlpatterns = [
     # vehicle URL
     url(r'^vehicles/$', VehicleList.as_view()),
     url(r'^vehicle/create/$', login_required(VehicleCreate.as_view())),
-    url(r'^vehicle/(?P<pk>[0-9]+)/$', VehicleDetail.as_view()),
+    # url(r'^vehicle/(?P<pk>[0-9]+)(?P<pk>[0-9]+)/$', VehicleDetail.as_view()),
 
     # vehicles model URL
     url(r'^models/vehicles/$', VehicleModelList.as_view()),

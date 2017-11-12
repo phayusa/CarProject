@@ -23,11 +23,11 @@
                         <ul class="top-user-area-list list list-horizontal list-border">
                             {% if user.is_authenticated %}
                                 <li class="top-user-area-avatar">
-                                    <a href="/register">
+                                    <a href="/user">
                                         <img class="origin round" src="{% static "img/40x40.png" %}"
                                              alt="Image Alternative text" title="AMaze"/>Bienvenue {{ user.username }}</a>
                                 </li>
-                                <li><a href="#">Déconnexion</a></li>
+                                <li><a href="/user/logout/">Déconnexion</a></li>
                             {% else %}
                                 <li class="top-user-area-avatar">
                                     <a href="/register">S'inscrire</a>
@@ -114,7 +114,7 @@
                 <li {% if active == 2 %} class="active" {% endif %}><a href="/about">A propos</a></li>
                 {#                    <li><a href="feature-typography.html">Villes</a></li>#}
                 <li {% if active == 3 %} class="active" {% endif %}><a href="/prices">Tarifs</a></li>
-                <li {% if active == 4 %} class="active" {% endif %}><a href="flights.html">Réservation</a></li>
+{#                <li {% if active == 4 %} class="active" {% endif %}><a href="/booking">Réservation</a></li>#}
                 <li {% if active == 5 %} class="active" {% endif %}><a href="/contact">Contact</a></li>
             </ul>
         </div>

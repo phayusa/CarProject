@@ -1,0 +1,141 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Blackline Services | Acceuil client</title>
+
+
+    {% include 'client/head.html' %}
+
+</head>
+
+<body>
+
+{% include 'client/facebook_widget.html' %}
+
+<div class="global-wrap">
+    {% include 'client/header.html' %}
+
+    {% load static %}
+
+    <div class="container">
+        <h1 class="page-title">Information Personnelles</h1>
+    </div>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <aside class="user-profile-sidebar">
+                    <div class="user-profile-avatar text-center">
+                        <img src="{% static "img/300x300.png" %}" alt="Image Alternative text" title="AMaze"/>
+                        <h5>{{ client.last_name }} {{ client.first_name }}</h5>
+                        <p>Membre depuis Mai 2012</p>
+                    </div>
+                    <ul class="list user-profile-nav">
+                        <li><a href="/user"><i class="fa fa-user"></i>Mon Compte</a>
+                        </li>
+                        <li><a href="/user/settings/"><i class="fa fa-cog"></i>Informations Personnelles</a>
+                        </li>
+                        <li><a href="/user/bookings/"><i class="fa fa-clock-o"></i>Mes Réservations</a>
+                        </li>
+                        <li><a href="user-profile-cards.html"><i class="fa fa-credit-card"></i>Moyen de Payements</a>
+                        </li>
+                    </ul>
+                </aside>
+            </div>
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md-5">
+                        <form action="">
+                            <h4>Utilisateur</h4>
+                            <div class="form-group form-group-icon-left"><i class="fa fa-user input-icon"></i>
+                                <label>Sexe</label>
+                                <input class="form-control" value="{{ client.gender}}" type="text" name="gender"/>
+                            </div>
+                            <div class="form-group form-group-icon-left"><i class="fa fa-user input-icon"></i>
+                                <label>Nom</label>
+                                <input class="form-control" value="{{ client.first_name }}" type="text" name="first_name"/>
+                            </div>
+                            <div class="form-group form-group-icon-left"><i class="fa fa-user input-icon"></i>
+                                <label>Prénom</label>
+                                <input class="form-control" value="{{ client.last_name }}" type="text" name="last_name"/>
+                            </div>
+                            <div class="form-group form-group-icon-left"><i class="fa fa-user input-icon"></i>
+                                <label>Age</label>
+                                <input class="form-control" value="{{ client.age }}" type="text" name="age"/>
+                            </div>
+                            <div class="gap gap-small"></div>
+                            <h4>Contact</h4>
+                             <div class="form-group form-group-icon-left"><i class="fa fa-envelope input-icon"></i>
+                                <label>E-mail</label>
+                                <input class="form-control" value="{{ client.mail }}" type="text"/>
+                            </div>
+                            <div class="form-group form-group-icon-left"><i class="fa fa-phone input-icon"></i>
+                                <label>Numéro de Téléphone</label>
+                                <input class="form-control" value="{{ client.phone_number }}" type="text"/>
+                            </div>
+{#                            <div class="form-group form-group-icon-left"><i class="fa fa-plane input-icon"></i>#}
+{#                                <label>Home Airport</label>#}
+{#                                <input class="form-control" value="London Heathrow Airport (LHR)" type="text"/>#}
+{#                            </div>#}
+{#                            <div class="form-group">#}
+{#                                <label>Street Address</label>#}
+{#                                <input class="form-control" value="46 Gray's Inn Rd, London, WC1X 8LP" type="text"/>#}
+{#                            </div>#}
+{#                            <div class="form-group">#}
+{#                                <label>City</label>#}
+{#                                <input class="form-control" value="London" type="text"/>#}
+{#                            </div>#}
+{#                            <div class="form-group">#}
+{#                                <label>State/Province/Region</label>#}
+{#                                <input class="form-control" value="London" type="text"/>#}
+{#                            </div>#}
+{#                            <div class="form-group">#}
+{#                                <label>ZIP code/Postal code</label>#}
+{#                                <input class="form-control" value="4115523" type="text"/>#}
+{#                            </div>#}
+{#                            <div class="form-group">#}
+{#                                <label>Country</label>#}
+{#                                <input class="form-control" value="United Kingdom" type="text"/>#}
+{#                            </div>#}
+                            <hr>
+                            <input type="submit" class="btn btn-primary" value="Sauvegarder">
+                        </form>
+                    </div>
+                    <div class="col-md-4 col-md-offset-1">
+                        <h4>Mot De Passe</h4>
+                        <form>
+                            <div class="form-group form-group-icon-left"><i class="fa fa-lock input-icon"></i>
+                                <label>Mot de Passe actuelle</label>
+                                <input class="form-control" type="password"/>
+                            </div>
+                            <div class="form-group form-group-icon-left"><i class="fa fa-lock input-icon"></i>
+                                <label>Nouveau Mot de Passe</label>
+                                <input class="form-control" type="password"/>
+                            </div>
+                            <div class="form-group form-group-icon-left"><i class="fa fa-lock input-icon"></i>
+                                <label>Confirmation Mot de Passe</label>
+                                <input class="form-control" type="password"/>
+                            </div>
+                            <hr/>
+                            <input class="btn btn-primary" type="submit" value="Change Password"/>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="gap"></div>
+    {% include 'client/footer.html' %}
+
+    {% include 'client/scriptLoading.html' %}
+</div>
+</body>
+
+</html>
+
+

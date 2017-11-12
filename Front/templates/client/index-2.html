@@ -105,7 +105,6 @@
 </div>
 <!-- END TOP AREA  -->
 
-
 <div class="container">
     <div class="search-tabs search-tabs-bg search-tabs-nobox search-tabs-lift-top">
         <div class="tabbable">
@@ -124,16 +123,16 @@
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade in active" id="tab-1">
-                    <h2>Arrivée - Destination</h2>
-                    <form>
+                    <h2>Départ - Destination</h2>
+                    <form action="/booking">
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group form-group-lg form-group-icon-left"><i
                                                 class="fa fa-map-marker input-icon"></i>
-                                            <label>Arrivée</label>
-                                            <input class="typeahead form-control"
+                                            <label>Départ</label>
+                                            <input class="typeahead form-control" name="start"
                                                    placeholder="Aéroport" type="text"/>
                                         </div>
                                     </div>
@@ -141,7 +140,7 @@
                                         <div class="form-group form-group-lg form-group-icon-left"><i
                                                 class="fa fa-map-marker input-icon"></i>
                                             <label>Destination</label>
-                                            <input class="typeahead form-control"
+                                            <input class="typeahead form-control" name="arrive"
                                                    placeholder="Adresse, Ville, Lieux" type="text"/>
                                         </div>
                                     </div>
@@ -153,21 +152,21 @@
                                         <div class="form-group form-group-lg form-group-icon-left"><i
                                                 class="fa fa-calendar input-icon input-icon-highlight"></i>
                                             <label>Date d'arrivée</label>
-                                            <input class="date-pick form-control" name="start" type="text"
-                                                   data-date-format="DD d MM yyyy"/>
+                                            <input class="date-pick form-control" name="date" type="date"/>
+                                            {#                                            <input class="date-pick form-control" name="date" type="text"/>#}
                                         </div>
                                     </div>
 
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <label>Heure</label>
-                                            <input class="time-pick form-control" type="text"/>
+                                            <input class="time-pick form-control" type="text" name="time"/>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <button class="btn btn-primary btn-lg" type="submit">Search for Rental Cars</button>
+                        <button class="btn btn-primary btn-lg" type="submit">Réserver une voiture</button>
                     </form>
                 </div>
             </div>
@@ -198,7 +197,7 @@
                 <h5 class="last-minute-title">Qualité de service professionelle</h5>
                 <p class="last-minute-date">Réservation disponible</p>
                 <p class="mb20">A partir de <b>10€</b></p>
-                <a class="btn btn-lg btn-white btn-ghost" href="#">Réserver maintenant
+                <a class="btn btn-lg btn-white btn-ghost" href="/booking/">Réserver maintenant
                     <i class="fa fa-angle-right"></i></a>
             </div>
         </div>

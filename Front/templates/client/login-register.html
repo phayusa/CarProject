@@ -42,18 +42,18 @@
                             </div>
                             <div class="col-md-4">
                                 <h3 class="mb15">Connexion</h3>
-                                <form>
+                                <form action="/user/login/" method="post">
                                     <div class="form-group form-group-ghost form-group-icon-left"><i
                                             class="fa fa-user input-icon input-icon-show"></i>
                                         <label>Utilisateur ou Email</label>
-                                        <input class="form-control" placeholder="e.g. johndoe@gmail.com" type="text"/>
+                                        <input class="form-control" placeholder="e.g. johndoe@gmail.com" type="text" name="username"/>
                                     </div>
                                     <div class="form-group form-group-ghost form-group-icon-left"><i
                                             class="fa fa-lock input-icon input-icon-show"></i>
                                         <label>Mot de Passe</label>
-                                        <input class="form-control" type="password" placeholder="my secret password"/>
+                                        <input class="form-control" type="password" placeholder="my secret password" name="password"/>
                                     </div>
-                                    <input class="btn btn-primary" type="submit" value="Se connecter"/>
+                                    <input class="btn btn-primary" type="submit" value="Se connecter" />
                                 </form>
                             </div>
                             <div class="col-md-4">
