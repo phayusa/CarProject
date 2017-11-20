@@ -13,7 +13,7 @@ class VehicleAdmin(admin.ModelAdmin):
 
 class BookingAdmin(admin.ModelAdmin):
     model = Booking
-    list_display = ('date', 'client', 'departure', 'destination', 'flight', 'arrive_time')
+    list_display = ('date', 'client', 'airport', 'destination', 'flight', 'arrive_time')
     search_fields = ('client__first_name', 'client__last_name', 'flight', 'arrive_time')
     list_filter = ('date', 'arrive_time')
     ordering = ('date',)
@@ -44,10 +44,14 @@ class AreaAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Client, PersonAdmin)
+admin.site.register(Commercial, PersonAdmin)
+admin.site.register(BuissnessPartner, PersonAdmin)
 admin.site.register(Vehicle, VehicleAdmin)
 admin.site.register(Travel, TravelAdmin)
 admin.site.register(Booking, BookingAdmin)
+admin.site.register(BookingPartner)
+admin.site.register(BookingCommecial)
 admin.site.register(Driver, DriverAdmin)
 admin.site.register(Area, AreaAdmin)
-admin.site.register(Test)
+admin.site.register(Airport)
 admin.site.register(VehicleModel, VehicleModelAdmin)

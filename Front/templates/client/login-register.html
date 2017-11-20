@@ -2,7 +2,11 @@
 <html class="full">
 
 <head>
-    <title>BlackLine Services | Connexion</title>
+    {% if type == 1 %}
+        <title>BlackLine Services | Connexion</title>
+    {% else %}
+        <title>BlackLine Services | S'inscrire</title>
+    {% endif %}
 
     {% load static %}
 
@@ -40,43 +44,106 @@
                                         stands situés dans les aéroports.</p>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <h3 class="mb15">Connexion</h3>
-                                <form action="/user/login/" method="post">
-                                    <div class="form-group form-group-ghost form-group-icon-left"><i
-                                            class="fa fa-user input-icon input-icon-show"></i>
-                                        <label>Utilisateur ou Email</label>
-                                        <input class="form-control" placeholder="e.g. johndoe@gmail.com" type="text" name="username"/>
-                                    </div>
-                                    <div class="form-group form-group-ghost form-group-icon-left"><i
-                                            class="fa fa-lock input-icon input-icon-show"></i>
-                                        <label>Mot de Passe</label>
-                                        <input class="form-control" type="password" placeholder="my secret password" name="password"/>
-                                    </div>
-                                    <input class="btn btn-primary" type="submit" value="Se connecter" />
-                                </form>
-                            </div>
-                            <div class="col-md-4">
+                            {% if type == 1 %}
+                                <div class="col-md-4">
+                                    <h3 class="mb15">Connexion</h3>
+                                    <form action="/user/login/" method="post">
+                                        {% csrf_token %}
+                                        <div class="form-group form-group-ghost form-group-icon-left"><i
+                                                class="fa fa-user input-icon input-icon-show"></i>
+                                            <label>Utilisateur ou Email</label>
+                                            <input class="form-control" placeholder="e.g. johndoe@gmail.com" type="text"
+                                                   name="username"/>
+                                        </div>
+                                        <div class="form-group form-group-ghost form-group-icon-left"><i
+                                                class="fa fa-lock input-icon input-icon-show"></i>
+                                            <label>Mot de Passe</label>
+                                            <input class="form-control" type="password" placeholder="my secret password"
+                                                   name="password"/>
+                                        </div>
+                                        <input class="btn btn-primary" type="submit" value="Se connecter"/>
+                                    </form>
+                                </div>
+                            {% else %}
                                 <h3 class="mb15">S'inscrire</h3>
-                                <form>
-                                    <div class="form-group form-group-ghost form-group-icon-left"><i
-                                            class="fa fa-user input-icon input-icon-show"></i>
-                                        <label>Nom</label>
-                                        <input class="form-control" placeholder="e.g. John Doe" type="text"/>
+                                <form method="post">
+                                    {% csrf_token %}
+
+                                    {#                                    gender = models.CharField(max_length=10, verbose_name="Sexe")#}
+                                    {#    mail = models.EmailField(blank=True)#}
+                                    {#    phone_number = PhoneNumberField(verbose_name="Téléphone")#}
+                                    {#    user = models.OneToOneField(User, verbose_name="Utilisateur")#}
+
+                                    <div class="col-md-4">
+                                        <div class="form-group form-group-ghost form-group-icon-left"><i
+                                                class="fa fa-user input-icon input-icon-show"></i>
+                                            <label>Nom d'utilisateur</label>
+                                            <input class="form-control" name="username" placeholder="ex : Beau Utilisateur"
+                                                   type="text"/>
+                                        </div>
+                                        <div class="form-group form-group-ghost form-group-icon-left"><i
+                                                class="fa fa-envelope input-icon input-icon-show"></i>
+                                            <label>Email</label>
+                                            <input class="form-control" name="email"
+                                                   placeholder="e.g. Beau@gmail.com"
+                                                   type="text"/>
+                                        </div>
+                                        <div class="form-group form-group-ghost form-group-icon-left"><i
+                                                class="fa fa-lock input-icon input-icon-show"></i>
+                                            <label>Mot de Passe</label>
+                                            <input class="form-control" name="password" type="password"
+                                                   placeholder="MotDePasse"/>
+                                        </div>
                                     </div>
-                                    <div class="form-group form-group-ghost form-group-icon-left"><i
-                                            class="fa fa-envelope input-icon input-icon-show"></i>
-                                        <label>Email</label>
-                                        <input class="form-control" placeholder="e.g. johndoe@gmail.com" type="text"/>
+
+
+                                    <div class="col-md-4">
+                                        <div class="form-group form-group-ghost form-group-icon-left"><i
+                                                class="fa fa-user input-icon input-icon-show"></i>
+                                            <label>Nom</label>
+                                            <input class="form-control" name="first_name" placeholder="ex : Lepic"
+                                                   type="text"/>
+                                        </div>
+                                        <div class="form-group form-group-ghost form-group-icon-left"><i
+                                                class="fa fa-user input-icon input-icon-show"></i>
+                                            <label>Prénom</label>
+                                            <input class="form-control" name="last_name" placeholder="ex : Henri"
+                                                   type="text"/>
+                                        </div>
+
+                                        <div class="form-group form-group-ghost form-group-icon-left"><i
+                                                class="fa fa- input-icon input-icon-show"></i>
+                                            <label>Age</label>
+                                            <input class="form-control" name="age" type="number" step="1" min="18"
+                                                   max="100" placeholder="18"/>
+                                        </div>
+
+                                        <div class="form-group form-group-ghost form-group-icon-left"><i
+                                                class="fa fa-user input-icon input-icon-show"></i>
+                                            <label>Sexe</label>
+                                            <div class="radio-inline">
+                                                <label>
+                                                    <input class="i-radio" type="radio" name="gender"
+                                                           value="Homme"/>Homme</label>
+                                                <label>
+                                                    <input class="i-radio" type="radio" name="gender"
+                                                           value="Femme"/>Femme</label>
+                                            </div>
+                                            {#                                            <input class="form-control" name="gender" type="number" step="1" min="18"#}
+                                            {#                                                   max="100"/>#}
+                                        </div>
+
+                                        <div class="form-group form-group-ghost form-group-icon-left"><i
+                                                class="fa fa-phone input-icon input-icon-show"></i>
+                                            <label>Teléphone</label>
+                                            <input class="form-control" name="phone_number" type="tel" placeholder="+336000000"/>
+                                        </div>
+                                        <input class="btn btn-primary" type="submit" value="Inscription"/>
+
                                     </div>
-                                    <div class="form-group form-group-ghost form-group-icon-left"><i
-                                            class="fa fa-lock input-icon input-icon-show"></i>
-                                        <label>Mot de Passe</label>
-                                        <input class="form-control" type="password" placeholder="my secret password"/>
-                                    </div>
-                                    <input class="btn btn-primary" type="submit" value="Inscription"/>
                                 </form>
-                            </div>
+                            {% endif %}
+
                         </div>
                     </div>
                 </div>

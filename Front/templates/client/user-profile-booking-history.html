@@ -59,7 +59,7 @@
                         <th>Passagers</th>
                         <th>Nombre de Bagages</th>
                         <th>Vol</th>
-                        <th>Véhicule choisit</th>
+                        <th>Etat</th>
                         <th>Annulation</th>
                     </tr>
                     </thead>
@@ -68,16 +68,11 @@
                         <tr>
                             <td>{{ booking.arrive_time }}</td>
                             <td>{{ booking.model_choose }}</td>
-                            <td>{{ booking.departure }} - {{ booking.destination }}</td>
+                            <td>{{ booking.airport.address }} - {{ booking.destination }}</td>
                             <td>{{ booking.passengers }}</td>
                             <td>{{ booking.luggage_number }}</td>
                             <td>{{ booking.flight }}</td>
-                            {% if booking.vehicle_choose %}
-                                <td>{{ booking.vehicle_choose }}</td>
-                            {% else %}
-                                <td>En cours</td>
-                                <td class="text-center"><a data-method="delete" class="btn btn-default" href="/user/booking/{{ booking.id }}/delete/">Annuler</a></td>
-                            {% endif %}
+                            <td>{{ booking.status}}</td>
                             {#                        <td class="booking-history-type"><i class="fa fa-plane"></i>#}
                             {#                            <small>flight</small>#}
                             {#                        </td>#}

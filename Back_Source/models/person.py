@@ -16,8 +16,8 @@ class Person(models.Model):
     phone_number = PhoneNumberField(verbose_name="Téléphone")
     user = models.OneToOneField(User, verbose_name="Utilisateur")
 
-    address = models.CharField(max_length=255, verbose_name="Adresse")
-    location = PlainLocationField(based_fields=['address'], zoom=7)
+    address = models.CharField(max_length=255, blank=True, null=True, verbose_name="Adresse")
+    location = PlainLocationField(blank=True, null=True, based_fields=['address'], zoom=7)
 
     def __str__(self):
         return self.last_name + ' ' + self.first_name
@@ -56,7 +56,6 @@ class Commercial(Person):
 
 # Partership information
 class BuissnessPartner(Person):
-
     name_company = models.CharField(max_length=500, verbose_name="Nom Société")
     type_company = models.CharField(max_length=500, verbose_name="Forme Juridique")
     tva_number = models.CharField(max_length=500, verbose_name="Numéro TVA")
@@ -64,7 +63,6 @@ class BuissnessPartner(Person):
     # Payment information
     iban_number = models.CharField(max_length=500, verbose_name="IBAN")
     bic_number = models.CharField(max_length=500, verbose_name="BIC")
-
 
     class Meta:
         verbose_name = "Partenaire Commercial"

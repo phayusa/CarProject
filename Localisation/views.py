@@ -42,7 +42,7 @@ def get_area(booking):
     #     data["lat"] = float(booking.destination.split()[0])
     #     data["lng"] = float(booking.destination.split()[1])
     # print data
-    data = booking.destination
+    data = LocationObj(booking.destination)
     for area in Area.objects.all():
         if (area.south < data.latitude < area.north) and (area.west < data.longitude < area.east):
             return area
@@ -120,9 +120,20 @@ def end_driver(request):
     vehicle.save()
 
 
+class LocationObj():
+    def __init__(self):
+        self.latitude = 0.0
+        self.longitude = 0.0
+
+    def __init__(self, str_pos):
+        tmp = str_pos.replace("(", "").replace(")", "").split(",")
+        self.latitude = float(tmp[0])
+        self.longitude = float(tmp[1])
+
+
 def upload_distance(booking):
-    points_destination = booking.destination
-    points_depart = booking.departure
+    points_destination = LocationObj(booking.destination_location)
+    points_depart = LocationObj(booking.airport.location)
     booking.distance = math.hypot(points_destination.latitude - points_depart.latitude,
                                   points_destination.longitude - points_depart.longitude)
     booking.save()

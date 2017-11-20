@@ -18,7 +18,7 @@ class VehicleModel(models.Model):
     # Seats fields
     child_seat = models.BooleanField(verbose_name="Siège enfant")
     number_place = models.IntegerField(verbose_name="Places")
-    luggage_number = models.IntegerField(help_text="Taille du coffre en litre", verbose_name="Volume du coffre")
+    luggage_number = models.IntegerField(help_text="Nombre de bagage authorisé", verbose_name="Nombre de baggage")
 
     # Category of the vehicle
     category = models.CharField(max_length=100, verbose_name="Catégorie")

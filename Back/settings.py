@@ -25,7 +25,7 @@ SECRET_KEY = 'gio=g00#o6)c7$y#!84@+_*=_pro+h7&=6+!$u=1q6*n^w6-*f'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    u"192.168.0.105", u'127.0.0.1', u'176.31.99.139', u'192.168.0.100', u'172.20.10.6',
+    u"192.168.0.105", u'127.0.0.1', u'176.31.99.139', u'192.168.0.100', u'localhost',
 ]
 
 # Application definition
@@ -171,6 +171,12 @@ CSRF_COOKIE_SECURE = False
 # SECURE_HSTS_PRELOAD = True
 
 GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyAb1NNSLUT7vzTIezPAqKumMB7wNXa2hMg'
+
+LOCATION_FIELD = {
+    'search.provider': 'google',
+    'provider.google.api_key': 'AIzaSyAb1NNSLUT7vzTIezPAqKumMB7wNXa2hMg',
+    'provider.google.map.type': 'ROADMAP',
+}
 
 # MEDIA_ROOT = '/Users/msrouji/Desktop/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static', 'media')

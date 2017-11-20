@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^about$', about),
     url(r'^404', not_found),
     url(r'^register', register),
+    url(r'^login', login),
     url(r'^prices', prices),
     url(r'^contact', contact),
     url(r'^booking/$', login_required(booking)),

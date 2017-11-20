@@ -1,1 +1,1 @@
-from user import LoginView, LogoutView
+from user import LoginView, LogoutView, user_authenticate

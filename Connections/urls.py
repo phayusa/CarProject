@@ -16,11 +16,11 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
-from views.user import LoginView, LogoutView, LoginViewWeb, logout_android
+from views.user import LoginView, LogoutView, LoginViewWeb, logout_android, user_authenticate
 from rest_framework_jwt.views import obtain_jwt_token, verify_jwt_token, refresh_jwt_token
 
 urlpatterns = [
-    url(r'^login/$', LoginView.as_view()),
+    url(r'^login/$', user_authenticate),
     url(r'^logout/android/$', logout_android),
     url(r'^logout/$', login_required(LogoutView.as_view())),
     url(r'^login_view/$', LoginViewWeb.as_view()),

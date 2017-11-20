@@ -28,5 +28,6 @@ class BookingForm(ModelForm):
 
     class Meta:
         model = Booking
-        fields = ['arrive_time', 'departure', 'destination', 'passengers', 'luggage_number', 'flight', 'model_choose', 'client']
+        fields = ['arrive_time', 'airport', 'destination', 'passengers', 'luggage_number', 'flight', 'model_choose',
+                  'client']
 

@@ -1,5 +1,6 @@
 from django.conf import settings
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout
 from django.http import *
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
@@ -30,7 +31,7 @@ class LoginViewWeb(TemplateView):
             login(request, user)
 
             return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
-        return render(request, self.template_name)
+        return HttpResponseRedirect("/")
 
 
 @method_decorator(csrf_exempt, name="dispatch")
@@ -84,3 +85,21 @@ class test(TemplateView):
 
     def get(self, request, **kwargs):
         return render(request, self.template_name)
+
+
+def user_authenticate(request):
+    username = password = ''
+    if request.POST:
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect('/')
+
+        else:
+            return HttpResponseRedirect('/register/')
+    else:
+        return HttpResponseRedirect('/register/')
