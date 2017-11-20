@@ -5,6 +5,9 @@ from person import Driver
 from area import Area
 from geoposition.fields import GeopositionField
 
+from django.db import models
+from location_field.models.plain import PlainLocationField
+
 
 class VehicleModel(models.Model):
     # Classical attributes
@@ -50,6 +53,9 @@ class Vehicle(models.Model):
 
     # Position fields
     pos = GeopositionField(blank=True, verbose_name="Position")
+
+    # adress = models.CharField(max_length=255)
+    # location = PlainLocationField(based_fields=['adress'], zoom=7)
 
     # File or photos to upload
     insurance = models.FileField(verbose_name="Contrat d'Assurance")

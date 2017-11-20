@@ -3,3 +3,4 @@ from person import Person, Client, Driver
 from travel import Travel
 from vehicle import Vehicle, VehicleModel
 from area import Area
+from test import Test

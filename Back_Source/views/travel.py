@@ -1,3 +1,5 @@
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
@@ -21,8 +23,13 @@ class TravelBase(generics.GenericAPIView):
         return Travel.objects.all()
 
 
+@method_decorator(csrf_exempt, name="dispatch")
 class TravelList(TravelBase, generics.ListCreateAPIView):
-    pass
+
+    def get_queryset(self):
+        if self.request.user.groups.filter(name='Drivers').exists():
+            return Travel.objects.filter(driver=Driver.objects.filter(user=self.request.user))
+        return Travel.objects.all()
 
 
 class TravelCreate(TravelBase, generics.CreateAPIView):

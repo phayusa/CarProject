@@ -29,6 +29,8 @@ class ClientPermission(permissions.BasePermission):
 # Permission which can access drivers
 class DriverPermission(permissions.BasePermission):
     def has_permission(self, request, view):
+        if request.method in permissions.SAFE_METHODS:
+            return True
         if request.user.groups.filter(name='Drivers').exists():
             return True
         elif request.user.is_superuser:
@@ -36,6 +38,8 @@ class DriverPermission(permissions.BasePermission):
         return False
 
     def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
         if request.user.groups.filter(name='Drivers').exists() or request.user.is_superuser:
             return True
         return False

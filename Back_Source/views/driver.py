@@ -1,10 +1,15 @@
+from django.http import *
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics
 from rest_framework.permissions import IsAdminUser
+from rest_framework.renderers import JSONRenderer
+from rest_framework.views import APIView
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
-from Back_Source.models import Driver
+from Back_Source.models import Vehicle, Driver, Travel
 from Back_Source.permissions.person import DriverPermission
-from Back_Source.serializers import DriverSerializer
+from Back_Source.serializers import DriverSerializer, BookingSerializer
 
 
 class DriverBase(generics.GenericAPIView):
@@ -32,3 +37,36 @@ class DriverDetail(DriverBase, generics.CreateAPIView):
 
 class DriverCreate(DriverBase, generics.RetrieveUpdateDestroyAPIView):
     permission_classes = IsAdminUser
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class DriverBookings(APIView):
+    permission_classes = [DriverPermission, ]
+    authentication_classes = [JSONWebTokenAuthentication, ]
+    raise_exception = True
+
+    def get(self, request, **kwargs):
+        try:
+            if not request.user:
+                return HttpResponse("Bad Request")
+            drivers = Driver.objects.filter(user=request.user)
+            if not drivers:
+                return HttpResponse("Bad Request")
+            driver = drivers[0]
+            vehicles = Vehicle.objects.filter(driver=driver)
+            if not vehicles:
+                return HttpResponse("Bad Request")
+            vehicle = vehicles[0]
+            travels = Travel.objects.filter(car=vehicle, start=None)
+            if not travels:
+                return HttpResponse("Bad Request")
+            travel = travels[0]
+            if not travel.driver:
+                travel.driver = driver
+                travel.save()
+            print travel.bookings.order_by('distance')
+            serialize = BookingSerializer(travel.bookings.order_by('distance'), many=True)
+            return HttpResponse(JSONRenderer().render(serialize.data))
+            # return HttpResponse(json.dumps(travel.bookings.order_by('distance')))
+        except IndexError:
+            return HttpResponse("Bad Request")

@@ -140,7 +140,7 @@
                                         <div class="form-group form-group-lg form-group-icon-left"><i
                                                 class="fa fa-map-marker input-icon"></i>
                                             <label>Destination</label>
-                                            <input class="typeahead form-control" name="arrive"
+                                            <input id="arrive_adress" class="typeahead form-control" name="arrive"
                                                    placeholder="Adresse, Ville, Lieux" type="text"/>
                                         </div>
                                     </div>
@@ -152,7 +152,7 @@
                                         <div class="form-group form-group-lg form-group-icon-left"><i
                                                 class="fa fa-calendar input-icon input-icon-highlight"></i>
                                             <label>Date d'arrivée</label>
-                                            <input class="date-pick form-control" name="date" type="date"/>
+                                            <input class="form-control" name="date" type="date"/>
                                             {#                                            <input class="date-pick form-control" name="date" type="text"/>#}
                                         </div>
                                     </div>
@@ -250,6 +250,46 @@
 {% include 'client/footer.html' %}
 
 {% include 'client/scriptLoading.html' %}
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAb1NNSLUT7vzTIezPAqKumMB7wNXa2hMg&libraries=places&callback=initAutocomplete"
+        async defer></script>
+
+<script>
+    var placeSearch, autocomplete;
+
+    function initAutocomplete() {
+        // Create the autocomplete object, restricting the search to geographical
+        // location types.
+        autocomplete = new google.maps.places.Autocomplete(
+            /** @type {!HTMLInputElement} */(document.getElementById('arrive_adress')),
+            {types: ['geocode']});
+
+        // When the user selects an address from the dropdown, populate the address
+        // fields in the form.
+        autocomplete.addListener('place_changed', fillInAddress);
+    }
+
+    function fillInAddress() {
+        // Get the place details from the autocomplete object.
+        var place = autocomplete.getPlace();
+
+{#        for (var component in componentForm) {#}
+{#            document.getElementById(component).value = '';#}
+{#            document.getElementById(component).disabled = false;#}
+{#        }#}
+{##}
+{#        // Get each component of the address from the place details#}
+{#        // and fill the corresponding field on the form.#}
+{#        for (var i = 0; i < place.address_components.length; i++) {#}
+{#            var addressType = place.address_components[i].types[0];#}
+{#            if (componentForm[addressType]) {#}
+{#                var val = place.address_components[i][componentForm[addressType]];#}
+{#                document.getElementById(addressType).value = val;#}
+{#            }#}
+{#        }#}
+    }
+</script>
+
 </div>
 </body>
 

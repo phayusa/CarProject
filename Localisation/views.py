@@ -24,6 +24,10 @@ def mapView2(request):
     return render(request, 'test_map2.html', {'pois': pois})
 
 
+def autocomplete(request):
+    return render(request, 'autocomplete.html')
+
+
 def get_area(booking):
     # if not len(booking.destination.split()) == 2:
     #     url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=' + \

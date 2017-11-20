@@ -17,7 +17,7 @@ from rest_framework_jwt.settings import api_settings
 class LoginViewWeb(TemplateView):
     template_name = 'front/index.html'
     authentication_classes = (SessionAuthentication, BasicAuthentication)
-    permissions_classes = (IsAuthenticated, )
+    permissions_classes = (IsAuthenticated,)
 
     def post(self, request, **kwargs):
         array_key = request.POST
@@ -37,11 +37,10 @@ class LoginViewWeb(TemplateView):
 class LoginView(APIView):
     template_name = 'front/index.html'
     authentication_classes = (SessionAuthentication, BasicAuthentication)
-    permissions_classes = (IsAuthenticated, )
+    permissions_classes = (IsAuthenticated,)
     permission_classes = (AllowAny,)
 
     def post(self, request, **kwargs):
-
         username = request.data.get('username', False)
         password = request.data.get('password', False)
 
@@ -55,12 +54,12 @@ class LoginView(APIView):
 
             response = {'user': username}
             response.update({'token': token})
-            # return Response(response, status=status.HTTP_202_ACCEPTED)
+            return Response(response, status=status.HTTP_202_ACCEPTED)
 
-            return HttpResponseRedirect('/')
-        return HttpResponseRedirect('/register')
-        # return Response(status=status.HTTP_400_BAD_REQUEST)
-        #return render(request, self.template_name)
+        # return HttpResponseRedirect('/')
+        # return HttpResponseRedirect('/register')
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+        # return render(request, self.template_name)
 
     def get(self, request, **kwargs):
         return HttpResponseRedirect('/register')
@@ -75,10 +74,13 @@ class LogoutView(TemplateView):
         return HttpResponseRedirect('/')
 
 
+def logout_android(request):
+    logout(request)
+    return HttpResponse("Ok")
+
+
 class test(TemplateView):
     template_name = 'front/booking.html'
 
     def get(self, request, **kwargs):
         return render(request, self.template_name)
-
-

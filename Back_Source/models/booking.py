@@ -32,6 +32,8 @@ class Booking(models.Model):
     # To know the nth booking selected for the travel
     distance = models.IntegerField(blank=True, null=True, verbose_name="Distance Départ-Destination")
 
+    status = models.CharField(max_length=100)
+
     def __str__(self):
         return str(self.client) + ' ' + self.date.strftime('%m/%d/%Y') + ' for ' + self.arrive_time.strftime(
             '%m/%d/%Y %Hh%M')
@@ -39,3 +41,5 @@ class Booking(models.Model):
     class Meta:
         verbose_name = u'Réservation'
 
+# class BookingCommecial(Booking):
+#     commercial =

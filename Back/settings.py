@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
@@ -26,9 +25,8 @@ SECRET_KEY = 'gio=g00#o6)c7$y#!84@+_*=_pro+h7&=6+!$u=1q6*n^w6-*f'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    u"192.168.0.105", u'127.0.0.1', u'176.31.99.139',
+    u"192.168.0.105", u'127.0.0.1', u'176.31.99.139', u'192.168.0.100', u'172.20.10.6',
 ]
-
 
 # Application definition
 
@@ -41,6 +39,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'braces',
     'geoposition',
+    'location_field.apps.DefaultConfig',
     # 'djangosecure',
     'sslserver',
     'django_filters',
@@ -82,7 +81,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Back.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
@@ -92,7 +90,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -112,7 +109,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
@@ -128,7 +124,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
@@ -137,7 +132,6 @@ STATIC_URL = '/static/'
 # Login routes
 LOGIN_REDIRECT_URL = '/db/bookings/'
 LOGIN_URL = '/user/login/'
-
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
@@ -150,7 +144,6 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
 }
-
 
 # SECURE_SSL_REDIRECT = True
 # In dev let it at False
@@ -169,13 +162,16 @@ CSRF_COOKIE_SECURE = False
 # SECURE_SSL_REDIRECT = True
 # # Secure cookies
 # SESSION_COOKIE_SECURE = True
-# CSRF_COOKIE_SECURE = True
+# CSRF_CO
+# OKIE_SECURE = True
 # SESSION_COOKIE_HTTPONLY = True
 #
 # SECURE_HSTS_SECONDS = 31536000
 # SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    # SECURE_HSTS_PRELOAD = True
+# SECURE_HSTS_PRELOAD = True
 
 GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyAb1NNSLUT7vzTIezPAqKumMB7wNXa2hMg'
 
-MEDIA_ROOT = '/home/phayusa/tmp/'
+# MEDIA_ROOT = '/Users/msrouji/Desktop/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static', 'media')
+STATIC_ROOT = os.path.join(MEDIA_ROOT, 'collect')

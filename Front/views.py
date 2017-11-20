@@ -137,7 +137,7 @@ def booking(request, *args, **kwargs):
     time = request.GET.get('time', None)
 
     if time and date:
-        raw_date = datetime.datetime.strptime(date + ' ' + time, "%m/%d/%Y %I:%M %p")
+        raw_date = datetime.datetime.strptime(date + ' ' + time, "%Y-%m-%d %I:%M %p")
         # tmp["arrive_time"] = raw_date.strftime("%d/%m/%Y %H:%M")
         tmp["arrive_time"] = raw_date.strftime("%Y-%m-%dT%H:%M")
 
