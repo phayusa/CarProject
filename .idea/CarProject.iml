@@ -21,6 +21,8 @@
       <list>
         <option value="$MODULE_DIR$/Connections/templates" />
         <option value="$MODULE_DIR$/Localisation/templates" />
+        <option value="$MODULE_DIR$/Front/templates" />
+        <option value="$MODULE_DIR$/AdminFront/templates" />
       </list>
     </option>
   </component>

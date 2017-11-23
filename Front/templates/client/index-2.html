@@ -31,7 +31,7 @@
                             <small>Dans plus de</small>
                             <h5>20 villes</h5>
                         </div>
-                        <a class="btn btn-white btn-ghost" href="#"><i class="fa fa-angle-right"></i> Réserver</a>
+{#                        <a class="btn btn-white btn-ghost" href="#"><i class="fa fa-angle-right"></i> Réserver</a>#}
                     </div>
                 </div>
             </div>
@@ -47,7 +47,7 @@
                             <small>Prise en charge directement depuis</small>
                             <h5>L'Aéroport</h5>
                         </div>
-                        <a class="btn btn-white btn-ghost" href="#"><i class="fa fa-angle-right"></i> Réserver</a>
+{#                        <a class="btn btn-white btn-ghost" href="#"><i class="fa fa-angle-right"></i> Réserver</a>#}
                     </div>
                 </div>
             </div>
@@ -63,7 +63,7 @@
                             <small>Plus de 10 types de</small>
                             <h5>Véhicules</h5>
                         </div>
-                        <a class="btn btn-white btn-ghost" href="#"><i class="fa fa-angle-right"></i> Réserver</a>
+{#                        <a class="btn btn-white btn-ghost" href="#"><i class="fa fa-angle-right"></i> Réserver</a>#}
                     </div>
                 </div>
             </div>
@@ -79,7 +79,7 @@
                             <small>Joingnable</small>
                             <h5>24h/24h</h5>
                         </div>
-                        <a class="btn btn-white btn-ghost" href="#"><i class="fa fa-angle-right"></i> Réserver</a>
+{#                        <a class="btn btn-white btn-ghost" href="#"><i class="fa fa-angle-right"></i> Réserver</a>#}
                     </div>
                 </div>
             </div>
@@ -155,13 +155,9 @@
 
 <script>
     function validateForm() {
-        var x = document.forms["booking-form"]["airport"].value;
-        if (x === "") {
-            alert("Un aéroport doit être choisi.");
-            return false;
-        }
 
-        var arrive = document.forms["booking-form"]["arrive"].value;
+
+        var arrive = document.forms["booking-form"]["destination"].value;
         if (arrive === "") {
             alert("Une destination doit être choisi.");
             return false;
@@ -179,7 +175,16 @@
             return false;
         }
 
-        document.getElementById("arrive_time").value = "ta mers";
+        if (Date.parse(time) < new Date().getTime()) {
+            alert("L'heure d'arrivée ne peut pas être inférieure à l'instant présent");
+            return false;
+        }
+
+        var flight = document.forms["booking-form"]["flight"].value
+        if (flight === "") {
+            alert("Un vol doit être indiqué");
+            return false;
+        }
 
 
     }
@@ -227,7 +232,7 @@
                                         <div class="form-group form-group-lg form-group-icon-right"><i
                                                 class="fa fa-map-marker input-icon"></i>
                                             <label>Destination</label>
-                                            <input id="arrive_adress" class="typeahead form-control" name="destination"
+                                            <input id="arrive_adress" class="form-control" name="destination"
                                                    placeholder="Adresse, Ville, Lieux" type="text"/>
                                             <input class="hidden" name="destination_location" type="text"
                                                    id="destination_location"/>
@@ -243,7 +248,7 @@
                                         <div class="form-group form-group-lg form-group-icon-right"><i
                                                 class="fa fa-calendar input-icon input-icon-highlight"></i>
                                             <label>Date d'arrivée</label>
-                                            <input class="form-control" name="date" type="date" id="date"/>
+                                            <input class="form-control" name="date" type="date" id="datetimepicker1"/>
                                             {#                                            <input class="date-pick form-control" name="date" type="text"/>#}
                                         </div>
                                     </div>
@@ -344,8 +349,8 @@
                 <h5 class="last-minute-title">Qualité de service professionelle</h5>
                 <p class="last-minute-date">Réservation disponible</p>
                 <p class="mb20">A partir de <b>10€</b></p>
-                <a class="btn btn-lg btn-white btn-ghost" href="/booking/">Réserver maintenant
-                    <i class="fa fa-angle-right"></i></a>
+{#                <a class="btn btn-lg btn-white btn-ghost" href="/booking/">Réserver maintenant#}
+{#                    <i class="fa fa-angle-right"></i></a>#}
             </div>
         </div>
     </div>

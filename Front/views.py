@@ -60,7 +60,7 @@ def login(request):
 
 def prices(request):
     models = VehicleModel.objects.all()
-    return render(request, 'client/prices.html', {'models': models})
+    return render(request, 'client/prices.html', {'models': models, "Airports":Airport.objects.all()})
 
 
 def contact(request):

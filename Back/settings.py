@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'Connections.apps.ConnectionsConfig',
     'Localisation.apps.LocalisationConfig',
     'Front.apps.FrontConfig',
+    'AdminFront.apps.AdminfrontConfig',
     'phonenumber_field',
     'rest_framework',
     'braces',

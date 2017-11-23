@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="fr">
+{% include 'client/head.html' %}
+
+<div class="modal fade" id="id01" role="dialog" aria-labelledby="id01">
+    <div class="modal-dialog" role="document">
+
+        <div class="modal-header">
+            <h5 class="modal-title" id="id01_label">Réservation</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <form name="booking-form" onsubmit="return validateForm()" method="post"
+              action="booking/create/" id="booking-form">
+            <div class="modal-body">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="form-group form-group-lg form-group-icon-right"><i
+                                class="fa fa-map-marker input-icon"></i>
+                            <label>Départ</label>
+                            {#                                            <input class="typeahead form-control" name="start"#}
+                            {#                                                   placeholder="Aéroport" type="text"/>#}
+                            <select class="format-option form-control" name="airport">
+                                {% for airport in Airports %}
+                                    <option value="{{ airport.id }}">{{ airport.address }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="form-group form-group-lg form-group-icon-right"><i
+                                class="fa fa-map-marker input-icon"></i>
+                            <label>Destination</label>
+                            <input id="arrive_adress" class="form-control" name="destination"
+                                   placeholder="Adresse, Ville, Lieux" type="text"/>
+                            <input class="hidden" name="destination_location" type="text"
+                                   id="destination_location"/>
+
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <input class="hidden" id="arrive_time" name="arrive_time"/>
+                            <div class="col-md-6">
+                                <div class="form-group form-group-lg form-group-icon-right"><i
+                                        class="fa fa-calendar input-icon input-icon-highlight"></i>
+                                    <label>Date d'arrivée</label>
+                                    <input class="form-control" name="date" type="date" id="datetimepicker1"/>
+                                    {#                                            <input class="date-pick form-control" name="date" type="text"/>#}
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group form-group-lg form-group-icon-right"><i
+                                        class="fa fa-clock-o input-icon input-icon-highlight"></i>
+                                    <label>Heure</label>
+                                    <input class="time-pick form-control" type="text" name="time" id="time"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
+                                    <i class="fa fa-car input-icon"></i>
+                                    <label>Modèle</label>
+                                    <select class="form-control format-option" name="model_choose" id="model_option">
+                                        {% for car in models %}
+                                            <option value="{{ car.id }}">{{ car }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
+                                    <i class="fa fa-users input-icon input-icon-highlight"></i>
+                                    <label>Passagers</label>
+                                    <select class="form-control format-option" name="passengers">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                        <option>6</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
+                                    <i class="fa fa-suitcase input-icon input-icon-highlight"></i>
+                                    <label>Baggages</label>
+                                    <select class="form-control format-option" name="luggage_number">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-8">
+                                <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
+                                    <i class="fa fa-plane input-icon input-icon-highlight"></i>
+                                    <label>Vol</label>
+                                    <input class="form-control" type="text" name="flight"/>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="row">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Réserver</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+<script>
+    function validateForm() {
+
+
+        var arrive = document.forms["booking-form"]["destination"].value;
+        if (arrive === "") {
+            alert("Une destination doit être choisi.");
+            return false;
+        }
+
+        var date = document.forms["booking-form"]["date"].value;
+        if (date === "") {
+            alert("Une date d'arrivée doit être choisi.");
+            return false;
+        }
+
+        var time = document.forms["booking-form"]["time"].value;
+        if (time === "") {
+            alert("Une heure d'arrivée doit être choisi.");
+            return false;
+        }
+
+        if (Date.parse(time) < new Date().getTime()) {
+            alert("L'heure d'arrivée ne peut pas être inférieure à l'instant présent");
+            return false;
+        }
+
+        var flight = document.forms["booking-form"]["flight"].value
+        if (flight === "") {
+            alert("Un vol doit être indiqué");
+            return false;
+        }
+
+
+    }
+</script>
+
+
+<script>
+    var placeSearch, autocomplete;
+
+    function initAutocomplete() {
+        // Create the autocomplete object, restricting the search to geographical
+        // location types.
+        autocomplete = new google.maps.places.Autocomplete(
+            /** @type {!HTMLInputElement} */(document.getElementById('arrive_adress')),
+            {
+                types: ['geocode'],
+                componentRestrictions: {country: "fr"}
+            });
+
+
+        // When the user selects an address from the dropdown, populate the address
+        // fields in the form.
+        autocomplete.addListener('place_changed', fillInAddress);
+    }
+
+    function fillInAddress() {
+        // Get the place details from the autocomplete object.
+        var place = autocomplete.getPlace();
+        document.getElementById("destination_location").value = place.geometry.location
+    }
+</script>
+
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAb1NNSLUT7vzTIezPAqKumMB7wNXa2hMg&libraries=places&callback=initAutocomplete"
+        async defer></script>
+
+{% include 'client/scriptLoading.html' %}
+
+</html>

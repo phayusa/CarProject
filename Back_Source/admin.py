@@ -31,7 +31,7 @@ class DriverAdmin(PersonAdmin):
 
 
 class VehicleModelAdmin(admin.ModelAdmin):
-    list_display = ('brand', 'model', 'year', 'child_seat', 'number_place', 'luggage_number', 'price')
+    list_display = ('id', 'brand', 'model', 'year', 'child_seat', 'number_place', 'luggage_number', 'price')
     list_filter = ('number_place', 'category', 'child_seat', 'brand')
 
 
