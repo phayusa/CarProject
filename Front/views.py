@@ -43,6 +43,7 @@ def register(request):
         # if old_user:
         #     return render(request, 'client/login-register.html')
         user = User.objects.create_user(username=data['username'], password=data['password'], email=data['email'])
+                                         # is_active=False)
         user.save()
         client = Client(user=user, mail=user.email, first_name=data['first_name'], last_name=data['last_name'],
                         age=int(data['age']), gender=data['gender'], phone_number=data['phone_number'])
@@ -60,7 +61,7 @@ def login(request):
 
 def prices(request):
     models = VehicleModel.objects.all()
-    return render(request, 'client/prices.html', {'models': models, "Airports":Airport.objects.all()})
+    return render(request, 'client/prices.html', {'models': models, "Airports": Airport.objects.all()})
 
 
 def contact(request):

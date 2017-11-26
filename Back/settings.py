@@ -131,7 +131,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # Login routes
-LOGIN_REDIRECT_URL = '/db/bookings/'
+LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/user/login/'
 
 REST_FRAMEWORK = {

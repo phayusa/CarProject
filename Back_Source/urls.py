@@ -20,6 +20,8 @@ from views.booking import BookingCreate, BookingList, BookingDetail
 from views.vehicle import VehicleCreate, VehicleList, VehicleDetail
 from views.vehicle import VehicleModelList, serve_image, serve_vehicle_driver, VehicleDriverSetter
 from views.client import ClientCreate, ClientDetail, ClientList
+from views.commercials import CommercialList, CommercialDetail, CommercialCreate
+from views.parteners import PartenerList, PartenerDetail, PartenerCreate
 from views.driver import DriverCreate, DriverDetail, DriverList, DriverBookings
 from views.travel import TravelCreate, TravelDetail, TravelList
 
@@ -43,6 +45,16 @@ urlpatterns = [
     url(r'^clients/$', ClientList.as_view()),
     url(r'^client/create/$', ClientCreate.as_view()),
     url(r'^client/(?P<pk>[0-9]+)/$', login_required(ClientDetail.as_view())),
+
+    # commercial URL
+    url(r'^commercials/$', CommercialList.as_view()),
+    url(r'^commercial/create/$', CommercialCreate.as_view()),
+    url(r'^commercial/(?P<pk>[0-9]+)/$', login_required(CommercialDetail.as_view())),
+
+    # partener URL
+    url(r'^parteners/$', PartenerList.as_view()),
+    url(r'^partener/create/$', PartenerCreate.as_view()),
+    url(r'^partener/(?P<pk>[0-9]+)/$', login_required(PartenerDetail.as_view())),
 
     # driver URL
     url(r'^drivers/$', login_required(DriverList.as_view())),
