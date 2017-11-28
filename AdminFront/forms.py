@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
-from django.forms import ModelForm
-from django.utils import timezone
 from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.forms import ModelForm
 
-from Back_Source.models.person import Client, Driver, Commercial, BuissnessPartner
 from Back_Source.models.booking import Booking
 from Back_Source.models.location import Airport
-from location_field.models.plain import PlainLocationField
+from Back_Source.models.person import Client, Driver, Commercial, BuissnessPartner
 
 
 class PersonForm(ModelForm):
@@ -31,14 +30,43 @@ class PersonForm(ModelForm):
 
     mail = forms.EmailField()
 
-    age = forms.NumberInput()
+    age = forms.IntegerField(validators=[
+        MaxValueValidator(120),
+        MinValueValidator(18)
+    ])
+
+    username = forms.CharField(max_length=1000, label="Nom d'utilisateur", required=False)
+
+    password = forms.CharField(widget=forms.PasswordInput(), label="Mot de Passe", required=False)
+    password_bis = forms.CharField(widget=forms.PasswordInput(), label="Confirmer Mot de Passe", required=False)
+
+    def clean(self):
+        cleaned_data = super(PersonForm, self).clean()
+        username = cleaned_data.get('username', None)
+        password = cleaned_data.get('password', None)
+        password_confirm = cleaned_data.get('password_bis', None)
+
+        user_select = cleaned_data.get('user', None)
+        if not username:
+            if not user_select:
+                raise forms.ValidationError('Il faut choisir un utilisateur ou en crée un nouveau')
+            user = user_select
+        else:
+            if user_select:
+                raise forms.ValidationError('Il faut soit crée un utilisateur soit en choisir un dans la liste')
+            try:
+                if password is not password_confirm:
+                    raise forms.ValidationError('Les mot de passes ne sont pas identique')
+                user = User.objects.create_user(username=username, password=password, email=self.cleaned_data['mail'])
+            except Exception as exception:
+                raise forms.ValidationError(exception.message)
 
 
 class ClientForm(PersonForm):
     class Meta:
         model = Client
-        fields = ['first_name', 'last_name', 'mail', 'phone_number', 'age', 'gender', 'status', 'user',
-                  'address']
+        fields = ['first_name', 'last_name', 'mail', 'phone_number', 'age', 'gender', 'status',
+                  'address', 'user']
 
 
 class DriverForm(PersonForm):
@@ -117,7 +145,6 @@ class BookingForm(ModelForm):
 
 
 class AirportForm(ModelForm):
-
     class Meta:
         model = Airport
         fields = ["address", "location"]

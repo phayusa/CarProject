@@ -18,11 +18,10 @@ def client_create(request):
             return redirect('/admin/manager/')
     else:
         form = ClientForm()
-        form_user = UserForm()
     if request.user.is_superuser:
         return render(request, 'object_edit.html',
                       {"sections": ["Gestion", "Création"],
-                       "form": form, "type": 2, "form_user": form_user})
+                       "form": form, "type": 2})
     else:
         return redirect('/')
 
