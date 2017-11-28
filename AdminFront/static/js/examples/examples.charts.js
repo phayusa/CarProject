@@ -222,7 +222,7 @@ Theme Version: 	2.0.0
 			data: morrisLineData,
 			xkey: 'y',
 			ykeys: ['a', 'b'],
-			labels: ['Series A', 'Series B'],
+			labels: ['Homme', 'Femme'],
 			hideHover: true,
 			lineColors: ['#0088cc', '#734ba9'],
 		});
@@ -250,9 +250,9 @@ Theme Version: 	2.0.0
 			data: morrisBarData,
 			xkey: 'y',
 			ykeys: ['a', 'b'],
-			labels: ['Series A', 'Series B'],
+			labels: ['Homme', 'Femme'],
 			hideHover: true,
-			barColors: ['#0088cc', '#2baab1']
+			barColors: ['#0088cc', '#C4698F']
 		});
 	}
 

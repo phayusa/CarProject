@@ -14,17 +14,17 @@ class PersonForm(ModelForm):
     gender = forms.ChoiceField(
         widget=forms.RadioSelect,
         choices=(
-            ('homme', 'Homme'),
-            ('femme', 'Femme'),
+            ('Homme', 'Homme'),
+            ('Femme', 'Femme'),
         )
     )
 
     status = forms.ChoiceField(
         widget=forms.RadioSelect,
         choices=(
-            ('inactif', 'Inactif'),
-            ('mail non confirmé', 'Mail non confirmé'),
-            ('actif', 'Actif'),
+            ('Inactif', 'Inactif'),
+            ('Mail non confirmé', 'Mail non confirmé'),
+            ('Actif', 'Actif'),
         )
     )
 
@@ -45,11 +45,11 @@ class PersonForm(ModelForm):
     def clean_status(self):
         cleaned_data = super(PersonForm, self).clean()
         status = cleaned_data.get("status", None)
-        if status is "inactif":
+        if status is "Inactif":
             return status
-        elif status is "mail non confirmé":
+        elif status is "Mail non confirmé":
             return status
-        elif status is "actif":
+        elif status is "Actif":
             return status
         else:
             raise forms.ValidationError("Status n\'est pas valable")
@@ -57,9 +57,9 @@ class PersonForm(ModelForm):
     def clean_gender(self):
         cleaned_data = super(PersonForm, self).clean()
         gender = cleaned_data.get("gender", None)
-        if gender is "homme":
+        if gender is "Homme":
             return gender
-        elif gender is "femme":
+        elif gender is "Femme":
             return gender
         else:
             raise forms.ValidationError("Genre n\'est pas valable")
@@ -114,27 +114,7 @@ class CommercialForm(PersonForm):
                   'address']
 
 
-class PartenerForm(ModelForm):
-    gender = forms.ChoiceField(
-        widget=forms.RadioSelect,
-        choices=(
-            ('Homme', 'Homme'),
-            ('Femme', 'Femme'),
-        )
-    )
-
-    status = forms.ChoiceField(
-        widget=forms.RadioSelect,
-        choices=(
-            ('inactif', 'Inactif'),
-            ('mail non confirmé', 'Mail non confirmé'),
-            ('actif', 'Actif'),
-        )
-    )
-
-    mail = forms.EmailField()
-
-    age = forms.NumberInput()
+class PartenerForm(PersonForm):
 
     class Meta:
         model = BuissnessPartner
@@ -149,13 +129,7 @@ class UserForm(ModelForm):
 
 
 class BookingForm(ModelForm):
-    # pasengers = forms.ChoiceField(
-    #     widget=forms.RadioSelect,
-    #     choices=(
-    #         ('homme', 'Homme'),
-    #         ('femme', 'Femme'),
-    #     )
-    # )
+
     passengers = forms.ChoiceField(choices=[(i, i) for i in range(1, 6)], label="Passagers")
 
     luggage_number = forms.ChoiceField(choices=[(i, i) for i in range(1, 5)], label="Baggages")

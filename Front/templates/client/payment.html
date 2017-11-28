@@ -51,7 +51,7 @@
                 </ul>
                 <div class="gap gap-small"></div>
                 <h4>Nouvelle Carte</h4>
-                <form class="cc-form" action="/booking/succeed/">
+                <form class="cc-form" action="/booking/succeed/{{ booking.id }}">
                     <div class="clearfix">
                         <div class="form-group form-group-cc-number">
                             <label>Numéro de Carte</label>
@@ -95,8 +95,10 @@
                             <p class="booking-item-payment-date-day">{{ booking.arrive_time.day }}/{{ booking.arrive_time.month }}/{{ booking.arrive_time.year }} {{ booking.arrive_time.hour }}H{{ booking.arrive_time.minute }}</p>
 
                             <div class="gap"></div>
-                            <h5>{{ booking.airport.address }} <i
-                                    class="fa fa-arrow-right booking-item-payment-date-separator"></i> {{ booking.destination }}
+                            <h5>
+                                <p>{{ booking.airport.address }}</p>
+                                <p><i class="fa fa-arrow-right booking-item-payment-date-separator"></i></p>
+                                <p>{{ booking.destination }}</p>
                             </h5>
                         </li>
                         <li>

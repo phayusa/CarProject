@@ -25,11 +25,13 @@ def index(request):
 
     clients = Client.objects.count()
 
+    all_booking_month = booking_size + booking_partener_size + booking_commercial_size
+
     if request.user.is_superuser:
-        return render(request, 'ui-elements-charts.html',
+        return render(request, 'index3.html',
                       {"today_order": today_booking, "commercial_booking": booking_commercial_size,
                        "client_booking": booking_size, "partener_booking": booking_partener_size,
-                       "clients": clients})
+                       "clients": clients, "all": all_booking_month})
     else:
         return redirect('/')
 
