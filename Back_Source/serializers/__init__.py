@@ -1,5 +1,6 @@
-from booking import BookingSerializer
+from booking import BookingSerializer, BookingCommercialSerializer, BookingPartenerSerializer
 from person import ClientSerializer, DriverSerializer, CommercialSerizalizer, PartenerSerializer
 from travel import TravelSerializer
 from vehicle import VehicleSerializer, VehicleModelSerializer
+from location import AirportSerializer
 

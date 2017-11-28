@@ -13,7 +13,7 @@ urlpatterns = [
     url(r'^prices', prices),
     url(r'^contact', contact),
     url(r'^booking/$', login_required(booking)),
-    url(r'^booking/create/$', login_required(booking_create)),
+    url(r'^booking/create/$', booking_create),
     url(r'^booking/succeed/$', login_required(booking_succeed)),
     url(r'^user/$', login_required(user)),
     url(r'^user/settings/$', login_required(user_settings)),
@@ -22,4 +22,4 @@ urlpatterns = [
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 # + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-handler404 = not_found
+# handler404 = not_found

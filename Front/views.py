@@ -43,7 +43,7 @@ def register(request):
         # if old_user:
         #     return render(request, 'client/login-register.html')
         user = User.objects.create_user(username=data['username'], password=data['password'], email=data['email'])
-                                         # is_active=False)
+        # is_active=False)
         user.save()
         client = Client(user=user, mail=user.email, first_name=data['first_name'], last_name=data['last_name'],
                         age=int(data['age']), gender=data['gender'], phone_number=data['phone_number'])
@@ -103,6 +103,9 @@ def booking_succeed(request):
 
 
 def booking_create(request, *args, **kwargs):
+    if not request.user.is_authenticated():
+        return redirect('/login/')
+
     # print request.POST
     # return render(request, 'client/contact-us.html')
     data = request.POST
@@ -123,7 +126,11 @@ def booking_create(request, *args, **kwargs):
     date = data.get('date', None)
     time = data.get('time', None)
 
-    client = Client.objects.filter(user=request.user)[0]
+    clients = Client.objects.filter(user=request.user)
+    if not clients:
+        client = Client.objects.all()[0]
+    else:
+        client = clients[0]
 
     print data
 
@@ -134,13 +141,15 @@ def booking_create(request, *args, **kwargs):
 
     date_w_timezone = pytz.timezone("Europe/Helsinki").localize(parse_datetime(date_time), is_dst=None)
     booking = Booking.objects.create(destination=data["destination"],
-                                     destination_location=data["destination_location"],
+                                     destination_location=data["destination_location"].replace('(', '').replace(')',
+                                                                                                                ''),
                                      airport=Airport.objects.filter(id=data["airport"])[0],
                                      arrive_time=date_w_timezone,
                                      luggage_number=int(data['luggage_number']),
                                      passengers=int(data['passengers']),
                                      model_choose=VehicleModel.objects.filter(id=data['model_choose'])[0],
-                                     client=client)
+                                     client=client,
+                                     flight=data["flight"])
     upload_distance(booking)
     booking.save()
     after = timezone.now() + datetime.timedelta(hours=1)

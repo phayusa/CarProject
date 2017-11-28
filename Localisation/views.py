@@ -42,7 +42,7 @@ def get_area(booking):
     #     data["lat"] = float(booking.destination.split()[0])
     #     data["lng"] = float(booking.destination.split()[1])
     # print data
-    data = LocationObj(booking.destination)
+    data = LocationObj(booking.destination_location)
     for area in Area.objects.all():
         if (area.south < data.latitude < area.north) and (area.west < data.longitude < area.east):
             return area

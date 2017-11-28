@@ -37,25 +37,32 @@
                             <span>Gestion Personnes</span>
                         </a>
                     </li>
+                    <li {% if active == 4 %}class="nav-active"{% endif %}>
+                        <a class="nav-link" href="/admin/bookings/">
+                            <i class="fa fa-address-book" aria-hidden="true"></i>
+                            <span>Réservation</span>
+                        </a>
+                    </li>
 
-{#                    <li class="nav-parent {% if active == 4 %}nav-expanded nav-active{% endif %}">#}
-{#                        <a class="nav-link" href="/admin/drivers/">#}
-{#                            <i class="fa fa-user" aria-hidden="true"></i>#}
-{#                            <span>Chauffeurs</span>#}
-{#                        </a>#}
-{#                        <ul class="nav nav-children">#}
-{#                            <li {% if sub_active == 1 %}class="nav-active"{% endif %}>#}
-{#                                <a class="nav-link" href="/admin/drivers/">#}
-{#                                    Gestion#}
-{#                                </a>#}
-{#                            </li>#}
-{#                            <li {% if sub_active == 2 %}class="nav-active"{% endif %}>#}
-{#                                <a class="nav-link" href="/admin/drivers/stats/">#}
-{#                                    Statistiques#}
-{#                                </a>#}
-{#                            </li>#}
-{#                        </ul>#}
-{#                    </li>#}
+
+                    {#                    <li class="nav-parent {% if active == 4 %}nav-expanded nav-active{% endif %}">#}
+                    {#                        <a class="nav-link" href="/admin/drivers/">#}
+                    {#                            <i class="fa fa-user" aria-hidden="true"></i>#}
+                    {#                            <span>Chauffeurs</span>#}
+                    {#                        </a>#}
+                    {#                        <ul class="nav nav-children">#}
+                    {#                            <li {% if sub_active == 1 %}class="nav-active"{% endif %}>#}
+                    {#                                <a class="nav-link" href="/admin/drivers/">#}
+                    {#                                    Gestion#}
+                    {#                                </a>#}
+                    {#                            </li>#}
+                    {#                            <li {% if sub_active == 2 %}class="nav-active"{% endif %}>#}
+                    {#                                <a class="nav-link" href="/admin/drivers/stats/">#}
+                    {#                                    Statistiques#}
+                    {#                                </a>#}
+                    {#                            </li>#}
+                    {#                        </ul>#}
+                    {#                    </li>#}
                 </ul>
             </nav>
 

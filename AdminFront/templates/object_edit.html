@@ -27,11 +27,11 @@
 
     <div class="inner-wrapper">
 
-        {% include "navigation_bar.html" with active=3 sub_active=1 %}
+        {% include "navigation_bar.html" with active=active sub_active=sub_active %}
 
         <section role="main" class="content-body">
 
-            {% include 'head_line.html' with Name="Clients" %}
+            {% include 'head_line.html' with Name=title %}
 
             <!-- start: page -->
             <section class="card">
@@ -41,28 +41,45 @@
                         {#                        <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
                     </div>
 
-                    <h2 class="card-title">Clients</h2>
+                    <h2 class="card-title">{{ title }}</h2>
                 </header>
-                <div class="card-body col-md-12">
-                    <form method="post">
-                        {% csrf_token %}
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="card-body col-md-12">
                         {#                        {{ form.address }}#}
-                                                {{ form.as_p }}
-{#                        <div class="card-body">#}
-{#                            <form class="form-horizontal form-bordered" method="get">#}
-{#                                <div class="form-group row">#}
-{#                                    <div class="col-lg-6">#}
-{#                                        <label class="col-lg-3 control-label text-lg-right pt-2">Nom</label>#}
-{#                                        <input class="form-control mb-3" type="text"#}
-{#                                               placeholder="Nom">#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </form>#}
-{#                        </div>#}
-                        <button type="submit" class="btn btn-primary">Modifier</button>
-                        <a class="btn btn-secondary" href="/admin/manager/">Annuler</a>
-                    </form>
-                </div>
+                        {#                        <table align="center">#}
+                        {#                            {{ form.as_table }}#}
+                        {##}
+                        {#                        </table>#}
+                        <div>
+                            {{ form.as_p }}
+                            {{ form.media }}
+                        </div>
+                        {#                        <div class="card-body">#}
+                        {#                            <form class="form-horizontal form-bordered" method="get">#}
+                        {#                                <div class="form-group row">#}
+                        {#                                    <div class="col-lg-6">#}
+                        {#                                        <label class="col-lg-3 control-label text-lg-right pt-2">Nom</label>#}
+                        {#                                        <input class="form-control mb-3" type="text"#}
+                        {#                                               placeholder="Nom">#}
+                        {#                                    </div>#}
+                        {#                                </div>#}
+                        {#                            </form>#}
+                        {#                        </div>#}
+
+                    </div>
+                    <div class="card-footer">
+                        {% if type == 2 %}
+                            {#                            {{ form_user.as_p }}#}
+                            <button type="submit" class="btn btn-success    ">Créer</button>
+                        {% else %}
+                            <button type="submit" class="btn btn-primary">Modifier</button>
+                        {% endif %}
+                        <a class="btn btn-secondary"
+                           href="{% if direct == 2 %}/admin/bookings/{% else %}/admin/manager/{% endif %}">Annuler</a>
+                    </div>
+                </form>
+
             </section>
 
 
@@ -83,8 +100,8 @@
 
 
 <!-- Examples -->
-<script src="{% static "js/client_manager_datatable.js" %}"></script>
-{#<script src="{% static "js/examples/examples.modals.js" %}"></script>#}
+{#<script src="{% static "js/datatable/client_manager_datatable.js" %}"></script>#}
+{#<script src="{% static "js/examples/examples.modal=s.js" %}"></script>#}
 
 
 </body>

@@ -17,6 +17,7 @@ from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
 
 from views.booking import BookingCreate, BookingList, BookingDetail
+from views.booking import BookingCommercialList, BookingPartenerList
 from views.vehicle import VehicleCreate, VehicleList, VehicleDetail
 from views.vehicle import VehicleModelList, serve_image, serve_vehicle_driver, VehicleDriverSetter
 from views.client import ClientCreate, ClientDetail, ClientList
@@ -24,12 +25,19 @@ from views.commercials import CommercialList, CommercialDetail, CommercialCreate
 from views.parteners import PartenerList, PartenerDetail, PartenerCreate
 from views.driver import DriverCreate, DriverDetail, DriverList, DriverBookings
 from views.travel import TravelCreate, TravelDetail, TravelList
+from views.airport import AirportList, AirportCreate, AirportDetail
 
 urlpatterns = [
     # bookings URL
     url(r'^bookings/$', login_required(BookingList.as_view())),
     url(r'^booking/create/$', login_required(BookingCreate.as_view())),
     url(r'^booking/(?P<pk>[0-9]+)/$', login_required(BookingDetail.as_view())),
+
+    # bookings commecial URL
+    url(r'^bookings-commercials/$', login_required(BookingCommercialList.as_view())),
+
+    # bookings URL
+    url(r'^bookings-parteners/$', login_required(BookingPartenerList.as_view())),
 
     # vehicle URL
     url(r'^vehicles/$', VehicleList.as_view()),
@@ -66,5 +74,10 @@ urlpatterns = [
     url(r'^travels/$', TravelList.as_view()),
     url(r'^travel/create/$', login_required(TravelCreate.as_view())),
     url(r'^travel/(?P<pk>[0-9]+)/$', login_required(TravelDetail.as_view())),
+
+    # Airport URL
+    url(r'^airports/$', AirportList.as_view()),
+    url(r'^airport/create/$', login_required(AirportCreate.as_view())),
+    url(r'^airport/(?P<pk>[0-9]+)/$', login_required(AirportDetail.as_view())),
 
 ]

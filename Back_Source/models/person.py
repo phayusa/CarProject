@@ -15,7 +15,7 @@ class Person(models.Model):
     mail = models.EmailField(blank=True)
     phone_number = PhoneNumberField(verbose_name="Téléphone")
     user = models.OneToOneField(User, verbose_name="Utilisateur")
-    status = models.CharField(max_length=100, default="Inactif")
+    status = models.CharField(max_length=100, default="inactif")
 
     address = models.CharField(max_length=255, blank=True, null=True, verbose_name="Adresse")
     location = PlainLocationField(blank=True, null=True, based_fields=['address'], zoom=7)
