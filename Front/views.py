@@ -97,9 +97,10 @@ def user_bookings_delete(request, pk):
     return render(request, 'client/user-profile-booking-history.html', {"client": client, "bookings": bookings})
 
 
-def booking_succeed(request):
+def booking_succeed(request, pk):
     client = Client.objects.filter(user=request.user)[0]
-    return render(request, 'client/success-payment.html', {"client": client})
+    booking = Booking.objects.filter(id=pk)[0]
+    return render(request, 'client/success-payment.html', {"client": client, "booking": booking})
 
 
 def booking_create(request, *args, **kwargs):
@@ -140,16 +141,21 @@ def booking_create(request, *args, **kwargs):
     date_time = raw_date.strftime("%Y-%m-%dT%H:%M")
 
     date_w_timezone = pytz.timezone("Europe/Helsinki").localize(parse_datetime(date_time), is_dst=None)
-    booking = Booking.objects.create(destination=data["destination"],
-                                     destination_location=data["destination_location"].replace('(', '').replace(')',
-                                                                                                                ''),
-                                     airport=Airport.objects.filter(id=data["airport"])[0],
-                                     arrive_time=date_w_timezone,
-                                     luggage_number=int(data['luggage_number']),
-                                     passengers=int(data['passengers']),
-                                     model_choose=VehicleModel.objects.filter(id=data['model_choose'])[0],
-                                     client=client,
-                                     flight=data["flight"])
+    booking, created = Booking.objects.get_or_create(destination=data["destination"],
+                                                     destination_location=data["destination_location"].replace('(',
+                                                                                                               '').replace(
+                                                         ')',
+                                                         ''),
+                                                     airport=Airport.objects.filter(id=data["airport"])[0],
+                                                     arrive_time=date_w_timezone,
+                                                     luggage_number=int(data['luggage_number']),
+                                                     passengers=int(data['passengers']),
+                                                     model_choose=VehicleModel.objects.filter(id=data['model_choose'])[
+                                                         0],
+                                                     client=client,
+                                                     flight=data["flight"])
+    if not created:
+        return redirect("/404/")
     upload_distance(booking)
     booking.save()
     after = timezone.now() + datetime.timedelta(hours=1)
@@ -157,7 +163,7 @@ def booking_create(request, *args, **kwargs):
     #  If the booking is for the current moment update
     if before < booking.arrive_time < after:
         set_booking_car(booking)
-    return render(request, 'client/payment.html')
+    return render(request, 'client/payment.html', {"booking": booking})
     # else:
     #     return redirect('/booking', {'form': form})
     # parsed_uri = urlparse(request.build_absolute_uri())

@@ -14,57 +14,58 @@
 
 {% include 'client/facebook_widget.html' %}
 
-    <div class="global-wrap">
-        {% include 'client/header.html' %}
+<div class="global-wrap">
+    {% include 'client/header.html' %}
 
-        <div class="gap"></div>
+    <div class="gap"></div>
 
 
-        <div class="container">
-            <div class="row">
-                <div class="col-md-8 col-md-offset-2">
-                    <i class="fa fa-check round box-icon-large box-icon-center box-icon-success mb30"></i>	
-                    <h2 class="text-center">{{ user.username }}, le payement est réussit!</h2>
-                    <h5 class="text-center mb30">Une confirmation de commande à était envoyé à {{ user.email }}</h5>
-                    <ul class="order-payment-list list mb30">
-                        <li>
-                            <div class="row">
-                                <div class="col-xs-9">
-                                    <h5><i class="fa fa-car"></i> Aéroport Charles de Gaules - Champ de Mars, Paris</h5>
-                                    <p><small>Jeudi 23 Novembre 2017</small>
-                                    </p>
-                                </div>
-                                <div class="col-xs-3">
-                                    <p class="text-right"><span class="text-lg">25€</span>
-                                    </p>
-                                </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <i class="fa fa-check round box-icon-large box-icon-center box-icon-success mb30"></i>
+                <h2 class="text-center">{{ user.username }}, le payement est réussit!</h2>
+                <h5 class="text-center mb30">Une confirmation de commande à était envoyé à {{ user.email }}</h5>
+                <ul class="order-payment-list list mb30">
+                    <li>
+                        <div class="row">
+                            <div class="col-xs-9">
+                                <h5><i class="fa fa-car"></i> {{ booking.airport.address }} - {{ booking.destination }}
+                                </h5>
+                                <p>
+                                    <small>Jeudi 23 Novembre 2017</small>
+                                </p>
                             </div>
-                        </li>
-                    </ul>
-{#                    <h4 class="text-center">You might also need in New York</h4>#}
-                    <ul class="list list-inline list-center">
-                        <li>
-                            <a class="btn btn-primary" href="/"><i class="fa fa-home"></i> Acceuil</a>
-                        </li>
-                        <li>
-                            <a class="btn btn-primary" href="/user/bookings"><i class="fa fa-list"></i> Mes Réservations</a>
-                        </li>
-{#                        <li><a class="btn btn-primary" href="#"><i class="fa fa-bolt"></i> Activities</a>#}
-{#                            <p class="text-center lh1em mt5"><small>274 offers<br /> from $131</small>#}
-{#                            </p>#}
-{#                        </li>#}
-                    </ul>
-                </div>
+                            <div class="col-xs-3">
+                                <p class="text-right"><span class="text-lg">{{ booking.model_choose.price }}€</span>
+                                </p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                {#                    <h4 class="text-center">You might also need in New York</h4>#}
+                <ul class="list list-inline list-center">
+                    <li>
+                        <a class="btn btn-primary" href="/"><i class="fa fa-home"></i> Acceuil</a>
+                    </li>
+                    <li>
+                        <a class="btn btn-primary" href="/user/bookings"><i class="fa fa-list"></i> Mes Réservations</a>
+                    </li>
+                    {#                        <li><a class="btn btn-primary" href="#"><i class="fa fa-bolt"></i> Activities</a>#}
+                    {#                            <p class="text-center lh1em mt5"><small>274 offers<br /> from $131</small>#}
+                    {#                            </p>#}
+                    {#                        </li>#}
+                </ul>
             </div>
-            <div class="gap"></div>
         </div>
-
-
-
-        {% include 'client/footer.html' %}
-
-        {% include 'client/scriptLoading.html' %}
+        <div class="gap"></div>
     </div>
+
+
+    {% include 'client/footer.html' %}
+
+    {% include 'client/scriptLoading.html' %}
+</div>
 </body>
 
 </html>

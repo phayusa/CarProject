@@ -40,6 +40,30 @@ class PersonForm(ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(), label="Mot de Passe", required=False)
     password_bis = forms.CharField(widget=forms.PasswordInput(), label="Confirmer Mot de Passe", required=False)
 
+    user = forms.ModelChoiceField(label='Utilisateur', queryset=User.objects.all().order_by("username"), required=False)
+
+    def clean_status(self):
+        cleaned_data = super(PersonForm, self).clean()
+        status = cleaned_data.get("status", None)
+        if status is "inactif":
+            return status
+        elif status is "mail non confirmé":
+            return status
+        elif status is "actif":
+            return status
+        else:
+            raise forms.ValidationError("Status n\'est pas valable")
+
+    def clean_gender(self):
+        cleaned_data = super(PersonForm, self).clean()
+        gender = cleaned_data.get("gender", None)
+        if gender is "homme":
+            return gender
+        elif gender is "femme":
+            return gender
+        else:
+            raise forms.ValidationError("Genre n\'est pas valable")
+
     def clean(self):
         cleaned_data = super(PersonForm, self).clean()
         username = cleaned_data.get('username', None)
@@ -47,17 +71,24 @@ class PersonForm(ModelForm):
         password_confirm = cleaned_data.get('password_bis', None)
 
         user_select = cleaned_data.get('user', None)
+        # print username
+        # print user_select
         if not username:
             if not user_select:
                 raise forms.ValidationError('Il faut choisir un utilisateur ou en crée un nouveau')
-            user = user_select
+            cleaned_data["user"] = user_select
+            return cleaned_data
         else:
             if user_select:
                 raise forms.ValidationError('Il faut soit crée un utilisateur soit en choisir un dans la liste')
             try:
-                if password is not password_confirm:
+                # print password
+                # print password_confirm
+                if password is password_confirm:
                     raise forms.ValidationError('Les mot de passes ne sont pas identique')
-                user = User.objects.create_user(username=username, password=password, email=self.cleaned_data['mail'])
+                cleaned_data["user"] = User.objects.create_user(username=username, password=password,
+                                                                email=self.cleaned_data['mail'])
+                return cleaned_data
             except Exception as exception:
                 raise forms.ValidationError(exception.message)
 

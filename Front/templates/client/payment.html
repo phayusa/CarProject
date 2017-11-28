@@ -12,117 +12,120 @@
 <body>
 {% include 'client/facebook_widget.html' %}
 
-    <div class="global-wrap">
-        {% include 'client/header.html' %}
-        {% load static %}
+<div class="global-wrap">
+    {% include 'client/header.html' %}
+    {% load static %}
 
-        <div class="gap"></div>
+    <div class="gap"></div>
 
 
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <img class="pp-img" src="{% static "img/paypal.png" %}" alt="Image Alternative text" title="Image Title" />
-                    <p>Important: Vous allez être redirigé vers le site de Paypal.</p><a class="btn btn-primary" href="/booking/succeed/">Payer via Paypal</a>
-                </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <img class="pp-img" src="{% static "img/paypal.png" %}" alt="Image Alternative text"
+                     title="Image Title"/>
+                <p>Important: Vous allez être redirigé vers le site de Paypal.</p><a class="btn btn-primary"
+                                                                                     href="/booking/succeed/">Payer via
+                Paypal</a>
+            </div>
 
-                <div class="col-md-4">
-                    <h4>Payer avec une carte sauvegarder</h4>
-                    <ul class="card-select">
+            <div class="col-md-4">
+                <h4>Payer avec une carte sauvegarder</h4>
+                <ul class="card-select">
+                    <li>
+                        <img class="card-select-img" src="{% static "img/payment/visa-curved-64px.png" %}"
+                             alt="Image Alternative text" title="Image Title"/>
+                        <div class="card-select-data">
+                            <p class="card-select-number">xxxx xxxx xxxx 1456</p>
+                            <input class="form-control card-select-cvc" type="text" placeholder="CVC"/>
+                        </div>
+                    </li>
+                    <li>
+                        <img class="card-select-img" src="{% static "img/payment/maestro-curved-64px.png" %}"
+                             alt="Image Alternative text" title="Image Title"/>
+                        <div class="card-select-data">
+                            <p class="card-select-number">xxxx xxxx xxxx 6698</p>
+                            <input class="form-control card-select-cvc" type="text" placeholder="CVC"/>
+                        </div>
+                    </li>
+                </ul>
+                <div class="gap gap-small"></div>
+                <h4>Nouvelle Carte</h4>
+                <form class="cc-form" action="/booking/succeed/">
+                    <div class="clearfix">
+                        <div class="form-group form-group-cc-number">
+                            <label>Numéro de Carte</label>
+                            <input class="form-control" placeholder="xxxx xxxx xxxx xxxx" type="text"/><span
+                                class="cc-card-icon"></span>
+                        </div>
+                        <div class="form-group form-group-cc-cvc">
+                            <label>CVC</label>
+                            <input class="form-control" placeholder="xxxx" type="text"/>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="form-group form-group-cc-name">
+                            <label>Nom du Porteur de la Carte</label>
+                            <input class="form-control" type="text"/>
+                        </div>
+                        <div class="form-group form-group-cc-date">
+                            <label>Date fin de validité</label>
+                            <input class="form-control" placeholder="mm/yy" type="text"/>
+                        </div>
+                    </div>
+                    <div class="checkbox checkbox-small">
+                        <label>
+                            <input class="i-check" type="checkbox" checked/>Add to My Cards</label>
+                    </div>
+                    <input class="btn btn-primary" type="submit" value="Payer"/>
+                </form>
+            </div>
+
+            <div class="col-md-4">
+                <div class="booking-item-payment">
+                    <header class="clearfix">
+                        <a class="booking-item-payment-img" href="#">
+                            <img src="{{ booking.model_choose.image_default }}" alt="Image Alternative text"
+                                 title="Image Title"/>
+                        </a>
+                        <h5 class="booking-item-payment-title"><a href="#">{{ booking.model_choose }}</a></h5>
+                    </header>
+                    <ul class="booking-item-payment-details">
                         <li>
-                            <img class="card-select-img" src="{% static "img/payment/visa-curved-64px.png" %}" alt="Image Alternative text" title="Image Title" />
-                            <div class="card-select-data">
-                                <p class="card-select-number">xxxx xxxx xxxx 1456</p>
-                                <input class="form-control card-select-cvc" type="text" placeholder="CVC" />
-                            </div>
+                            <p class="booking-item-payment-date-day">{{ booking.arrive_time.day }}/{{ booking.arrive_time.month }}/{{ booking.arrive_time.year }} {{ booking.arrive_time.hour }}H{{ booking.arrive_time.minute }}</p>
+
+                            <div class="gap"></div>
+                            <h5>{{ booking.airport.address }} <i
+                                    class="fa fa-arrow-right booking-item-payment-date-separator"></i> {{ booking.destination }}
+                            </h5>
                         </li>
                         <li>
-                            <img class="card-select-img" src="{% static "img/payment/maestro-curved-64px.png" %}" alt="Image Alternative text" title="Image Title" />
-                            <div class="card-select-data">
-                                <p class="card-select-number">xxxx xxxx xxxx 6698</p>
-                                <input class="form-control card-select-cvc" type="text" placeholder="CVC" />
-                            </div>
+                            <h5>Voiture ({{ booking.passengers }} passagers)</h5>
+                            <ul class="booking-item-payment-price">
+                                <li>
+                                    <p class="booking-item-payment-price-title">Voyage</p>
+                                    <p class="booking-item-payment-price-amount">{{ booking.model_choose.price }}€</p>
+                                </li>
+                                {#                                    <li>#}
+                                {#                                        <p class="booking-item-payment-price-title">Siège Enfant</p>#}
+                                {#                                        <p class="booking-item-payment-price-amount">10€</p>#}
+                                {#                                    </li>#}
+                            </ul>
                         </li>
                     </ul>
-                    <div class="gap gap-small"></div>
-                    <h4>Nouvelle Carte</h4>
-                    <form class="cc-form" action="/booking/succeed/">
-                        <div class="clearfix">
-                            <div class="form-group form-group-cc-number">
-                                <label>Numéro de Carte</label>
-                                <input class="form-control" placeholder="xxxx xxxx xxxx xxxx" type="text" /><span class="cc-card-icon"></span>
-                            </div>
-                            <div class="form-group form-group-cc-cvc">
-                                <label>CVC</label>
-                                <input class="form-control" placeholder="xxxx" type="text" />
-                            </div>
-                        </div>
-                        <div class="clearfix">Proceed Payment
-                            <div class="form-group form-group-cc-name">
-                                <label>Nom du Porteur de la Carte</label>
-                                <input class="form-control" type="text" />
-                            </div>
-                            <div class="form-group form-group-cc-date">
-                                <label>Date fin de validité</label>
-                                <input class="form-control" placeholder="mm/yy" type="text" />
-                            </div>
-                        </div>
-                        <div class="checkbox checkbox-small">
-                            <label>
-                                <input class="i-check" type="checkbox" checked/>Add to My Cards</label>
-                        </div>
-                        <input class="btn btn-primary" type="submit" value="Payer" />
-                    </form>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="booking-item-payment">
-                        <header class="clearfix">
-                            <a class="booking-item-payment-img" href="#">
-                                <img src="{% static "img/cars/Peugeot 508.jpg" %}" alt="Image Alternative text" title="Image Title" />
-                            </a>
-                            <h5 class="booking-item-payment-title"><a href="#">Peugeot 508</a></h5>
-                        </header>
-                        <ul class="booking-item-payment-details">
-                            <li>
-                                <h5>Aéroport Charles de Gaules - Champ de Mars, Paris</h5>
-                                <div class="booking-item-payment-date">
-                                    <p class="booking-item-payment-date-day">23 Novembre</p>
-                                    <p class="booking-item-payment-date-weekday">Jeudi</p>
-{#                                </div><i class="fa fa-arrow-right booking-item-payment-date-separator"></i>#}
-{#                                <div class="booking-item-payment-date">#}
-{#                                    <p class="booking-item-payment-date-day">May, 3</p>#}
-{#                                    <p class="booking-item-payment-date-weekday">Saturday</p>#}
-                                </div>
-                            </li>
-                            <li>
-                                <h5>Voiture (2 Passagers)</h5>
-                                <ul class="booking-item-payment-price">
-                                    <li>
-                                        <p class="booking-item-payment-price-title">Voyage</p>
-                                        <p class="booking-item-payment-price-amount">15€</p>
-                                    </li>
-                                    <li>
-                                        <p class="booking-item-payment-price-title">Siège Enfant</p>
-                                        <p class="booking-item-payment-price-amount">10€</p>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                        <p class="booking-item-payment-total">Total TTC: <span>25€</span>
-                        </p>
-                    </div>
+                    <p class="booking-item-payment-total">Total TTC: <span>{{ booking.model_choose.price }}€</span>
+                    </p>
                 </div>
             </div>
-            <div class="gap"></div>
         </div>
-
-
-
-        {% include 'client/footer.html' %}
-
-        {% include 'client/scriptLoading.html' %}
+        <div class="gap"></div>
     </div>
+
+
+    {% include 'client/footer.html' %}
+
+    {% include 'client/scriptLoading.html' %}
+</div>
 </body>
 
 </html>
