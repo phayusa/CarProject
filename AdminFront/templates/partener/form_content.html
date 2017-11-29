@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<div class="modal-body">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-10">
+            <div class="form-group form-group-lg form-group-icon-right"><i
+                    class="fa fa-map-marker input-icon"></i>
+                <label>Départ</label>
+                {#                                            <input class="typeahead form-control" name="start"#}
+                {#                                                   placeholder="Aéroport" type="text"/>#}
+                <select class="format-option form-control" name="airport">
+                    {% for airport in airports %}
+                        <option value="{{ airport.id }}">{{ airport.address }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="form-group form-group-lg form-group-icon-right"><i
+                    class="fa fa-map-marker input-icon"></i>
+                <label>Destination</label>
+                <input id="arrive_adress" class="form-control" name="destination"
+                       placeholder="Adresse, Ville, Lieux" type="text"/>
+                <input class="hidden" name="destination_location" type="text"
+                       id="destination_location"/>
+
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                <input class="hidden" id="arrive_time" name="arrive_time"/>
+                <div class="col-md-6">
+                    <div class="form-group form-group-lg form-group-icon-right"><i
+                            class="fa fa-calendar input-icon input-icon-highlight"></i>
+                        <label>Date d'arrivée</label>
+                        <input class="form-control" name="date" type="date" id="datetimepicker1" placeholder="jj/mm/aaaa"/>
+                        {#                                            <input class="date-pick form-control" name="date" type="text"/>#}
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group form-group-lg form-group-icon-right"><i
+                            class="fa fa-clock-o input-icon input-icon-highlight"></i>
+                        <label>Heure</label>
+                        <input class="form-control time-pick" type="text" name="time" id="time" placeholder="ex 10:30 PM"/>
+                        {#                        <span class="input-group-addon">#}
+                        {#                            <i class="fa fa-clock-o"></i>#}
+                        {#                        </span>#}
+                        {#                        <input type="text" data-plugin-timepicker class="form-control"#}
+                        {#                               data-plugin-options='{ "showMeridian": false }'>#}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
+                        <i class="fa fa-car input-icon"></i>
+                        <label>Modèle</label>
+                        <select class="form-control format-option" name="model_choose" id="model_option">
+                            {% for car in models %}
+                                <option value="{{ car.id }}">{{ car }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
+                        <i class="fa fa-users input-icon input-icon-highlight"></i>
+                        <label>Passagers</label>
+                        <select class="form-control format-option" name="passengers">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
+                        <i class="fa fa-suitcase input-icon input-icon-highlight"></i>
+                        <label>Baggages</label>
+                        <select class="form-control format-option" name="luggage_number">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
+                        <i class="fa fa-plane input-icon input-icon-highlight"></i>
+                        <label>Vol</label>
+                        <input class="form-control" type="text" name="flight" placeholder="ex: BAW329"/>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="row">
+            </div>
+        </div>
+
+        <input type="hidden" name="client" value="{{ client }}">
+        <input type="hidden" name="status" value="En cours de validation">
+    </div>
+</div>
+
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAb1NNSLUT7vzTIezPAqKumMB7wNXa2hMg&libraries=places&callback=initAutocomplete"
+        async defer></script>
+
+<script>
+    var placeSearch, autocomplete;
+
+    function initAutocomplete() {
+        // Create the autocomplete object, restricting the search to geographical
+        // location types.
+        autocomplete = new google.maps.places.Autocomplete(
+            /** @type {!HTMLInputElement} */(document.getElementById('arrive_adress')),
+            {
+                types: ['geocode'],
+                componentRestrictions: {country: "fr"}
+            });
+        {#            {types: ['geocode']});#}
+
+
+        // When the user selects an address from the dropdown, populate the address
+        // fields in the form.
+        autocomplete.addListener('place_changed', fillInAddress);
+    }
+
+    function fillInAddress() {
+        // Get the place details from the autocomplete object.
+        var place = autocomplete.getPlace();
+        document.getElementById("destination_location").value = place.geometry.location;
+        {#        for (var component in componentForm) {#}
+        {#            document.getElementById(component).value = '';#}
+        {#            document.getElementById(component).disabled = false;#}
+        {#        }#}
+        {##}
+        {#        // Get each component of the address from the place details#}
+        {#        // and fill the corresponding field on the form.#}
+        {#        for (var i = 0; i < place.address_components.length; i++) {#}
+        {#            var addressType = place.address_components[i].types[0];#}
+        {#            if (componentForm[addressType]) {#}
+        {#                var val = place.address_components[i][componentForm[addressType]];#}
+        {#                document.getElementById(addressType).value = val;#}
+        {#            }#}
+        {#        }#}
+    }
+</script>
+</html>

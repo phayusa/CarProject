@@ -28,7 +28,7 @@ def index(request):
     all_booking_month = booking_size + booking_partener_size + booking_commercial_size
 
     if request.user.is_superuser:
-        return render(request, 'index3.html',
+        return render(request, 'admin_bis/index3.html',
                       {"today_order": today_booking, "commercial_booking": booking_commercial_size,
                        "client_booking": booking_size, "partener_booking": booking_partener_size,
                        "clients": clients, "all": all_booking_month})
@@ -41,7 +41,7 @@ def base_manager(request):
         return redirect('/admin/login')
 
     if request.user.is_superuser:
-        return render(request, 'person_manager.html', {"sections": ["Gestion Comptes"]})
+        return render(request, 'admin_bis/person_manager.html', {"sections": ["Gestion Comptes"]})
     else:
         return redirect('/')
 
@@ -51,7 +51,7 @@ def booking_manager(request):
         return redirect('/admin/login')
 
     if request.user.is_superuser:
-        return render(request, 'booking_manager.html', {"sections": ["Gestion Réservation"]})
+        return render(request, 'admin_bis/booking_manager.html', {"sections": ["Gestion Réservation"]})
     else:
         return redirect('/')
 
@@ -62,7 +62,7 @@ def areas(request):
 
     if request.user.is_superuser:
         if request.method == "GET":
-            return render(request, 'areas.html', {"sections": ["Zones"], "areas": Area.objects.all()})
+            return render(request, 'admin_bis/areas.html', {"sections": ["Zones"], "areas": Area.objects.all()})
         else:
             if request.method == "POST":
                 data = request.POST
@@ -84,7 +84,7 @@ def areas(request):
 
 def login_view(request):
     if request.method == "GET":
-        return render(request, 'login.html')
+        return render(request, 'admin_bis/login.html')
     else:
         if request.method == "POST":
             username = request.POST['username']
@@ -93,7 +93,7 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 if user.is_superuser:
-                    return redirect('/admin')
+                    return redirect('/admin/')
                 return redirect('/')
             else:
-                return render(request, 'login.html')
+                return render(request, 'admin_bis/login.html')

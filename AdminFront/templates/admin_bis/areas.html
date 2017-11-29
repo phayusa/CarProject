@@ -12,20 +12,20 @@
 
     {% load static %}
 
-    {% include 'style.html' %}
+    {% include 'admin_bis/style.html' %}
 </head>
 <body>
 <section class="body">
 
-    {% include "header.html" %}
+    {% include "admin_bis/header.html" %}
 
     <div class="inner-wrapper">
 
-        {% include "navigation_bar.html" with active=2 %}
+        {% include "admin_bis/navigation_bar.html" with active=2 %}
 
         <section role="main" class="content-body">
 
-            {% include 'head_line.html' with Name="Zones" %}
+            {% include 'admin_bis/head_line.html' with Name="Zones" %}
 
             <!-- start: page -->
             {#            <div id="map"></div>#}
@@ -64,7 +64,7 @@
 </section>
 
 
-{% include "base_script.html" %}
+{% include "admin_bis/base_script.html" %}
 {##}
 {#<!-- Examples -->#}
 {#<script src="{% static "js/examples/examples.dashboard.js" %}"></script>#}

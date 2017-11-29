@@ -12,7 +12,7 @@
 
     {% load static %}
 
-    {% include 'style.html' %}
+    {% include 'admin_bis/style.html' %}
 
     <!-- Specific Page Vendor CSS -->
     <link rel="stylesheet" href="{% static "vendor/select2/css/select2.css" %}"/>
@@ -23,15 +23,15 @@
 <body>
 <section class="body">
 
-    {% include "header.html" %}
+    {% include "admin_bis/header.html" %}
 
     <div class="inner-wrapper">
 
-        {% include "navigation_bar.html" with active=active sub_active=sub_active %}
+        {% include "admin_bis/navigation_bar.html" with active=active sub_active=sub_active %}
 
         <section role="main" class="content-body">
 
-            {% include 'head_line.html' with Name=title %}
+            {% include 'admin_bis/head_line.html' with Name=title %}
 
             <!-- start: page -->
             <section class="card">
@@ -90,7 +90,7 @@
 </section>
 
 
-{% include "base_script.html" %}
+{% include "admin_bis/base_script.html" %}
 
 <!-- Specific Page Vendor -->
 <script src="{% static "vendor/select2/js/select2.js" %}"></script>

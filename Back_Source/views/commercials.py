@@ -24,8 +24,9 @@ class CommercialBase(generics.GenericAPIView):
 
     # Return only the booking of the connected Commercial
     def get_queryset(self):
-        if self.request.user.groups.filter(name='Clients').exists():
-            return Commercial.objects.filter(user=self.request.user)
+        # if self.request.user.groups.filter(name='Clients').exists():
+        if not self.request.user.is_superuser:
+            return Commercial.objects.filter(partner__user=self.request.user)
         return Commercial.objects.all()
 
 

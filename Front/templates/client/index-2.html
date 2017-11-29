@@ -180,11 +180,26 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-sm-3">
+                                    <div class="col-md-3">
                                         <div class="form-group form-group-lg form-group-icon-right"><i
                                                 class="fa fa-clock-o input-icon input-icon-highlight"></i>
                                             <label>Heure</label>
                                             <input class="time-pick form-control" type="text" name="time" id="time"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-md-4">
+                                        <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
+                                            <i class="fa fa-car input-icon"></i>
+                                            <label>Modèle</label>
+                                            <select class="form-control format-option" name="model_choose">
+                                                {% for car in cars %}
+                                                    <option value="{{ car.id }}">{{ car }}</option>
+                                                {% endfor %}
+                                            </select>
                                         </div>
                                     </div>
 
@@ -199,18 +214,6 @@
                                                 <option>4</option>
                                                 <option>5</option>
                                                 <option>6</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
-                                            <i class="fa fa-car input-icon"></i>
-                                            <label>Modèle</label>
-                                            <select class="form-control format-option" name="model_choose">
-                                                {% for car in cars %}
-                                                    <option value="{{ car.id }}">{{ car }}</option>
-                                                {% endfor %}
                                             </select>
                                         </div>
                                     </div>

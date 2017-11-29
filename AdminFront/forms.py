@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.forms import ModelForm
 
-from Back_Source.models.booking import Booking
+from Back_Source.models.booking import Booking, BookingPartner
 from Back_Source.models.location import Airport
 from Back_Source.models.person import Client, Driver, Commercial, BuissnessPartner
 
@@ -42,27 +42,28 @@ class PersonForm(ModelForm):
 
     user = forms.ModelChoiceField(label='Utilisateur', queryset=User.objects.all().order_by("username"), required=False)
 
-    def clean_status(self):
-        cleaned_data = super(PersonForm, self).clean()
-        status = cleaned_data.get("status", None)
-        if status is "Inactif":
-            return status
-        elif status is "Mail non confirmé":
-            return status
-        elif status is "Actif":
-            return status
-        else:
-            raise forms.ValidationError("Status n\'est pas valable")
-
-    def clean_gender(self):
-        cleaned_data = super(PersonForm, self).clean()
-        gender = cleaned_data.get("gender", None)
-        if gender is "Homme":
-            return gender
-        elif gender is "Femme":
-            return gender
-        else:
-            raise forms.ValidationError("Genre n\'est pas valable")
+    #
+    # def clean_status(self):
+    #     cleaned_data = super(PersonForm, self).clean()
+    #     status = cleaned_data.get("status", None)
+    #     if status is 'Inactif':
+    #         return status
+    #     elif status is 'Mail non confirmé':
+    #         return status
+    #     elif status is 'Actif':
+    #         return status
+    #     else:
+    #         raise forms.ValidationError("Status n\'est pas valable")
+    #
+    # def clean_gender(self):
+    #     cleaned_data = super(PersonForm, self).clean()
+    #     gender = cleaned_data.get("gender", None)
+    #     if gender is 'Homme':
+    #         return gender
+    #     elif gender is 'Femme':
+    #         return gender
+    #     else:
+    #         raise forms.ValidationError("Genre n\'est pas valable")
 
     def clean(self):
         cleaned_data = super(PersonForm, self).clean()
@@ -115,7 +116,6 @@ class CommercialForm(PersonForm):
 
 
 class PartenerForm(PersonForm):
-
     class Meta:
         model = BuissnessPartner
         fields = ['first_name', 'last_name', 'mail', 'phone_number', 'age', 'gender', 'status', 'user',
@@ -129,7 +129,6 @@ class UserForm(ModelForm):
 
 
 class BookingForm(ModelForm):
-
     passengers = forms.ChoiceField(choices=[(i, i) for i in range(1, 6)], label="Passagers")
 
     luggage_number = forms.ChoiceField(choices=[(i, i) for i in range(1, 5)], label="Baggages")
@@ -147,6 +146,17 @@ class BookingForm(ModelForm):
         model = Booking
         fields = ["airport", "destination", "client", "passengers", "luggage_number",
                   "flight", "arrive_time", "model_choose", "vehicle_choose", "status"]
+
+
+class BookingPartenerForm(BookingForm):
+
+    date = forms.DateField()
+    time = forms.TimeField()
+
+    class Meta:
+        model = BookingPartner
+        fields = ["airport", "destination", "client", "passengers", "luggage_number",
+                  "flight", "model_choose", "vehicle_choose"]
 
 
 class AirportForm(ModelForm):

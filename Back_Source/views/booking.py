@@ -16,7 +16,7 @@ class BookingBase(RecentLoginRequiredMixin, generics.GenericAPIView):
     serializer_class = BookingSerializer
     redirect_unauthenticated_users = False
     # permission_classes = (ClientPermission, )
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
     # authentication_classes = (JSONWebTokenAuthentication, )
     raise_exception = True
 
@@ -46,14 +46,17 @@ class BookingCommecialBase(RecentLoginRequiredMixin, generics.GenericAPIView):
     serializer_class = BookingCommercialSerializer
     redirect_unauthenticated_users = False
     # permission_classes = (ClientPermission, )
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
     # authentication_classes = (JSONWebTokenAuthentication, )
     raise_exception = True
 
     def get_queryset(self):
-        if self.request.user.groups.filter(name='Clients').exists():
-            return BookingCommecial.objects.filter(client=Client.objects.filter(user=self.request.user))
+        if not self.request.user.is_superuser:
+            return BookingCommecial.objects.filter(commercial__partner__user=self.request.user)
         return BookingCommecial.objects.all()
+        # if self.request.user.groups.filter(name='Clients').exists():
+        #     return BookingCommecial.objects.filter(client=Client.objects.filter(user=self.request.user))
+        # return BookingCommecial.objects.all()
 
 
 class BookingCommercialList(BookingCommecialBase, generics.ListAPIView):
@@ -67,18 +70,19 @@ class BookingPartenerBase(RecentLoginRequiredMixin, generics.GenericAPIView):
     serializer_class = BookingPartenerSerializer
     redirect_unauthenticated_users = False
     # permission_classes = (ClientPermission, )
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
     # authentication_classes = (JSONWebTokenAuthentication, )
     raise_exception = True
 
     def get_queryset(self):
-        if self.request.user.groups.filter(name='Clients').exists():
-            return BookingPartner.objects.filter(client=Client.objects.filter(user=self.request.user))
+
+        if not self.request.user.is_superuser:
+            return BookingPartner.objects.filter(partner__user=self.request.user)
         return BookingPartner.objects.all()
+        # if self.request.user.groups.filter(name='Clients').exists():
+        #     return BookingPartner.objects.filter(client=Client.objects.filter(user=self.request.user))
+        # return BookingPartner.objects.all()
 
 
 class BookingPartenerList(BookingPartenerBase, generics.ListAPIView):
     filter_fields = ('date', 'travel', 'client')
-
-
-

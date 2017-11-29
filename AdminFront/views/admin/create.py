@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import redirect
 from django.shortcuts import render
 
-from ..forms import ClientForm, DriverForm, CommercialForm, PartenerForm, UserForm
+from AdminFront.forms import ClientForm, DriverForm, CommercialForm, PartenerForm, UserForm
 
 
 def client_create(request):
@@ -19,7 +19,7 @@ def client_create(request):
     else:
         form = ClientForm()
     if request.user.is_superuser:
-        return render(request, 'object_edit.html',
+        return render(request, 'admin_bis/object_edit.html',
                       {"sections": ["Gestion", "Création"],
                        "form": form, "type": 2})
     else:
@@ -38,7 +38,7 @@ def driver_create(request):
     else:
         form = DriverForm()
     if request.user.is_superuser:
-        return render(request, 'object_edit.html',
+        return render(request, 'admin_bis/object_edit.html',
                       {"sections": ["Gestion", "Création"],
                        "form": form, "type": 2})
     else:
@@ -57,7 +57,7 @@ def commercial_create(request):
     else:
         form = CommercialForm()
     if request.user.is_superuser:
-        return render(request, 'object_edit.html',
+        return render(request, 'admin_bis/object_edit.html',
                       {"sections": ["Gestion", "Création"],
                        "form": form, "type": 2})
     else:
@@ -76,7 +76,7 @@ def partener_create(request):
     else:
         form = PartenerForm()
     if request.user.is_superuser:
-        return render(request, 'object_edit.html',
+        return render(request, 'admin_bis/object_edit.html',
                       {"sections": ["Gestion", "Création"],
                        "form": form, "type": 2})
     else:

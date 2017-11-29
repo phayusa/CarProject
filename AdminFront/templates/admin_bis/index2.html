@@ -12,7 +12,7 @@
 
     {% load static %}
 
-    {% include 'style.html' %}
+    {% include 'admin_bis/style.html' %}
 
     <!-- Specific Page Vendor CSS -->
     <link rel="stylesheet" href=" {% static "vendor/jquery-ui/jquery-ui.css" %}"/>
@@ -24,15 +24,15 @@
 <body>
 <section class="body">
 
-    {% include "header.html" %}
+    {% include "admin_bis/header.html" %}
 
     <div class="inner-wrapper">
 
-        {% include "navigation_bar.html" with active=1 %}
+        {% include "admin_bis/navigation_bar.html" with active=1 %}
 
         <section role="main" class="content-body">
 
-            {% include 'head_line.html' with Name="Acceuil" %}
+            {% include 'admin_bis/head_line.html' with Name="Acceuil" %}
 
             <!-- start: page -->
             <div class="row">
@@ -155,10 +155,10 @@
                                         </div>
                                         <div class="widget-summary-col">
                                             <div class="summary">
-                                                <h4 class="title">Support Questions</h4>
+                                                <h4 class="title">Réservation Total</h4>
                                                 <div class="info">
                                                     <strong class="amount">1281</strong>
-                                                    <span class="text-primary">(14 unread)</span>
+                                                    <span class="text-primary">(14 Aujourd'hui)</span>
                                                 </div>
                                             </div>
                                             <div class="summary-footer">
@@ -206,14 +206,14 @@
                                         </div>
                                         <div class="widget-summary-col">
                                             <div class="summary">
-                                                <h4 class="title">Today's Orders</h4>
+                                                <h4 class="title">Réservation Aujourd'hui</h4>
                                                 <div class="info">
-                                                    <strong class="amount">38</strong>
+                                                    <strong class="amount">{{ today_order }}</strong>
                                                 </div>
                                             </div>
-                                            <div class="summary-footer">
-                                                <a class="text-muted text-uppercase" href="#">(statement)</a>
-                                            </div>
+{#                                            <div class="summary-footer">#}
+{#                                                <a class="text-muted text-uppercase" href="#">(statement)</a>#}
+{#                                            </div>#}
                                         </div>
                                     </div>
                                 </div>
@@ -853,90 +853,10 @@
         </section>
     </div>
 
-    <aside id="sidebar-right" class="sidebar-right">
-        <div class="nano">
-            <div class="nano-content">
-                <a href="#" class="mobile-close d-md-none">
-                    Collapse <i class="fa fa-chevron-right"></i>
-                </a>
-
-                <div class="sidebar-right-wrapper">
-
-                    <div class="sidebar-widget widget-calendar">
-                        <h6>Upcoming Tasks</h6>
-                        <div data-plugin-datepicker data-plugin-skin="dark"></div>
-
-                        <ul>
-                            <li>
-                                <time datetime="2017-04-19T00:00+00:00">04/19/2017</time>
-                                <span>Company Meeting</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="sidebar-widget widget-friends">
-                        <h6>Friends</h6>
-                        <ul>
-                            <li class="status-online">
-                                <figure class="profile-picture">
-                                    <img src=" {% static "img/!sample-user.jpg" %}" alt="Joseph Doe"
-                                         class="rounded-circle">
-                                </figure>
-                                <div class=" profile-info">
-                                    <span class="name">Joseph Doe Junior</span>
-                                    <span class="title">Hey, how are you?</span>
-                                </div>
-                            </li>
-                            <li class="status-online">
-                                <figure class="profile-picture">
-                                    <img src=" {% static "img/!sample-user.jpg" %}" alt="Joseph Doe"
-                                         class="rounded-circle">
-                                </figure>
-                                <div class=" profile-info">
-                                    <span class="name">Joseph Doe Junior</span>
-                                    <span class="title">Hey, how are you?</span>
-                                </div>
-                            </li>
-                            <li class="status-offline">
-                                <figure class="profile-picture">
-                                    <img src=" {% static "img/!sample-user.jpg" %}" alt="Joseph Doe"
-                                         class="rounded-circle">
-                                </figure>
-                                <div class=" profile-info">
-                                    <span class="name">Joseph Doe Junior</span>
-                                    <span class="title">Hey, how are you?</span>
-                                </div>
-                            </li>
-                            <li class="status-offline">
-                                <figure class="profile-picture">
-                                    <img src=" {% static "img/!sample-user.jpg" %}" alt="Joseph Doe"
-                                         class="rounded-circle">
-                                </figure>
-                                <div class=" profile-info">
-                                    <span class="name">Joseph Doe Junior</span>
-                                    <span class="title">Hey, how are you?</span>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </aside>
-
 </section>
 
-<!-- Vendor -->
-<script src="{% static "vendor/jquery/jquery.js" %}"></script>
-<script src="{% static "vendor/jquery-browser-mobile/jquery.browser.mobile.js" %}"></script>
-<script src="{% static "vendor/popper/umd/popper.min.js" %}"></script>
-<script src="{% static "vendor/bootstrap/js/bootstrap.js" %}"></script>
-<script src="{% static "vendor/bootstrap-datepicker/js/bootstrap-datepicker.js" %}"></script>
-<script src="{% static "vendor/common/common.js" %}"></script>
-<script src="{% static "vendor/nanoscroller/nanoscroller.js" %}"></script>
-<script src="{% static "vendor/magnific-popup/jquery.magnific-popup.js" %}"></script>
-<script src="{% static "vendor/jquery-placeholder/jquery-placeholder.js" %}"></script>
+{% include "admin_bis/base_script.html" %}
+
 
 <!-- Specific Page Vendor -->
 <script src="{% static "vendor/jquery-ui/jquery-ui.js" %}"></script>
@@ -958,14 +878,13 @@
 <script src="{% static "vendor/jqvmap/jquery.vmap.js" %}"></script>
 <script src="{% static "vendor/jqvmap/data/jquery.vmap.sampledata.js" %}"></script>
 <script src="{% static "vendor/jqvmap/maps/jquery.vmap.world.js" %}"></script>
-<script src="{% static "vendor/jqvmap/maps/continents/jquery.vmap.africa.js" %}"></script>
-<script src="{% static "vendor/jqvmap/maps/continents/jquery.vmap.asia.js" %}"></script>
-<script src="{% static "vendor/jqvmap/maps/continents/jquery.vmap.australia.js" %}"></script>
-<script src="{% static "vendor/jqvmap/maps/continents/jquery.vmap.europe.js" %}"></script>
-<script src="{% static "vendor/jqvmap/maps/continents/jquery.vmap.north-america.js" %}"></script>
-<script src="{% static "vendor/jqvmap/maps/continents/jquery.vmap.south-america.js" %}"></script>
+{#<script src="{% static "vendor/jqvmap/maps/continents/jquery.vmap.africa.js" %}"></script>#}
+{#<script src="{% static "vendor/jqvmap/maps/continents/jquery.vmap.asia.js" %}"></script>#}
+{#<script src="{% static "vendor/jqvmap/maps/continents/jquery.vmap.australia.js" %}"></script>#}
+{#<script src="{% static "vendor/jqvmap/maps/continents/jquery.vmap.europe.js" %}"></script>#}
+{#<script src="{% static "vendor/jqvmap/maps/continents/jquery.vmap.north-america.js" %}"></script>#}
+{#<script src="{% static "vendor/jqvmap/maps/continents/jquery.vmap.south-america.js" %}"></script>#}
 
-{% include "base_script.html" %}
 
 <!-- Examples -->
 {#<script src="{% static "js/examples/examples.dashboard.js" %}"></script>#}

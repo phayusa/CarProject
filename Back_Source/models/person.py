@@ -31,11 +31,6 @@ class Person(models.Model):
         )
 
 
-# Client information
-class Client(Person):
-    payment = models.CharField(max_length=5, blank=True, verbose_name="Type de Payement")
-
-
 # Driver information
 class Driver(Person):
     revenues = models.IntegerField(default=0, blank=True, null=True, verbose_name="Revenues")
@@ -43,16 +38,6 @@ class Driver(Person):
 
     class Meta:
         verbose_name = "Chauffeur"
-
-
-# Commercial information
-class Commercial(Person):
-    revenues = models.IntegerField(default=0, blank=True, null=True, verbose_name="Revenues")
-    remuneration = models.IntegerField(default=0, blank=True, null=True, verbose_name="Rémunération")
-
-    class Meta:
-        verbose_name = "Commercial"
-        verbose_name_plural = "Commerciaux"
 
 
 # Partership information
@@ -66,8 +51,29 @@ class BuissnessPartner(Person):
     bic_number = models.CharField(max_length=500, verbose_name="BIC")
 
     def __unicode__(self):
-        return u''+self.name_company
+        return u'' + self.name_company
 
     class Meta:
         verbose_name = "Partenaire Commercial"
         verbose_name_plural = "Partenaire Commerciaux"
+
+
+# Commercial information
+class Commercial(Person):
+    revenues = models.IntegerField(default=0, blank=True, null=True, verbose_name="Revenues")
+    remuneration = models.IntegerField(default=0, blank=True, null=True, verbose_name="Rémunération")
+
+    # (null if comming from the base company)
+    partner = models.ForeignKey(BuissnessPartner, on_delete=models.CASCADE, default=None, blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Commercial"
+        verbose_name_plural = "Commerciaux"
+
+
+# Client information
+class Client(Person):
+    payment = models.CharField(max_length=5, blank=True, verbose_name="Type de Payement")
+
+    # (null if comming from the base company)
+    partner = models.ForeignKey(BuissnessPartner, on_delete=models.CASCADE, default=None, blank=True, null=True)

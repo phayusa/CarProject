@@ -1,0 +1,152 @@
+<!doctype html>
+<html class="fixed">
+<head>
+
+    <!-- Basic -->
+    <meta charset="UTF-8">
+
+    <title>Clients | Blackline Services</title>
+    <meta name="keywords" content="HTML5 Admin Template"/>
+    <meta name="description" content="Porto Admin - Responsive HTML5 Template">
+    <meta name="author" content="okler.net">
+
+    {% load static %}
+
+    {% include 'admin_bis/style.html' %}
+
+    <!-- Specific Page Vendor CSS -->
+    <link rel="stylesheet" href="{% static "vendor/select2/css/select2.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/bootstrap-timepicker/css/bootstrap-timepicker.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/select2-bootstrap-theme/select2-bootstrap.min.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/datatables/media/css/dataTables.bootstrap4.css" %}"/>
+
+</head>
+<body>
+<section class="body">
+
+    {% include "admin_bis/header.html" %}
+
+    <div class="inner-wrapper">
+
+        {% include "partener/navigation_bar.html" with active=active sub_active=sub_active %}
+
+        <section role="main" class="content-body">
+
+            {% include 'admin_bis/head_line.html' with Name=title %}
+
+            <!-- start: page -->
+            <section class="card">
+                <header class="card-header">
+                    <div class="card-actions">
+                        <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                        {#                        <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
+                    </div>
+
+                    <h2 class="card-title">{{ title }}</h2>
+                </header>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="card-body col-md-12">
+                        {#                        {{ form.address }}#}
+                        {#                        <table align="center">#}
+                        {#                            {{ form.as_table }}#}
+                        {##}
+                        {#                        </table>#}
+                        {#                            {{ form.as_p }}#}
+                        {{ form.errors }}
+                        {% if custom %}
+                            <div class="col-md-8">
+                                {% include 'partener/form_content.html' %}
+                            </div>
+                        {% else %}
+                            <div class="form-group row">
+                                <table class="form-control" width="400">
+                                    {{ form.as_table }}
+                                </table>
+                                {#                                <div class="form-control">#}
+                                {#                                    {{ form.as_p }}#}
+                                {#                                </div>#}
+                                {{ form.media }}
+                            </div>
+                            {{ form.errors }}
+                        {% endif %}
+                        {#                        <div class="card-body">#}
+                        {#                            <form class="form-horizontal form-bordered" method="get">#}
+                        {#                                <div class="form-group row">#}
+                        {#                                    <div class="col-lg-6">#}
+                        {#                                        <label class="col-lg-3 control-label text-lg-right pt-2">Nom</label>#}
+                        {#                                        <input class="form-control mb-3" type="text"#}
+                        {#                                               placeholder="Nom">#}
+                        {#                                    </div>#}
+                        {#                                </div>#}
+                        {#                            </form>#}
+                        {#                        </div>#}
+
+                    </div>
+                    <div class="card-footer">
+                        {% if type == 2 %}
+                            {#                            {{ form_user.as_p }}#}
+                            <button type="submit" class="btn btn-success    ">Créer</button>
+                        {% else %}
+                            <button type="submit" class="btn btn-primary">Modifier</button>
+                        {% endif %}
+                        <a class="btn btn-secondary"
+                           href="{% if direct == 2 %}/partener/bookings/{% else %}/partener/manager/{% endif %}">Annuler</a>
+                    </div>
+                </form>
+
+            </section>
+
+
+            <!-- end: page -->
+        </section>
+    </div>
+
+</section>
+
+
+{% include "admin_bis/base_script.html" %}
+
+<!-- Specific Page Vendor -->
+
+<script src="{% static "vendor/jquery-ui/jquery-ui.js" %}"></script>
+<script src="{% static "vendor/jqueryui-touch-punch/jqueryui-touch-punch.js" %}"></script>
+
+<script src="{% static "vendor/select2/js/select2.js" %}"></script>
+<script src="{% static "vendor/datatables/media/js/jquery.dataTables.min.js" %}"></script>
+<script src="{% static "vendor/datatables/media/js/dataTables.bootstrap4.min.js" %}"></script>
+<script src="{% static "vendor/pnotify/pnotify.custom.js" %}"></script>
+{#<script src="{% static "vendor/bootstrap-timepicker/bootstrap-timepicker.js" %}"></script>#}
+
+
+<script src="{% static "vendor/bootstrap-multiselect/bootstrap-multiselect.js" %}"></script>
+<script src="{% static "vendor/jquery-maskedinput/jquery.maskedinput.js" %}"></script>
+<script src="{% static "vendor/bootstrap-tagsinput/bootstrap-tagsinput.js" %}"></script>
+<script src="{% static "vendor/bootstrap-colorpicker/js/bootstrap-colorpicker.js" %}"></script>
+<script src="{% static "vendor/bootstrap-timepicker/bootstrap-timepicker.js" %}"></script>
+<script src="{% static "vendor/fuelux/js/spinner.js" %}"></script>
+<script src="{% static "vendor/dropzone/dropzone.js" %}"></script>
+<script src="{% static "vendor/bootstrap-markdown/js/markdown.js" %}"></script>
+<script src="{% static "vendor/bootstrap-markdown/js/to-markdown.js" %}"></script>
+<script src="{% static "vendor/bootstrap-markdown/js/bootstrap-markdown.js" %}"></script>
+{#<script src="{% static "vendor/codemirror/lib/codemirror.js"%}"></script>#}
+{#<script src="{% static "vendor/codemirror/addon/selection/active-line.js"%}"></script>#}
+{#<script src="{% static "vendor/codemirror/addon/edit/matchbrackets.js"%}"></script>#}
+{#<script src="{% static "vendor/codemirror/mode/javascript/javascript.js"%}"></script>#}
+{#<script src="{% static "vendor/codemirror/mode/xml/xml.js"%}"></script>#}
+{#<script src="{% static "vendor/codemirror/mode/htmlmixed/htmlmixed.js"%}"></script>#}
+{#<script src="{% static "vendor/codemirror/mode/css/css.js"%}"></script>#}
+<script src="{% static "vendor/summernote/summernote-bs4.js" %}"></script>
+<script src="{% static "vendor/bootstrap-maxlength/bootstrap-maxlength.js" %}"></script>
+<script src="{% static "vendor/ios7-switch/ios7-switch.js" %}"></script>
+
+
+<!-- Examples -->
+
+<script src="{% static "js/examples/examples.advanced.form.js" %}"></script>
+{#<script src="{% static "js/datatable/client_manager_datatable.js" %}"></script>#}
+{#<script src="{% static "js/examples/examples.modal=s.js" %}"></script>#}
+
+
+</body>
+</html>

@@ -24,8 +24,8 @@ class ClientBase(generics.GenericAPIView):
 
     # Return only the booking of the connected client
     def get_queryset(self):
-        if self.request.user.groups.filter(name='Clients').exists():
-            return Client.objects.filter(user=self.request.user)
+        if not self.request.user.is_superuser:
+            return Client.objects.filter(partner__user=self.request.user)
         return Client.objects.all()
 
 
