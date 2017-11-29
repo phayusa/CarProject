@@ -68,7 +68,7 @@ class PersonForm(ModelForm):
 
     user = forms.ModelChoiceField(label='Utilisateur', queryset=User.objects.all().order_by("username"), required=False)
 
-    def clean_user(self):
+    def clean(self):
         cleaned_data = super(PersonForm, self).clean()
         username = cleaned_data.get('username', None)
         password = cleaned_data.get('password', None)
@@ -96,4 +96,4 @@ class ClientForm(PersonForm):
     class Meta:
         model = Client
         fields = ['first_name', 'last_name', 'mail', 'phone_number', 'age', 'gender', 'status',
-                  'address', 'user']
+                  'address', 'user', 'status', 'username', 'password', 'password_bis']

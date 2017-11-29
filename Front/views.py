@@ -47,22 +47,13 @@ def register(request):
         form = ClientForm(request.POST)
         if form.is_valid():
 
-            data = request.POST
-
-            test_key = ['username', 'email', 'password', 'first_name', 'last_name', 'age', 'gender', 'phone_number']
-            if not all(k in data for k in test_key):
-                return render(request, 'client/login-register.html')
-
-            user = User.objects.create_user(username=data['username'], password=data['password'], email=data['email'])
             # is_active=False)
-            user.save()
+            # user.save()
             # client = Client(user=user, mail=user.email, first_name=data['first_name'], last_name=data['last_name'],
             #                 age=int(data['age']), gender=data['gender'], phone_number=data['phone_number'])
-            tmp =form.save(commit=False)
-            tmp.user = user
-            tmp.save()
+            client = form.save()
 
-            login_func(request, user)
+            login_func(request, client.user)
 
             return redirect('/')
     else:
