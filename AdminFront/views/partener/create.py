@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import datetime
+
+import pytz
 from django.shortcuts import redirect
 from django.shortcuts import render
+from django.utils.dateparse import parse_datetime
 
 from AdminFront.forms import ClientForm, CommercialForm, BookingPartenerForm
-from Back_Source.models import BuissnessPartner, Airport, VehicleModel
+from Back_Source.models import VehicleModel, Client, Airport, BuissnessPartner
 
 
 def client_create(request):
@@ -58,25 +62,34 @@ def booking_create(request):
         return redirect('/partener/login')
 
     if request.method == "POST":
-        print request.POST
+        form_client = ClientForm()
         form = BookingPartenerForm(request.POST)
         if form.is_valid():
             tmp = form.save(commit=False)
-
-            print tmp
-
             tmp.partner = BuissnessPartner.objects.filter(user=request.user)[0]
+
+            date = request.POST.get('date', None)
+            time = request.POST.get('time', None)
+
+            raw_date = datetime.datetime.strptime(date + ' ' + time, "%Y-%m-%d %H:%M")
+            date_time = raw_date.strftime("%Y-%m-%dT%H:%M")
+
+            date_w_timezone = pytz.timezone("Europe/Helsinki").localize(parse_datetime(date_time), is_dst=None)
+
+            tmp.arrive_time = date_w_timezone
             tmp.save()
-            return redirect('/partener/manager/')
+            return redirect('/partener/bookings/')
         print form.errors
     else:
         form = BookingPartenerForm()
+        form_client = ClientForm()
+
     if request.user.is_superuser or BuissnessPartner.objects.filter(user=request.user).exists():
         return render(request, 'partener/object_edit.html',
                       {"sections": ["Gestion", "Création"],
                        "form": form, "type": 2, "active": 4,
                        "sub_active": 1, "title": "Création Réservation",
                        "airports": Airport.objects.all(), "models": VehicleModel.objects.all(),
-                       "custom": True})
+                       "custom": True, "clients": Client.objects.filter(partner__user=request.user)})
     else:
         return redirect('/')

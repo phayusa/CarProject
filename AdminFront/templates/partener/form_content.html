@@ -34,7 +34,8 @@
                     <div class="form-group form-group-lg form-group-icon-right"><i
                             class="fa fa-calendar input-icon input-icon-highlight"></i>
                         <label>Date d'arrivée</label>
-                        <input class="form-control" name="date" type="date" id="datetimepicker1" placeholder="jj/mm/aaaa"/>
+                        <input class="form-control" name="date" type="date" id="datetimepicker1"
+                               placeholder="ex: 25/12/2017"/>
                         {#                                            <input class="date-pick form-control" name="date" type="text"/>#}
                     </div>
                 </div>
@@ -43,7 +44,8 @@
                     <div class="form-group form-group-lg form-group-icon-right"><i
                             class="fa fa-clock-o input-icon input-icon-highlight"></i>
                         <label>Heure</label>
-                        <input class="form-control time-pick" type="text" name="time" id="time" placeholder="ex 10:30 PM"/>
+                        <input class="form-control time-pick" type="text" name="time" id="time"
+                               placeholder="ex 10:30"/>
                         {#                        <span class="input-group-addon">#}
                         {#                            <i class="fa fa-clock-o"></i>#}
                         {#                        </span>#}
@@ -103,16 +105,91 @@
                         <input class="form-control" type="text" name="flight" placeholder="ex: BAW329"/>
                     </div>
                 </div>
-
             </div>
         </div>
 
-        <div class="col-md-8">
+        <div class="gap">
+            <br>
+        </div>
+
+
+        <div class="col-md-12">
             <div class="row">
+{#                <p>{{ form.client.label }}{{ form.client }}</p>#}
+{#                <label>Client : </label>#}
+                <select name="client">
+                    <option>...</option>
+                    {% for client in clients %}
+                        <option value="{{ client.id }}">{{ client }}</option>
+                    {% endfor %}
+
+                </select>
             </div>
         </div>
 
-        <input type="hidden" name="client" value="{{ client }}">
+
+        {#        <div class="col-md-8">#}
+        {#            <div class="row">#}
+        {#                <div>#}
+        {#                    <label><input value="1" type="radio" name="formselector"#}
+        {#                                  onclick="displayForm(this)">Utilisateur existant</label>#}
+        {#                    <br>#}
+        {#                    <label><input value="2" type="radio" name="formselector"#}
+        {#                                  onclick="displayForm(this)">Nouveau utilisateur</label>#}
+        {#                </div>#}
+        {##}
+        {##}
+        {#                <script type="text/javascript">#}
+        {#                    function displayForm(c) {#}
+        {#                        if (c.value == "1") {#}
+        {##}
+        {#                            document.getElementById("exist_user").style.display = 'inline';#}
+        {#                            document.getElementById("new_user").style.display = 'none';#}
+        {#                        }#}
+        {#                        else if (c.value == "2") {#}
+        {#                            document.getElementById("exist_user").style.display = 'none';#}
+        {##}
+        {#                            document.getElementById("new_user").style.display = 'inline';#}
+        {#                        }#}
+        {#                        else {#}
+        {#                        }#}
+        {#                    }#}
+        {#                </script>#}
+        {#            </div>#}
+        {#        </div>#}
+        {##}
+        {#        <div class="col-md-8">#}
+        {#            <div class="row">#}
+        {#                <div style="display:none" id="new_user">#}
+        {#                    <label>Renseigner les information du nouveau client</label>#}
+        {#                    <br>#}
+        {#                    <br>#}
+        {#                    <table>#}
+        {#                        {{ form_client.as_table }}#}
+        {#                    </table>#}
+        {#                </div>#}
+        {#                <div style="display:none" id="exist_user">#}
+        {#                    <label>Choisissez le client :</label>#}
+        {#                    <br>#}
+        {#                    <br>#}
+        {#                    <select name="client">#}
+        {#                        {% for client in clients %}#}
+        {#                            <option>{{ client }}</option>#}
+        {#                        {% endfor %}#}
+        {#                    </select>#}
+        {#                </div>#}
+        {##}
+        {#            </div>#}
+        {#        </div>#}
+
+        {#        <label>Client : </label>#}
+        {#        <select name="client">#}
+        {#            {% for client in clients %}#}
+        {#                <option>{{ client }}</option>#}
+        {#            {% endfor %}#}
+        {#        </select>#}
+
+
         <input type="hidden" name="status" value="En cours de validation">
     </div>
 </div>

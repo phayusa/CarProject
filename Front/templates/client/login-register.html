@@ -27,10 +27,15 @@
             <div class="bg-mask"></div>
             <div class="bg-img" style="background-image:url({% static "img/backgrounds/login.jpg" %});"></div>
             <div class="bg-holder-content full text-white">
-                <a class="logo-holder" href="index.html">
+                <a class="logo-holder" href="/">
                     <img src="{% static "img/logo-white.png" %}" alt="Image Alternative text" title="Image Title"/>
                 </a>
                 <div class="full-center">
+                    <div align="center">
+                        <label>Erreurs !!!!</label>
+                        {{ form.errors }}
+                    </div>
+
                     <div class="container">
                         <div class="row row-wrap" data-gutter="60">
                             <div class="col-md-4">
@@ -44,6 +49,7 @@
                                         stands situés dans les aéroports.</p>
                                 </div>
                             </div>
+
                             {% if type == 1 %}
                                 <div class="col-md-4">
                                     <h3 class="mb15">Connexion</h3>
@@ -58,7 +64,8 @@
                                         <div class="form-group form-group-ghost form-group-icon-left"><i
                                                 class="fa fa-lock input-icon input-icon-show"></i>
                                             <label>Mot de Passe</label>
-                                            <input class="form-control" type="password" placeholder="Mot de passe secret"
+                                            <input class="form-control" type="password"
+                                                   placeholder="Mot de passe secret"
                                                    name="password"/>
                                         </div>
                                         <p>
@@ -147,6 +154,8 @@
 
                                     </div>
                                 </form>
+
+
                             {% endif %}
 
                         </div>

@@ -13,7 +13,7 @@ from django.utils.dateparse import parse_datetime
 
 from Back_Source.models import VehicleModel, Client, Booking, Airport, BuissnessPartner
 from Localisation.views import upload_distance, set_booking_car
-from forms import BookingForm
+from forms import BookingForm, ClientForm
 
 
 # Create your views here.
@@ -44,25 +44,31 @@ def not_found(request):
 
 def register(request):
     if request.method == "POST":
-        data = request.POST
-        print data
-        test_key = ['username', 'email', 'password', 'first_name', 'last_name', 'age', 'gender', 'phone_number']
-        if not all(k in data for k in test_key):
-            return render(request, 'client/login-register.html')
-        # old_user = User.objects.get(username=data["username"])
-        # if old_user:
-        #     return render(request, 'client/login-register.html')
-        user = User.objects.create_user(username=data['username'], password=data['password'], email=data['email'])
-        # is_active=False)
-        user.save()
-        client = Client(user=user, mail=user.email, first_name=data['first_name'], last_name=data['last_name'],
-                        age=int(data['age']), gender=data['gender'], phone_number=data['phone_number'])
-        client.save()
-        login_func(request, user)
+        form = ClientForm(request.POST)
+        if form.is_valid():
 
-        return redirect('/')
+            data = request.POST
 
-    return render(request, 'client/login-register.html')
+            test_key = ['username', 'email', 'password', 'first_name', 'last_name', 'age', 'gender', 'phone_number']
+            if not all(k in data for k in test_key):
+                return render(request, 'client/login-register.html')
+
+            user = User.objects.create_user(username=data['username'], password=data['password'], email=data['email'])
+            # is_active=False)
+            user.save()
+            # client = Client(user=user, mail=user.email, first_name=data['first_name'], last_name=data['last_name'],
+            #                 age=int(data['age']), gender=data['gender'], phone_number=data['phone_number'])
+            tmp =form.save(commit=False)
+            tmp.user = user
+            tmp.save()
+
+            login_func(request, user)
+
+            return redirect('/')
+    else:
+        form = ClientForm()
+
+    return render(request, 'client/login-register.html', {"form": form})
 
 
 def login(request):
