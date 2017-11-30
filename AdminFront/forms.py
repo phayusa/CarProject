@@ -9,7 +9,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.forms import ModelForm
 from django.utils.dateparse import parse_datetime
 
-from Back_Source.models.booking import Booking, BookingPartner
+from Back_Source.models.booking import Booking, BookingPartner, BookingCommecial
 from Back_Source.models.location import Airport
 from Back_Source.models.person import Client, Driver, Commercial, BuissnessPartner
 from Back_Source.models.vehicle import Vehicle, VehicleModel
@@ -154,45 +154,27 @@ class BookingForm(ModelForm):
 
 
 class BookingPartenerForm(BookingForm):
-    # date = forms.DateField()
-    # time = forms.TimeField()
-
     date = forms.CharField(max_length=100)
 
     time = forms.CharField(max_length=100, label="Heure")
 
     arrive_time = forms.CharField(widget=forms.HiddenInput, required=False)
 
-    #
-    # def clean(self):
-    #     cleaned_data = super(BookingPartenerForm, self).clean()
-    #
-    #     print cleaned_data
-    #
-    #     date = cleaned_data.get('date', None)
-    #     time = cleaned_data.get('time', None)
-    #
-    #     if not date:
-    #         raise forms.ValidationError("La date n'est pas indiqué")
-    #
-    #     if not time:
-    #         raise forms.ValidationError("L'heure n'est pas indiqué")
-    #
-    #     try:
-    #         print date
-    #         print time
-    #         raw_date = datetime.datetime.strptime(date + ' ' + time, "%Y-%m-%d %H:%M")
-    #         print raw_date
-    #         date_time = raw_date.strftime("%Y-%m-%dT%H:%M")
-    #
-    #         date_w_timezone = pytz.timezone("Europe/Helsinki").localize(parse_datetime(date_time), is_dst=None)
-    #
-    #         self.arrive_time = date_w_timezone
-    #     except Exception:
-    #         raise forms.ValidationError("La date ou l'heure est incorrecte")
-
     class Meta:
         model = BookingPartner
+        fields = ["airport", "destination", "client", "passengers", "luggage_number",
+                  "flight", "model_choose", "vehicle_choose", "status", "arrive_time"]
+
+
+class BookingCommercialForm(BookingForm):
+    date = forms.CharField(max_length=100)
+
+    time = forms.CharField(max_length=100, label="Heure")
+
+    arrive_time = forms.CharField(widget=forms.HiddenInput, required=False)
+
+    class Meta:
+        model = BookingCommecial
         fields = ["airport", "destination", "client", "passengers", "luggage_number",
                   "flight", "model_choose", "vehicle_choose", "status", "arrive_time"]
 

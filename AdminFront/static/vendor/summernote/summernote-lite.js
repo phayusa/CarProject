@@ -69,7 +69,7 @@
     // Webpack
     if (typeof __webpack_require__ === 'function') { // jshint ignore:line
       try {
-        // If CodeMirror can't be resolved, `require.resolve` will throw an
+        // If codemirror can't be resolved, `require.resolve` will throw an
         // exception and `hasCodeMirror` won't be set to `true`.
         require.resolve('codemirror');
         hasCodeMirror = true;
@@ -80,7 +80,7 @@
       // Browserify
       if (typeof require.resolve !== 'undefined') {
         try {
-          // If CodeMirror can't be resolved, `require.resolve` will throw an
+          // If codemirror can't be resolved, `require.resolve` will throw an
           // exception and `hasCodeMirror` won't be set to `true`.
           require.resolve('codemirror');
           hasCodeMirror = true;
@@ -6085,11 +6085,11 @@
       $editor.addClass('codeview');
       $codable.focus();
 
-      // activate CodeMirror as codable
+      // activate codemirror as codable
       if (agent.hasCodeMirror) {
         var cmEditor = CodeMirror.fromTextArea($codable[0], options.codemirror);
 
-        // CodeMirror TernServer
+        // codemirror TernServer
         if (options.codemirror.tern) {
           var server = new CodeMirror.TernServer(options.codemirror.tern);
           cmEditor.ternServer = server;
@@ -6098,7 +6098,7 @@
           });
         }
 
-        // CodeMirror hasn't Padding.
+        // codemirror hasn't Padding.
         cmEditor.setSize(null, $editable.outerHeight());
         $codable.data('cmEditor', cmEditor);
       }
@@ -6108,7 +6108,7 @@
      * deactivate code view
      */
     this.deactivate = function () {
-      // deactivate CodeMirror as codable
+      // deactivate codemirror as codable
       if (agent.hasCodeMirror) {
         var cmEditor = $codable.data('cmEditor');
         $codable.val(cmEditor.getValue());

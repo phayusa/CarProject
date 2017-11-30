@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^base-admin/', admin.site.urls),
     url(r'^admin/', include('AdminFront.urls.admin')),
     url(r'^partener/', include('AdminFront.urls.partener')),
+    url(r'^commercial/', include('AdminFront.urls.commecial')),
     url(r'^db/', include('Back_Source.urls')),
     url(r'^localisation/', include('Localisation.urls')),
     url(r'^user/', include('Connections.urls')),

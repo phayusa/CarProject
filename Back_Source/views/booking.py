@@ -1,7 +1,7 @@
 from braces.views import RecentLoginRequiredMixin
 from rest_framework import generics
 
-from Back_Source.models import Booking, Client, BookingPartner, BookingCommecial
+from Back_Source.models import Booking, Client, BookingPartner, BookingCommecial, BuissnessPartner, Commercial
 from Back_Source.permissions.person import ClientPermission
 from Back_Source.serializers import BookingSerializer, BookingCommercialSerializer, BookingPartenerSerializer
 
@@ -53,7 +53,13 @@ class BookingCommecialBase(generics.GenericAPIView):
 
     def get_queryset(self):
         if not self.request.user.is_superuser:
-            return BookingCommecial.objects.filter(commercial__partner__user=self.request.user)
+            if BuissnessPartner.objects.filter(user=self.request.user).exists():
+                return BookingCommecial.objects.filter(commercial__partner__user=self.request.user)
+            else:
+                if Commercial.objects.filter(user=self.request.user).exists():
+                    return BookingCommecial.objects.filter(commercial__user=self.request.user)
+                else:
+                    return None
         return BookingCommecial.objects.all()
         # if self.request.user.groups.filter(name='Clients').exists():
         #     return BookingCommecial.objects.filter(client=Client.objects.filter(user=self.request.user))
@@ -76,7 +82,6 @@ class BookingPartenerBase(generics.GenericAPIView):
     raise_exception = True
 
     def get_queryset(self):
-
         if not self.request.user.is_superuser:
             return BookingPartner.objects.filter(partner__user=self.request.user)
         return BookingPartner.objects.all()

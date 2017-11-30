@@ -11,7 +11,7 @@ from django.shortcuts import render
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
 
-from Back_Source.models import VehicleModel, Client, Booking, Airport, BuissnessPartner
+from Back_Source.models import VehicleModel, Client, Booking, Airport, BuissnessPartner, Commercial
 from Localisation.views import upload_distance, set_booking_car
 from forms import BookingForm, ClientForm
 
@@ -29,6 +29,8 @@ def index(request):
         return redirect("/admin/")
     if BuissnessPartner.objects.filter(user=request.user).exists():
         return redirect("/partener/")
+    if Commercial.objects.filter(user=request.user).exists():
+        return redirect("/commercial/")
 
     return render(request, 'client/index-2.html',
                   {"Airports": Airport.objects.all(), "cars": VehicleModel.objects.all()})
@@ -46,7 +48,6 @@ def register(request):
     if request.method == "POST":
         form = ClientForm(request.POST)
         if form.is_valid():
-
             # is_active=False)
             # user.save()
             # client = Client(user=user, mail=user.email, first_name=data['first_name'], last_name=data['last_name'],

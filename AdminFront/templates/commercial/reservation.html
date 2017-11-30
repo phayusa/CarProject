@@ -1,0 +1,286 @@
+<!doctype html>
+<html class="fixed">
+<head>
+
+    <!-- Basic -->
+    <meta charset="UTF-8">
+
+    <title>{{ title }} | Blackline Services</title>
+    <meta name="keywords" content="HTML5 Admin Template"/>
+    <meta name="description" content="Porto Admin - Responsive HTML5 Template">
+    <meta name="author" content="okler.net">
+
+    {% load static %}
+
+    {% include 'admin_bis/style.html' %}
+
+    {#    <!-- Specific Page Vendor CSS -->#}
+    {#    <link rel="stylesheet" href="{% static "vendor/select2/css/select2.css" %}"/>#}
+    {#    <link rel="stylesheet" href="{% static "vendor/select2-bootstrap-theme/select2-bootstrap.min.css" %}"/>#}
+    {#    <link rel="stylesheet" href="{% static "vendor/datatables/media/css/dataTables.bootstrap4.css" %}"/>#}
+
+    <!-- Specific Page Vendor CSS -->
+    <link rel="stylesheet" href="{% static "vendor/jquery-ui/jquery-ui.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/jquery-ui/jquery-ui.theme.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/select2/css/select2.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/select2-bootstrap-theme/select2-bootstrap.min.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/bootstrap-multiselect/bootstrap-multiselect.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/bootstrap-tagsinput/bootstrap-tagsinput.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/bootstrap-timepicker/css/bootstrap-timepicker.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/dropzone/basic.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/dropzone/dropzone.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/bootstrap-markdown/css/bootstrap-markdown.min.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/summernote/summernote-bs4.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/codemirror/lib/codemirror.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/codemirror/theme/monokai.css" %}"/>
+
+</head>
+<body>
+<section class="body">
+
+    {% include "admin_bis/header.html" %}
+
+    <div class="inner-wrapper">
+
+        {% include "commercial/navigation_bar.html" with active=active sub_active=sub_active %}
+
+        <section role="main" class="content-body">
+
+            {% include 'admin_bis/head_line.html' with Name=title %}
+
+            <!-- start: page -->
+            <section class="card">
+                <header class="card-header">
+                    <div class="card-actions">
+                        <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                        {#                        <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
+                    </div>
+
+                    <h2 class="card-title">{{ title }}</h2>
+                </header>
+                <form method="post" {% if file %}enctype="multipart/form-data"{% endif %}>
+                    {% csrf_token %}
+                    <div class="card-body col-md-12">
+                        <div>
+                            {% if form.errors %}
+                                {{ form.errors }}
+                            {% endif %}
+
+                            {% if custom %}
+                                <form class="form-horizontal form-bordered" method="get">
+                                    <div class="form-group row">
+                                        <div class="row">
+                                            <label class="col-lg-7 control-label text-lg-left"><input value="1"
+                                                                                                      type="radio"
+                                                                                                      name="formselector"
+                                                                                                      onclick="displayForm(this)">Existant</label>
+
+                                            <label class="col-lg-7 control-label text-lg-left"><input value="2"
+                                                                                                      type="radio"
+                                                                                                      name="formselector"
+                                                                                                      onclick="displayForm(this)">Nouveau</label>
+                                        </div>
+                                    </div>
+
+                                    <script type="text/javascript">
+                                        function displayForm(c) {
+                                            if (c.value == "1") {
+
+                                                document.getElementById("exist_user").style.display = 'inline';
+                                                document.getElementById("new_user").style.display = 'none';
+                                            }
+                                            else if (c.value == "2") {
+                                                document.getElementById("exist_user").style.display = 'none';
+
+                                                document.getElementById("new_user").style.display = 'inline';
+                                            }
+                                            else {
+                                            }
+                                        }
+                                    </script>
+
+                                    <div style="display:none" id="new_user">
+                                        {#                                        <label>Renseigner les information du nouveau client</label>#}
+
+
+                                        {#                                        <label class="col-lg-3 control-label text-lg-left pt-2"#}
+                                        {#                                               for="username">Username</label>#}
+
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <label>Informations Clients</label>
+                                                <div class="form-horizontal">
+                                                    <div class="form-group row">
+                                                        <div class="col-lg-6">
+                                                            <input type="text" class="form-control" id="first_name"
+                                                                   placeholder="Nom">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <div class="col-lg-6">
+                                                            <input type="text" class="form-control" id="last_name"
+                                                                   placeholder="Prénom">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <div class="col-lg-6">
+                                                            <input type="number" class="form-control" id="age"
+                                                                   placeholder="Age" max="100" min="18">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <div class="col-lg-6">
+                                                            <input type="email" class="form-control" id="mail"
+                                                                   placeholder="Mail">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <div class="col-lg-6">
+                                                            <input type="tel" class="form-control" id="phone_number"
+                                                                   placeholder="Téléphone">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-lg-6">
+                                                <label>Utilisateur</label>
+                                                <div class="form-horizontal">
+                                                    <div class="form-group row">
+                                                        <div class="col-lg-6">
+                                                            <input type="text" class="form-control" id="username"
+                                                                   placeholder="Nom d'utilisateur">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <div class="col-lg-6">
+                                                            <input type="password" class="form-control" id="password"
+                                                                   placeholder="Mot de Passe">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <div class="col-lg-6">
+                                                            <input type="password" class="form-control"
+                                                                   id="password_confirm"
+                                                                   placeholder="Confirmation Mot de Passe">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="gap"></div>
+                                            <br>
+                                            <br>
+                                            <br>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div style="display:none" id="exist_user" class="form-group row">
+                                        {#                                        <select name="client">#}
+                                        {#                                            {% for client in clients %}#}
+                                        {#                                                <option>{{ client }}</option>#}
+                                        {#                                            {% endfor %}#}
+                                        {#                                        </select>#}
+                                        <div class="form-group row">
+                                            <label class="col-lg-3 control-label text-lg-right pt-2">Client</label>
+                                            <div class="col-lg-6">
+                                                <select data-plugin-selectTwo class="form-control populate">
+                                                    {% for client in clients %}
+                                                        <option value="{{ client.id }}">{{ client }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group row">
+                                        <label class="col-lg-3 control-label text-lg-right pt-2" for="inputDefault">Default</label>
+                                        <div class="col-lg-6">
+                                            <input type="text" class="form-control" id="inputDefault">
+                                        </div>
+                                    </div>
+                                </form>
+                            {% else %}
+                                {{ form.as_p }}
+                                {{ form.media }}
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+                    <div class="card-footer">
+                        {% if type == 2 %}
+                            {#                            {{ form_user.as_p }}#}
+                            <button type="submit" class="btn btn-success    ">Créer</button>
+                        {% else %}
+                            <button type="submit" class="btn btn-primary">Modifier</button>
+                        {% endif %}
+                        <a class="btn btn-secondary"
+                           href="/commercial/">Annuler</a>
+                    </div>
+                </form>
+
+            </section>
+
+
+            <!-- end: page -->
+        </section>
+    </div>
+
+</section>
+
+
+{% include "admin_bis/base_script.html" %}
+
+<!-- Specific Page Vendor -->
+{#<script src="{% static "vendor/select2/js/select2.js" %}"></script>#}
+{#<script src="{% static "vendor/datatables/media/js/jquery.dataTables.min.js" %}"></script>#}
+{#<script src="{% static "vendor/datatables/media/js/dataTables.bootstrap4.min.js" %}"></script>#}
+{#<script src="{% static "vendor/pnotify/pnotify.custom.js" %}"></script>#}
+<script src="{% static "vendor/jquery-ui/jquery-ui.js" %}"></script>
+<script src="{% static "vendor/jqueryui-touch-punch/jqueryui-touch-punch.js" %}"></script>
+<script src="{% static "vendor/select2/js/select2.js" %}"></script>
+<script src="{% static "vendor/bootstrap-multiselect/bootstrap-multiselect.js" %}"></script>
+<script src="{% static "vendor/jquery-maskedinput/jquery.maskedinput.js" %}"></script>
+<script src="{% static "vendor/bootstrap-tagsinput/bootstrap-tagsinput.js" %}"></script>
+<script src="{% static "vendor/bootstrap-colorpicker/js/bootstrap-colorpicker.js" %}"></script>
+<script src="{% static "vendor/bootstrap-timepicker/bootstrap-timepicker.js" %}"></script>
+<script src="{% static "vendor/fuelux/js/spinner.js" %}"></script>
+<script src="{% static "vendor/dropzone/dropzone.js" %}"></script>
+<script src="{% static "vendor/bootstrap-markdown/js/markdown.js" %}"></script>
+<script src="{% static "vendor/bootstrap-markdown/js/to-markdown.js" %}"></script>
+<script src="{% static "vendor/bootstrap-markdown/js/bootstrap-markdown.js" %}"></script>
+<script src="{% static "vendor/codemirror/lib/codemirror.js" %}"></script>
+<script src="{% static "vendor/codemirror/addon/selection/active-line.js" %}"></script>
+<script src="{% static "vendor/codemirror/addon/edit/matchbrackets.js" %}"></script>
+<script src="{% static "vendor/codemirror/mode/javascript/javascript.js" %}"></script>
+<script src="{% static "vendor/codemirror/mode/xml/xml.js" %}"></script>
+<script src="{% static "vendor/codemirror/mode/htmlmixed/htmlmixed.js" %}"></script>
+<script src="{% static "vendor/codemirror/mode/css/css.js" %}"></script>
+<script src="{% static "vendor/summernote/summernote-bs4.js" %}"></script>
+<script src="{% static "vendor/bootstrap-maxlength/bootstrap-maxlength.js" %}"></script>
+<script src="{% static "vendor/ios7-switch/ios7-switch.js" %}"></script>
+
+
+<!-- Examples -->
+<script src="{% static "js/examples/examples.advanced.form.js" %}"></script>
+<!-- Examples -->
+{#<script src="{% static "js/datatable/client_manager_datatable.js" %}"></script>#}
+{#<script src="{% static "js/examples/examples.modal=s.js" %}"></script>#}
+
+
+</body>
+</html>
