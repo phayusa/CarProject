@@ -16,7 +16,7 @@ def client_edit(request, pk):
         form = ClientForm(request.POST, instance=Client.objects.get(id=pk))
         if form.is_valid():
             form.save()
-            return redirect('/admin_bis/manager/')
+            return redirect('/admin/manager/')
     else:
         form = ClientForm(instance=Client.objects.get(id=pk))
     if request.user.is_superuser:
@@ -70,7 +70,7 @@ def commercial_edit(request, pk):
 
 def partener_edit(request, pk):
     if not request.user.is_authenticated():
-        return redirect('/admin_bis/login')
+        return redirect('/admin/login')
 
     if request.method == "POST":
         form = PartenerForm(request.POST, instance=BuissnessPartner.objects.get(id=pk))
@@ -90,7 +90,7 @@ def partener_edit(request, pk):
 
 def booking_edit(request, pk):
     if not request.user.is_authenticated():
-        return redirect('/admin_bis/login')
+        return redirect('/admin/login')
 
     if request.method == "POST":
         form = BookingForm(request.POST, instance=Booking.objects.get(id=pk))

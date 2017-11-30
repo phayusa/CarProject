@@ -90,6 +90,8 @@ def booking_create(request):
                        "form": form, "type": 2, "active": 4,
                        "sub_active": 1, "title": "Création Réservation",
                        "airports": Airport.objects.all(), "models": VehicleModel.objects.all(),
-                       "custom": True, "clients": Client.objects.filter(partner__user=request.user)})
+                       "custom": True, "clients": Client.objects.filter(partner__user=request.user),
+                       "passengers_list": range(1, 7), "luggage_list": range(1, 6), "creation": True,
+                       "direct": 2})
     else:
         return redirect('/')

@@ -38,7 +38,7 @@ def index(request):
 
 def base_manager(request):
     if not request.user.is_authenticated():
-        return redirect('/admin_bis/login')
+        return redirect('/admin/login')
 
     if request.user.is_superuser or BuissnessPartner.objects.filter(user=request.user).exists():
         return render(request, 'partener/person_manager.html', {"sections": ["Gestion Comptes"]})

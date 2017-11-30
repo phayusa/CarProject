@@ -47,12 +47,6 @@
                 <form method="post">
                     {% csrf_token %}
                     <div class="card-body col-md-12">
-                        {#                        {{ form.address }}#}
-                        {#                        <table align="center">#}
-                        {#                            {{ form.as_table }}#}
-                        {##}
-                        {#                        </table>#}
-                        {#                            {{ form.as_p }}#}
                         {{ form.errors }}
                         {% if custom %}
                             <div class="col-md-8">
@@ -63,25 +57,9 @@
                                 <table class="form-control" width="400">
                                     {{ form.as_table }}
                                 </table>
-                                {#                                <div class="form-control">#}
-                                {#                                    {{ form.as_p }}#}
-                                {#                                </div>#}
                                 {{ form.media }}
                             </div>
-                            {{ form.errors }}
                         {% endif %}
-                        {#                        <div class="card-body">#}
-                        {#                            <form class="form-horizontal form-bordered" method="get">#}
-                        {#                                <div class="form-group row">#}
-                        {#                                    <div class="col-lg-6">#}
-                        {#                                        <label class="col-lg-3 control-label text-lg-right pt-2">Nom</label>#}
-                        {#                                        <input class="form-control mb-3" type="text"#}
-                        {#                                               placeholder="Nom">#}
-                        {#                                    </div>#}
-                        {#                                </div>#}
-                        {#                            </form>#}
-                        {#                        </div>#}
-
                     </div>
                     <div class="card-footer">
                         {% if type == 2 %}

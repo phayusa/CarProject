@@ -11,7 +11,8 @@
                 {#                                                   placeholder="Aéroport" type="text"/>#}
                 <select class="format-option form-control" name="airport">
                     {% for airport in airports %}
-                        <option value="{{ airport.id }}">{{ airport.address }}</option>
+                        <option {% if form.airport.value is airport %}selected{% endif %}
+                                value="{{ airport.id }}">{{ airport.address }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -21,9 +22,10 @@
                     class="fa fa-map-marker input-icon"></i>
                 <label>Destination</label>
                 <input id="arrive_adress" class="form-control" name="destination"
-                       placeholder="Adresse, Ville, Lieux" type="text"/>
+                       placeholder="Adresse, Ville, Lieux" type="text"
+                       value="{{ form.destination.value|default_if_none:"" }}"/>
                 <input class="hidden" name="destination_location" type="text"
-                       id="destination_location"/>
+                       id="destination_location" value="{{ form.destination_location.value|default_if_none:"" }}"/>
 
             </div>
         </div>
@@ -35,7 +37,7 @@
                             class="fa fa-calendar input-icon input-icon-highlight"></i>
                         <label>Date d'arrivée</label>
                         <input class="form-control" name="date" type="date" id="datetimepicker1"
-                               placeholder="ex: 25/12/2017"/>
+                               placeholder="ex: 25/12/2017" value="{{ form.arrive_time.value|date:"Y-m-d" }}"/>
                         {#                                            <input class="date-pick form-control" name="date" type="text"/>#}
                     </div>
                 </div>
@@ -45,7 +47,7 @@
                             class="fa fa-clock-o input-icon input-icon-highlight"></i>
                         <label>Heure</label>
                         <input class="form-control time-pick" type="text" name="time" id="time"
-                               placeholder="ex 10:30"/>
+                               placeholder="ex 10:30" value="{{ form.arrive_time.value.time }}"/>
                         {#                        <span class="input-group-addon">#}
                         {#                            <i class="fa fa-clock-o"></i>#}
                         {#                        </span>#}
@@ -63,7 +65,8 @@
                         <label>Modèle</label>
                         <select class="form-control format-option" name="model_choose" id="model_option">
                             {% for car in models %}
-                                <option value="{{ car.id }}">{{ car }}</option>
+                                <option {% if form.model_choose.value is car %}selected{% endif %}
+                                        value="{{ car.id }}">{{ car }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -74,12 +77,9 @@
                         <i class="fa fa-users input-icon input-icon-highlight"></i>
                         <label>Passagers</label>
                         <select class="form-control format-option" name="passengers">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                            <option>6</option>
+                            {% for number in passengers_list %}
+                                <option {% if form.passengers.value == number %}selected{% endif %}>{{ number }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>
@@ -89,11 +89,9 @@
                         <i class="fa fa-suitcase input-icon input-icon-highlight"></i>
                         <label>Baggages</label>
                         <select class="form-control format-option" name="luggage_number">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                            {% for number in luggage_list %}
+                                <option {% if form.passengers.value == number %}selected{% endif %}>{{ number }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>
@@ -102,7 +100,8 @@
                     <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
                         <i class="fa fa-plane input-icon input-icon-highlight"></i>
                         <label>Vol</label>
-                        <input class="form-control" type="text" name="flight" placeholder="ex: BAW329"/>
+                        <input class="form-control" type="text" name="flight" placeholder="ex: BAW329"
+                               value="{{ form.flight.value|default_if_none:"" }}"/>
                     </div>
                 </div>
             </div>
@@ -115,15 +114,31 @@
 
         <div class="col-md-12">
             <div class="row">
-{#                <p>{{ form.client.label }}{{ form.client }}</p>#}
-{#                <label>Client : </label>#}
-                <select name="client">
-                    <option>...</option>
-                    {% for client in clients %}
-                        <option value="{{ client.id }}">{{ client }}</option>
-                    {% endfor %}
 
-                </select>
+                {#                {{ form.arrive_time }}#}
+
+                {% if creation %}
+                    <div class="col-md-6">
+                        <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
+                            <i class="fa fa-user input-icon input-icon-highlight"></i>
+                            <label>Utilisateur</label>
+                            <select name="client" class="form-control format-option">
+                                <option>...</option>
+                                {% for client in clients %}
+                                    <option value="{{ client.id }}">{{ client }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <input type="hidden" name="status" value="En cours de validation">
+
+                {% else %}
+                    <input type="hidden" name="client" value="{{ form.client.value }}">
+
+                    <label>Status</label>
+                    {{ form.status }}
+                {% endif %}
+
             </div>
         </div>
 
@@ -189,8 +204,6 @@
         {#            {% endfor %}#}
         {#        </select>#}
 
-
-        <input type="hidden" name="status" value="En cours de validation">
     </div>
 </div>
 

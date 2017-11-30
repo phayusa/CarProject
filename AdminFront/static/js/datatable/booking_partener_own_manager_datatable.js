@@ -10,7 +10,7 @@ Theme Version: 	2.0.0
 
     var datatableInit = function () {
 
-        var $table = $('#booking_partener_table');
+        var $table = $('#booking_partener_bis_table');
         // $table.dataTable({
         // 	dom: '<"row"<"col-lg-6"l><"col-lg-6"f>><"table-responsive"t>p',
         // 	bProcessing: true,
@@ -69,7 +69,7 @@ Theme Version: 	2.0.0
             }
         );
 
-        $('#booking_parterner_table tbody').on('click', 'button', function () {
+        $('#booking_partener_bis_table tbody').on('click', 'button', function () {
             // var data = bis.row($(this).parents('tr')).data();
             // alert("" + data["id"]);
             // $('#id01').modal('show');
@@ -78,7 +78,7 @@ Theme Version: 	2.0.0
         });
 
         // Add the class for the search field is inside the table
-        $("#booking_partener_table_filter").addClass("col-md-10");
+        $("#booking_partener_bis_table_filter").addClass("col-md-10");
 
     };
 
