@@ -167,16 +167,19 @@ class BookingPartenerForm(BookingForm):
 
 
 class BookingCommercialForm(BookingForm):
-    date = forms.CharField(max_length=100)
+    date = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder': '2017-12-20', 'type': 'date'}))
 
-    time = forms.CharField(max_length=100, label="Heure")
+    time = forms.CharField(max_length=100, label="Heure",
+                           widget=forms.TextInput(attrs={'placeholder': '10:30', 'type': 'time'}))
 
     arrive_time = forms.CharField(widget=forms.HiddenInput, required=False)
 
+    status = forms.CharField(widget=forms.HiddenInput)
+
     class Meta:
         model = BookingCommecial
-        fields = ["airport", "destination", "client", "passengers", "luggage_number",
-                  "flight", "model_choose", "vehicle_choose", "status", "arrive_time"]
+        fields = ["airport", "destination", "passengers", "luggage_number",
+                  "flight", "model_choose", "status", "arrive_time"]
 
 
 class AirportForm(ModelForm):

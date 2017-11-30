@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'braces',
     'geoposition',
     'location_field.apps.DefaultConfig',
+    'widget_tweaks',
     # 'djangosecure',
     'sslserver',
     'django_filters',

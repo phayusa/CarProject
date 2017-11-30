@@ -15,6 +15,8 @@ from Back_Source.models.person import Client, Commercial, BuissnessPartner
 from Back_Source.models.location import Airport
 from Back_Source.models.vehicle import VehicleModel
 
+from django.contrib.auth.forms import UserCreationForm
+
 
 def index(request):
     if not request.user.is_authenticated():
@@ -25,6 +27,11 @@ def index(request):
     commercial = Commercial.objects.filter(user=request.user)[0]
 
     if request.method == "POST":
+        type = request.POST.get("formselector", None)
+        if not type:
+            redirect("/")
+        print type
+
         form = BookingCommercialForm(request.POST)
         if form.is_valid():
             tmp = form.save(commit=False)
@@ -58,7 +65,7 @@ def index(request):
                        "airports": Airport.objects.all(), "models": VehicleModel.objects.all(),
                        "custom": True, "clients": clients,
                        "passengers_list": range(1, 7), "luggage_list": range(1, 6), "creation": True,
-                       "direct": 2})
+                       "direct": 2, "user_form": UserCreationForm()})
     else:
         return redirect('/')
 
