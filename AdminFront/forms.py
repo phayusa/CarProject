@@ -12,6 +12,7 @@ from django.utils.dateparse import parse_datetime
 from Back_Source.models.booking import Booking, BookingPartner
 from Back_Source.models.location import Airport
 from Back_Source.models.person import Client, Driver, Commercial, BuissnessPartner
+from Back_Source.models.vehicle import Vehicle, VehicleModel
 
 
 class PersonForm(ModelForm):
@@ -161,6 +162,7 @@ class BookingPartenerForm(BookingForm):
     time = forms.CharField(max_length=100, label="Heure")
 
     arrive_time = forms.CharField(widget=forms.HiddenInput, required=False)
+
     #
     # def clean(self):
     #     cleaned_data = super(BookingPartenerForm, self).clean()
@@ -199,3 +201,17 @@ class AirportForm(ModelForm):
     class Meta:
         model = Airport
         fields = ["address", "location"]
+
+
+class VehicleModelForm(ModelForm):
+    class Meta:
+        model = VehicleModel
+        fields = ["brand", "model", "year", "child_seat", "number_place", "luggage_number", "category", "doors",
+                  "image_default", "price"]
+
+
+class VehicleForm(ModelForm):
+    class Meta:
+        model = Vehicle
+        fields = ["model", "driver", "registration", "color", "insurance", "insurance_card", "registration_card",
+                  "front", "back", "travelling", "area"]

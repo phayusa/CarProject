@@ -28,9 +28,28 @@ Theme Version: 	2.0.0
                     {data: 'commercial'},
                     {data: 'airport'},
                     {data: 'destination'},
-                    {data: 'date'},
+                    // {data: 'date'},
+                    {
+                        "data": "date",
+                        "type": "date",
+                        "render": function (value) {
+                            if (value === null) return "";
+                            var dt = new Date(value);
+                            return (dt.getDate() + 1) + "/" + dt.getMonth() + "/" + dt.getFullYear();
+                        }
+                    },
                     {data: 'client'},
-                    {data: 'arrive_time'},
+                    // {data: 'arrive_time'},
+                    {
+                        "data": "arrive_time",
+                        "type": "date",
+                        "render": function (value) {
+                            if (value === null) return "";
+
+                            var dt = new Date(value);
+                            return (dt.getDate() + 1) + "/" + dt.getMonth() + "/" + dt.getFullYear() + " " + dt.getUTCHours() + "H" + dt.getUTCMinutes();
+                        }
+                    },
                     {data: 'status'},
                     {data: 'tt'}
                 ],
@@ -74,7 +93,7 @@ Theme Version: 	2.0.0
             // var data = bis.row($(this).parents('tr')).data();
             // alert("" + data["id"]);
             // $('#id01').modal('show');
-            window.location.href = '/partener/booking/'+bis.row($(this).parents('tr')).data()["id"];
+            window.location.href = '/partener/booking/' + bis.row($(this).parents('tr')).data()["id"];
             // $('#modalForm').getElementById("")
         });
 

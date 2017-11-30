@@ -1,0 +1,120 @@
+<!doctype html>
+<html class="fixed">
+<head>
+
+    <!-- Basic -->
+    <meta charset="UTF-8">
+
+    <title>Voitures | Blackline Services</title>
+    <meta name="keywords" content="HTML5 Admin Template"/>
+    <meta name="description" content="Porto Admin - Responsive HTML5 Template">
+    <meta name="author" content="okler.net">
+
+    {% load static %}
+
+    {% include 'admin_bis/style.html' %}
+
+    <!-- Specific Page Vendor CSS -->
+    <link rel="stylesheet" href="{% static "vendor/select2/css/select2.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/select2-bootstrap-theme/select2-bootstrap.min.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/datatables/media/css/dataTables.bootstrap4.css" %}"/>
+
+</head>
+<body>
+<section class="body">
+
+    {% include "admin_bis/header.html" %}
+
+    <div class="inner-wrapper">
+
+        {% include "admin_bis/navigation_bar.html" with active=5 %}
+
+        <section role="main" class="content-body">
+
+            {% include 'admin_bis/head_line.html' with Name="Voitures" %}
+
+
+            <section class="card card mb-4">
+                <header class="card-header">
+                    <div class="card-actions">
+                        <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                    </div>
+
+                    <h2 class="card-title">Modèles</h2>
+                </header>
+                <div class="card-body col-md-12">
+                    <table class="table table-bordered table-striped" id="car_model_datatable"
+                            {#                           data-url="{% static "ajax/ajax-datatables-sample.json" %}">#}
+                           data-url="/db/models/vehicles/" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Marque</th>
+                            <th>Modèle</th>
+                            <th>Année</th>
+                            <th>Prix</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <a class="btn btn-success" href="/admin/car-model/create/">Ajouter</a>
+                </div>
+            </section>
+
+            <section class="card card mb-4">
+                <header class="card-header">
+                    <div class="card-actions">
+                        <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                    </div>
+
+                    <h2 class="card-title">Modèles</h2>
+                </header>
+                <div class="card-body col-md-12">
+                    <table class="table table-bordered table-striped" id="car_datatable"
+                            {#                           data-url="{% static "ajax/ajax-datatables-sample.json" %}">#}
+                           data-url="/db/vehicles/" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>Modèle</th>
+                            <th>Immatriculation</th>
+                            <th>Couleur</th>
+                            <th>Revenues</th>
+                            <th>Zone</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <a class="btn btn-success" href="/admin/car/create/">Ajouter</a>
+                </div>
+            </section>
+
+        </section>
+
+    </div>
+
+</section>
+
+
+{% include "admin_bis/base_script.html" %}
+
+<!-- Specific Page Vendor -->
+<script src="{% static "vendor/select2/js/select2.js" %}"></script>
+<script src="{% static "vendor/datatables/media/js/jquery.dataTables.min.js" %}"></script>
+<script src="{% static "vendor/datatables/media/js/dataTables.bootstrap4.min.js" %}"></script>
+<script src="{% static "vendor/pnotify/pnotify.custom.js" %}"></script>
+
+
+<script src="{% static "js/datatable/car_model_datatable.js" %}"></script>
+<script src="{% static "js/datatable/car_datatable.js" %}"></script>
+
+{#<script src="{% static "js/examples/examples.modals.js" %}"></script>#}
+
+
+</body>
+</html>

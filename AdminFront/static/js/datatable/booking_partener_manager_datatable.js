@@ -11,11 +11,6 @@ Theme Version: 	2.0.0
     var datatableInit = function () {
 
         var $table = $('#booking_partener_table');
-        // $table.dataTable({
-        // 	dom: '<"row"<"col-lg-6"l><"col-lg-6"f>><"table-responsive"t>p',
-        // 	bProcessing: true,
-        // 	sAjaxSource: $table.data('url')
-        // });
         var bis = $table.DataTable({
                 // "ajax": $table.data('url'),
                 "ajax": {
@@ -28,9 +23,28 @@ Theme Version: 	2.0.0
                     {data: 'partner'},
                     {data: 'airport'},
                     {data: 'destination'},
-                    {data: 'date'},
+                    // {data: 'date'},
+                    {
+                        "data": "date",
+                        "type": "date",
+                        "render": function (value) {
+                            if (value === null) return "";
+                            var dt = new Date(value);
+                            return (dt.getDate() + 1) + "/" + dt.getMonth() + "/" + dt.getFullYear();
+                        }
+                    },
                     {data: 'client'},
-                    {data: 'arrive_time'},
+                    // {data: 'arrive_time'},
+                    {
+                        "data": "arrive_time",
+                        "type": "date",
+                        "render": function (value) {
+                            if (value === null) return "";
+
+                            var dt = new Date(value);
+                            return (dt.getDate() + 1) + "/" + dt.getMonth() + "/" + dt.getFullYear() + " " + dt.getUTCHours() + "H" + dt.getUTCMinutes();
+                        }
+                    },
                     {data: 'status'},
                     {data: 'tt'}
                 ],
@@ -71,11 +85,7 @@ Theme Version: 	2.0.0
         );
 
         $('#booking_parterner_table tbody').on('click', 'button', function () {
-            // var data = bis.row($(this).parents('tr')).data();
-            // alert("" + data["id"]);
-            // $('#id01').modal('show');
-            window.location.href = '/admin/booking/'+bis.row($(this).parents('tr')).data()["id"];
-            // $('#modalForm').getElementById("")
+            window.location.href = '/admin/booking/' + bis.row($(this).parents('tr')).data()["id"];
         });
 
         // Add the class for the search field is inside the table

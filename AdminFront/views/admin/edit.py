@@ -5,7 +5,9 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 
 from Back_Source.models import Client, Driver, BuissnessPartner, Commercial, Booking, Airport
+from Back_Source.models.vehicle import VehicleModel, Vehicle
 from AdminFront.forms import ClientForm, DriverForm, CommercialForm, PartenerForm, UserForm, BookingForm, AirportForm
+from AdminFront.forms import VehicleModelForm, VehicleForm
 
 
 def client_edit(request, pk):
@@ -124,5 +126,44 @@ def airport_edit(request, pk):
                       {"sections": ["Gestion", "Edition Aéroport", str(pk)],
                        "form": form, "direct": 2, "title": "Aéroports", "active": 4,
                        "sub_active": 1})
+    else:
+        return redirect('/')
+
+
+def car_model_edit(request, pk):
+    if not request.user.is_authenticated():
+        return redirect('/admin/login')
+
+    if request.method == "POST":
+        form = VehicleModelForm(request.POST, instance=VehicleModel.objects.get(id=pk))
+        if form.is_valid():
+            form.save()
+            return redirect('/admin/cars/')
+    else:
+        form = VehicleModelForm(instance=VehicleModel.objects.get(id=pk))
+    if request.user.is_superuser:
+        return render(request, 'admin_bis/object_edit.html',
+                      {"sections": ["Gestion", "Edition Modèle", str(pk)],
+                       "form": form, "direct": 3, "title": "Modèle", "active": 5})
+    else:
+        return redirect('/')
+
+
+def car_edit(request, pk):
+    if not request.user.is_authenticated():
+        return redirect('/admin/login')
+
+    if request.method == "POST":
+        form = VehicleForm(request.POST, request.FILES, instance=Vehicle.objects.get(id=pk))
+        if form.is_valid():
+            form.save()
+            return redirect('/admin/cars/')
+    else:
+        form = VehicleForm(instance=Vehicle.objects.get(id=pk))
+    if request.user.is_superuser:
+        return render(request, 'admin_bis/object_edit.html',
+                      {"sections": ["Gestion", "Edition Voiture", str(pk)],
+                       "form": form, "direct": 3, "title": "Modèle", "active": 5,
+                       "file": True})
     else:
         return redirect('/')

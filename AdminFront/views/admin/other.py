@@ -56,6 +56,16 @@ def booking_manager(request):
         return redirect('/')
 
 
+def car_manager(request):
+    if not request.user.is_authenticated():
+        return redirect('/admin/login')
+
+    if request.user.is_superuser:
+        return render(request, 'admin_bis/car_manager.html', {"sections": ["Gestion Voitures"]})
+    else:
+        return redirect('/')
+
+
 def areas(request):
     if not request.user.is_authenticated():
         return redirect('/admin/login')

@@ -9,7 +9,8 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 
-class BookingBase(RecentLoginRequiredMixin, generics.GenericAPIView):
+# class BookingBase(RecentLoginRequiredMixin, generics.GenericAPIView):
+class BookingBase(generics.GenericAPIView):
     # Require a login within the last 10 minutes
     # max_last_login_delta = 900
 
@@ -39,7 +40,7 @@ class BookingDetail(BookingBase, generics.RetrieveUpdateDestroyAPIView):
     # redirect_field_name = '.'
 
 
-class BookingCommecialBase(RecentLoginRequiredMixin, generics.GenericAPIView):
+class BookingCommecialBase(generics.GenericAPIView):
     # Require a login within the last 10 minutes
     # max_last_login_delta = 900
 
@@ -63,7 +64,7 @@ class BookingCommercialList(BookingCommecialBase, generics.ListAPIView):
     filter_fields = ('date', 'travel', 'client')
 
 
-class BookingPartenerBase(RecentLoginRequiredMixin, generics.GenericAPIView):
+class BookingPartenerBase(generics.GenericAPIView):
     # Require a login within the last 10 minutes
     # max_last_login_delta = 900
 

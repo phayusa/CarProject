@@ -5,7 +5,7 @@
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <title>Clients | Blackline Services</title>
+    <title>{{ title }} | Blackline Services</title>
     <meta name="keywords" content="HTML5 Admin Template"/>
     <meta name="description" content="Porto Admin - Responsive HTML5 Template">
     <meta name="author" content="okler.net">
@@ -43,7 +43,7 @@
 
                     <h2 class="card-title">{{ title }}</h2>
                 </header>
-                <form method="post">
+                <form method="post" {% if file %}enctype="multipart/form-data"{% endif %}>
                     {% csrf_token %}
                     <div class="card-body col-md-12">
                         {#                        {{ form.address }}#}
@@ -76,7 +76,7 @@
                             <button type="submit" class="btn btn-primary">Modifier</button>
                         {% endif %}
                         <a class="btn btn-secondary"
-                           href="{% if direct == 2 %}/admin/bookings/{% else %}/admin/manager/{% endif %}">Annuler</a>
+                           href="{% if direct == 2 %}/admin/bookings/{% elif direct == 3 %}/admin/cars/{% else %}/admin/manager/{% endif %}">Annuler</a>
                     </div>
                 </form>
 

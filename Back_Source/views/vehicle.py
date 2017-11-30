@@ -11,7 +11,6 @@ from Back_Source.models import Vehicle, Driver, VehicleModel
 from Back_Source.permissions.person import DriverPermission, GeneralPermission
 from Back_Source.serializers import VehicleSerializer, VehicleModelSerializer
 
-from rest_framework.renderers import JSONRenderer
 
 class VehicleBase(generics.GenericAPIView):
     serializer_class = VehicleSerializer

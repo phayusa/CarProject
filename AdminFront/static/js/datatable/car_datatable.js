@@ -10,7 +10,7 @@ Theme Version: 	2.0.0
 
     var datatableInit = function () {
 
-        var $table = $('#booking_commercial_table');
+        var $table = $('#car_datatable');
         // $table.dataTable({
         // 	dom: '<"row"<"col-lg-6"l><"col-lg-6"f>><"table-responsive"t>p',
         // 	bProcessing: true,
@@ -25,32 +25,11 @@ Theme Version: 	2.0.0
                 dom: '<"row"<"col-lg-6"l><"col-lg-6"f>><"table-responsive"t>p',
                 bProcessing: true,
                 columns: [
-                    {data: 'commercial'},
-                    {data: 'airport'},
-                    {data: 'destination'},
-                    // {data: 'date'},
-                    {
-                        "data": "date",
-                        "type": "date",
-                        "render": function (value) {
-                            if (value === null) return "";
-                            var dt = new Date(value);
-                            return (dt.getDate() + 1) + "/" + dt.getMonth() + "/" + dt.getFullYear();
-                        }
-                    },
-                    {data: 'client'},
-                    // {data: 'arrive_time'},
-                    {
-                        "data": "arrive_time",
-                        "type": "date",
-                        "render": function (value) {
-                            if (value === null) return "";
-
-                            var dt = new Date(value);
-                            return (dt.getDate() + 1) + "/" + dt.getMonth() + "/" + dt.getFullYear() + " " + dt.getUTCHours() + "H" + dt.getUTCMinutes();
-                        }
-                    },
-                    {data: 'status'},
+                    {data: 'model'},
+                    {data: 'registration'},
+                    {data: 'color'},
+                    {data: 'revenues'},
+                    {data: 'area'},
                     {data: 'tt'}
                 ],
                 "columnDefs": [{
@@ -89,16 +68,16 @@ Theme Version: 	2.0.0
             }
         );
 
-        $('#booking_commercial_table tbody').on('click', 'button', function () {
+        $('#car_datatable tbody').on('click', 'button', function () {
             // var data = bis.row($(this).parents('tr')).data();
             // alert("" + data["id"]);
             // $('#id01').modal('show');
-            window.location.href = '/admin/booking/' + bis.row($(this).parents('tr')).data()["id"];
+            window.location.href = '/admin/car/' + bis.row($(this).parents('tr')).data()["id"];
             // $('#modalForm').getElementById("")
         });
 
         // Add the class for the search field is inside the table
-        $("#booking_commercial_table_filter").addClass("col-md-10");
+        $("#car_datatable_filter").addClass("col-md-10");
 
     };
 

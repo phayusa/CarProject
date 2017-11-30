@@ -65,7 +65,7 @@ class Vehicle(models.Model):
     back = models.ImageField(verbose_name="Photo Arrière")
 
     # Buisness field
-    revenues = models.IntegerField(blank=True, null=True, verbose_name="Revenues")
+    revenues = models.IntegerField(blank=True, null=True, default=0, verbose_name="Revenues")
 
     # Processing attributes
     # Busy car
