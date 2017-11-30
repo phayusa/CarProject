@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 
 class BookingBase(RecentLoginRequiredMixin, generics.GenericAPIView):
     # Require a login within the last 10 minutes
-    max_last_login_delta = 900
+    # max_last_login_delta = 900
 
     serializer_class = BookingSerializer
     redirect_unauthenticated_users = False
@@ -41,7 +41,7 @@ class BookingDetail(BookingBase, generics.RetrieveUpdateDestroyAPIView):
 
 class BookingCommecialBase(RecentLoginRequiredMixin, generics.GenericAPIView):
     # Require a login within the last 10 minutes
-    max_last_login_delta = 900
+    # max_last_login_delta = 900
 
     serializer_class = BookingCommercialSerializer
     redirect_unauthenticated_users = False
@@ -65,7 +65,7 @@ class BookingCommercialList(BookingCommecialBase, generics.ListAPIView):
 
 class BookingPartenerBase(RecentLoginRequiredMixin, generics.GenericAPIView):
     # Require a login within the last 10 minutes
-    max_last_login_delta = 900
+    # max_last_login_delta = 900
 
     serializer_class = BookingPartenerSerializer
     redirect_unauthenticated_users = False

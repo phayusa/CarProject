@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 
 class AirportBase(generics.GenericAPIView):
     # Require a login within the last 10 minutes
-    max_last_login_delta = 60000
+    # max_last_login_delta = 60000
 
     serializer_class = AirportSerializer
     # redirect_unauthenticated_users = False
