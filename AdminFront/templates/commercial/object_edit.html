@@ -1,0 +1,253 @@
+<!doctype html>
+<html class="fixed">
+<head>
+
+    <!-- Basic -->
+    <meta charset="UTF-8">
+
+    <title>{{ title }} | Blackline Services</title>
+    <meta name="keywords" content="HTML5 Admin Template"/>
+    <meta name="description" content="Porto Admin - Responsive HTML5 Template">
+    <meta name="author" content="okler.net">
+
+    {% load static %}
+
+    {% load widget_tweaks %}
+
+    {% include 'admin_bis/style.html' %}
+
+    {#    <!-- Specific Page Vendor CSS -->#}
+    {#    <link rel="stylesheet" href="{% static "vendor/select2/css/select2.css" %}"/>#}
+    {#    <link rel="stylesheet" href="{% static "vendor/select2-bootstrap-theme/select2-bootstrap.min.css" %}"/>#}
+    {#    <link rel="stylesheet" href="{% static "vendor/datatables/media/css/dataTables.bootstrap4.css" %}"/>#}
+
+    <!-- Specific Page Vendor CSS -->
+    <link rel="stylesheet" href="{% static "vendor/jquery-ui/jquery-ui.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/jquery-ui/jquery-ui.theme.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/select2/css/select2.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/select2-bootstrap-theme/select2-bootstrap.min.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/bootstrap-multiselect/bootstrap-multiselect.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/bootstrap-tagsinput/bootstrap-tagsinput.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/bootstrap-timepicker/css/bootstrap-timepicker.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/dropzone/basic.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/dropzone/dropzone.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/bootstrap-markdown/css/bootstrap-markdown.min.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/summernote/summernote-bs4.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/codemirror/lib/codemirror.css" %}"/>
+    <link rel="stylesheet" href="{% static "vendor/codemirror/theme/monokai.css" %}"/>
+
+</head>
+<body>
+<section class="body">
+
+    {% include "admin_bis/header.html" %}
+
+    <div class="inner-wrapper">
+
+        {% include "commercial/navigation_bar.html" with active=active sub_active=sub_active %}
+
+        <section role="main" class="content-body">
+
+            {% include 'admin_bis/head_line.html' with Name=title %}
+
+            <!-- start: page -->
+            <section class="card">
+                <header class="card-header">
+                    <div class="card-actions">
+                        <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                        {#                        <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
+                    </div>
+
+                    <h2 class="card-title">{{ title }}</h2>
+                </header>
+                <form method="post" class="form-horizontal form-bordered"
+                      {% if file %}enctype="multipart/form-data"{% endif %}>
+                    {% csrf_token %}
+                    <div class="card-body col-md-12">
+                        <div>
+                            {% if form.errors %}
+                                {{ form.errors }}
+                            {% endif %}
+
+                            {% if custom %}
+
+                                <div class="form-group row fieldWrapper">
+                                    <label class="col-lg-3 control-label text-lg-right pt-2">Client</label>
+                                    <div class="col-lg-6">
+                                        <select data-plugin-selectTwo class="form-control populate" name="client"
+                                                id="id_client">
+                                            <option value="None">...</option>
+                                            {% for client in clients %}
+                                                <option value="{{ client.id }}"
+                                                        {% if client.id == form.client.value %}selected{% endif %}>{{ client }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                </div>
+
+
+                                {% for field in form.visible_fields %}
+                                    <div class="form-group row fieldWrapper">
+                                        <label class="col-lg-3 control-label text-lg-right pt-2"
+                                               for="inputDefault">{{ field.label }}</label>
+                                        <div class="col-lg-6">
+                                            {{ field.errors }}
+                                            {% render_field field class+="form-control" %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+
+                                <div class="form-group row fieldWrapper">
+                                    <label class="col-lg-3 control-label text-lg-right pt-2"
+                                           for="inputDefault">Date</label>
+                                    <div class="col-lg-6">
+                                        <input name="date" type="date" class="form-control" placeholder="2017-12-25"
+                                               value="{{ form.arrive_time.value|date:"Y-m-d" }}"/>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group row fieldWrapper">
+                                    <label class="col-lg-3 control-label text-lg-right pt-2"
+                                           for="inputDefault">Date</label>
+                                    <div class="col-lg-6">
+                                        <input name="time" type="time" class="form-control" placeholder="19:30"
+                                               value="{{ form.arrive_time.value.time }}"/>
+                                    </div>
+                                </div>
+
+                                {{ form.destination_location }}
+
+                            {% else %}
+                                {#                                {{ form.as_p }}#}
+                                {#                                {{ form.media }}#}
+                                {% for field in form.visible_fields %}
+                                    <div class="form-group row fieldWrapper">
+                                        <label class="col-lg-3 control-label text-lg-right pt-2"
+                                               for="inputDefault">{{ field.label }}</label>
+                                        <div class="col-lg-6">
+                                            {{ field.errors }}
+                                            {% render_field field class+="form-control" %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+                    <div class="card-footer">
+                        {% if type == 2 %}
+                            {#                            {{ form_user.as_p }}#}
+                            <button type="submit" class="btn btn-success    ">Créer</button>
+                        {% else %}
+                            <button type="submit" class="btn btn-primary">Modifier</button>
+                        {% endif %}
+                        <a class="btn btn-secondary"
+                           href="/commercial/">Annuler</a>
+                    </div>
+
+                </form>
+
+            </section>
+
+
+            <!-- end: page -->
+        </section>
+    </div>
+
+</section>
+
+
+{% include "admin_bis/base_script.html" %}
+
+<!-- Specific Page Vendor -->
+{#<script src="{% static "vendor/select2/js/select2.js" %}"></script>#}
+{#<script src="{% static "vendor/datatables/media/js/jquery.dataTables.min.js" %}"></script>#}
+{#<script src="{% static "vendor/datatables/media/js/dataTables.bootstrap4.min.js" %}"></script>#}
+{#<script src="{% static "vendor/pnotify/pnotify.custom.js" %}"></script>#}
+<script src="{% static "vendor/jquery-ui/jquery-ui.js" %}"></script>
+<script src="{% static "vendor/jqueryui-touch-punch/jqueryui-touch-punch.js" %}"></script>
+<script src="{% static "vendor/select2/js/select2.js" %}"></script>
+<script src="{% static "vendor/bootstrap-multiselect/bootstrap-multiselect.js" %}"></script>
+<script src="{% static "vendor/jquery-maskedinput/jquery.maskedinput.js" %}"></script>
+<script src="{% static "vendor/bootstrap-tagsinput/bootstrap-tagsinput.js" %}"></script>
+<script src="{% static "vendor/bootstrap-colorpicker/js/bootstrap-colorpicker.js" %}"></script>
+<script src="{% static "vendor/bootstrap-timepicker/bootstrap-timepicker.js" %}"></script>
+<script src="{% static "vendor/fuelux/js/spinner.js" %}"></script>
+<script src="{% static "vendor/dropzone/dropzone.js" %}"></script>
+<script src="{% static "vendor/bootstrap-markdown/js/markdown.js" %}"></script>
+<script src="{% static "vendor/bootstrap-markdown/js/to-markdown.js" %}"></script>
+<script src="{% static "vendor/bootstrap-markdown/js/bootstrap-markdown.js" %}"></script>
+<script src="{% static "vendor/codemirror/lib/codemirror.js" %}"></script>
+<script src="{% static "vendor/codemirror/addon/selection/active-line.js" %}"></script>
+<script src="{% static "vendor/codemirror/addon/edit/matchbrackets.js" %}"></script>
+<script src="{% static "vendor/codemirror/mode/javascript/javascript.js" %}"></script>
+<script src="{% static "vendor/codemirror/mode/xml/xml.js" %}"></script>
+<script src="{% static "vendor/codemirror/mode/htmlmixed/htmlmixed.js" %}"></script>
+<script src="{% static "vendor/codemirror/mode/css/css.js" %}"></script>
+<script src="{% static "vendor/summernote/summernote-bs4.js" %}"></script>
+<script src="{% static "vendor/bootstrap-maxlength/bootstrap-maxlength.js" %}"></script>
+<script src="{% static "vendor/ios7-switch/ios7-switch.js" %}"></script>
+<script src="{% static "vendor/datatables/media/js/jquery.dataTables.min.js" %}"></script>
+<script src="{% static "vendor/datatables/media/js/dataTables.bootstrap4.min.js" %}"></script>
+
+
+<!-- Examples -->
+<script src="{% static "js/examples/examples.advanced.form.js" %}"></script>
+<script src="{% static "js/datatable/booking_commercial_own_manager_datatable.js" %}"></script>
+<!-- Examples -->
+{#<script src="{% static "js/datatable/client_manager_datatable.js" %}"></script>#}
+{#<script src="{% static "js/examples/examples.modal=s.js" %}"></script>#}
+
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAb1NNSLUT7vzTIezPAqKumMB7wNXa2hMg&libraries=places&callback=initAutocomplete"
+        async defer></script>
+
+<script>
+    var placeSearch, autocomplete;
+
+    function initAutocomplete() {
+        // Create the autocomplete object, restricting the search to geographical
+        // location types.
+        autocomplete = new google.maps.places.Autocomplete(
+            /** @type {!HTMLInputElement} */(document.getElementById('id_destination')),
+            {
+                types: ['geocode'],
+                componentRestrictions: {country: "fr"}
+            });
+        {#            {types: ['geocode']});#}
+
+
+        // When the user selects an address from the dropdown, populate the address
+        // fields in the form.
+        autocomplete.addListener('place_changed', fillInAddress);
+    }
+
+    function fillInAddress() {
+        // Get the place details from the autocomplete object.
+        var place = autocomplete.getPlace();
+        document.getElementById("id_destination_location").value = place.geometry.location;
+        {#        for (var component in componentForm) {#}
+        {#            document.getElementById(component).value = '';#}
+        {#            document.getElementById(component).disabled = false;#}
+        {#        }#}
+        {##}
+        {#        // Get each component of the address from the place details#}
+        {#        // and fill the corresponding field on the form.#}
+        {#        for (var i = 0; i < place.address_components.length; i++) {#}
+        {#            var addressType = place.address_components[i].types[0];#}
+        {#            if (componentForm[addressType]) {#}
+        {#                var val = place.address_components[i][componentForm[addressType]];#}
+        {#                document.getElementById(addressType).value = val;#}
+        {#            }#}
+        {#        }#}
+    }
+</script>
+
+
+</body>
+</html>

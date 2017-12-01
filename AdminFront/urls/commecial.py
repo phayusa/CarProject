@@ -4,5 +4,6 @@ from ..views.commercial import *
 
 urlpatterns = [
     url(r'^$', index),
-    url(r'^login/$', login_view),
+    url(r'^(?P<pk>[0-9]+)/', edit_booking),
+    url(r'^clients/', clients_list),
 ]

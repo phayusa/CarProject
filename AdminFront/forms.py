@@ -77,8 +77,7 @@ class PersonForm(ModelForm):
         password_confirm = cleaned_data.get('password_bis', None)
 
         user_select = cleaned_data.get('user', None)
-        # print username
-        # print user_select
+
         if not username:
             if not user_select:
                 raise forms.ValidationError('Il faut choisir un utilisateur ou en crée un nouveau')
@@ -104,6 +103,15 @@ class ClientForm(PersonForm):
         model = Client
         fields = ['first_name', 'last_name', 'mail', 'phone_number', 'age', 'gender', 'status',
                   'address', 'user']
+
+
+class ClientFormNoUser(PersonForm):
+    user = forms.CharField(widget=forms.HiddenInput)
+
+    class Meta:
+        model = Client
+        fields = ['first_name', 'last_name', 'mail', 'phone_number', 'age', 'gender',
+                  'address']
 
 
 class DriverForm(PersonForm):
@@ -166,7 +174,18 @@ class BookingPartenerForm(BookingForm):
                   "flight", "model_choose", "vehicle_choose", "status", "arrive_time"]
 
 
-class BookingCommercialForm(BookingForm):
+class BookingCommercialEditForm(BookingForm):
+    arrive_time = forms.CharField(widget=forms.HiddenInput, required=False)
+
+    destination_location = forms.CharField(widget=forms.HiddenInput)
+
+    class Meta:
+        model = BookingCommecial
+        fields = ["airport", "destination", "destination_location", "passengers", "luggage_number",
+                  "flight", "model_choose", "status", "arrive_time"]
+
+
+class BookingCommercialCreateForm(BookingForm):
     date = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder': '2017-12-20', 'type': 'date'}))
 
     time = forms.CharField(max_length=100, label="Heure",
@@ -176,9 +195,11 @@ class BookingCommercialForm(BookingForm):
 
     status = forms.CharField(widget=forms.HiddenInput)
 
+    destination_location = forms.CharField(widget=forms.HiddenInput)
+
     class Meta:
         model = BookingCommecial
-        fields = ["airport", "destination", "passengers", "luggage_number",
+        fields = ["airport", "destination", "destination_location", "passengers", "luggage_number",
                   "flight", "model_choose", "status", "arrive_time"]
 
 

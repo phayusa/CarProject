@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from rest_framework import generics
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
-from Back_Source.models import Client
+from Back_Source.models import Client, BuissnessPartner, Commercial
 from Back_Source.permissions.person import ClientPermission
 from Back_Source.serializers import ClientSerializer
 from rest_framework.renderers import JSONRenderer
@@ -25,7 +25,14 @@ class ClientBase(generics.GenericAPIView):
     # Return only the booking of the connected client
     def get_queryset(self):
         if not self.request.user.is_superuser:
-            return Client.objects.filter(partner__user=self.request.user)
+            if BuissnessPartner.objects.filter(user=self.request.user).exists():
+                return Client.objects.filter(partner__user=self.request.user)
+            else:
+                if Commercial.objects.filter(user=self.request.user).exists():
+                    commercial = Commercial.objects.filter(user=self.request.user)[0]
+                    return Client.objects.filter(partner=commercial.partner)
+                else:
+                    return None
         return Client.objects.all()
 
 
