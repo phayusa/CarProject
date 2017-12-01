@@ -40,6 +40,12 @@ class Booking(models.Model):
 
     status = models.CharField(max_length=100, default="En cours de validation")
 
+    account = models.IntegerField(default=5, verbose_name="Accompte")
+    accountType = models.CharField(max_length=5, default="CB", verbose_name="Réglement de l'accompte")
+
+    # Fill by the driver after the travel
+    payement_type = models.CharField(max_length=5, default="Aucun")
+
     def __str__(self):
         return str(self.client) + ' ' + self.date.strftime('%m/%d/%Y') + ' for ' + self.arrive_time.strftime(
             '%m/%d/%Y %Hh%M')

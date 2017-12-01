@@ -168,10 +168,20 @@ class BookingForm(ModelForm):
         )
     )
 
+    accountType = forms.ChoiceField(
+        label="Réglement de l'accompte",
+        widget=forms.RadioSelect,
+        choices=(
+            ('CB', 'CB'),
+            ('Espèce', 'Espèce'),
+        )
+    )
+
     class Meta:
         model = Booking
         fields = ["airport", "destination", "client", "passengers", "luggage_number",
-                  "flight", "arrive_time", "model_choose", "vehicle_choose", "status"]
+                  "flight", "arrive_time", "model_choose", "vehicle_choose", "status",
+                  "account", "accountType"]
 
 
 class BookingPartenerForm(BookingForm):
@@ -184,7 +194,8 @@ class BookingPartenerForm(BookingForm):
     class Meta:
         model = BookingPartner
         fields = ["airport", "destination", "client", "passengers", "luggage_number",
-                  "flight", "model_choose", "vehicle_choose", "status", "arrive_time"]
+                  "flight", "model_choose", "vehicle_choose", "status", "arrive_time",
+                  "account", "accountType"]
 
 
 class BookingCommercialEditForm(BookingForm):
@@ -195,7 +206,8 @@ class BookingCommercialEditForm(BookingForm):
     class Meta:
         model = BookingCommecial
         fields = ["airport", "destination", "destination_location", "passengers", "luggage_number",
-                  "flight", "model_choose", "status", "arrive_time"]
+                  "flight", "model_choose", "status", "arrive_time",
+                  "account", "accountType"]
 
 
 class BookingCommercialCreateForm(BookingForm):
@@ -213,7 +225,7 @@ class BookingCommercialCreateForm(BookingForm):
     class Meta:
         model = BookingCommecial
         fields = ["airport", "destination", "destination_location", "passengers", "luggage_number",
-                  "flight", "model_choose", "status", "arrive_time"]
+                  "flight", "model_choose", "status", "arrive_time", "account", "accountType"]
 
 
 class AirportForm(ModelForm):
