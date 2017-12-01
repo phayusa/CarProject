@@ -98,6 +98,12 @@ def user_bookings(request):
     return render(request, 'client/user-profile-booking-history.html', {"client": client, "bookings": bookings})
 
 
+def user_cards(request):
+    client = Client.objects.filter(user=request.user)[0]
+    bookings = Booking.objects.filter(client=client)
+    return render(request, 'client/user-profile-cards.html', {"client": client, "bookings": bookings})
+
+
 def user_bookings_delete(request, pk):
     # parsed_uri = urlparse(request.build_absolute_uri())
     # baseurl = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
