@@ -177,6 +177,10 @@ class BookingForm(ModelForm):
         )
     )
 
+    account = forms.IntegerField(validators=[
+        MinValueValidator(5)
+    ])
+
     class Meta:
         model = Booking
         fields = ["airport", "destination", "client", "passengers", "luggage_number",
