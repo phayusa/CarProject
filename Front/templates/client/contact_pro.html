@@ -1,0 +1,129 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Aceline Services | Espace Pro</title>
+
+    {% include 'client/head.html' %}
+
+</head>
+
+<body>
+
+{% include 'client/facebook_widget.html' %}
+
+<!-- /FACEBOOK WIDGET -->
+<div class="global-wrap">
+
+    {% include 'client/header.html' with active=6 %}
+
+    {% include 'client/scriptLoading.html' %}
+
+
+    <div class="container">
+        <h1 class="page-title">Espace Pro</h1>
+    </div>
+
+
+    <div class="container">
+        <div class="gap"></div>
+        <div class="row">
+            <div class="col-md-7">
+                <p>Entrez vos coordonnées, et notre équipe vous contactera.</p>
+                <div class="gap"></div>
+
+                <form class="form-horizontal form-bordered" method="post">
+                    {% csrf_token %}
+                    <div class="form-group row">
+                        <label class="col-lg-6 control-label text-lg-right pt-4"
+                               for="inputDefault">Dénomination sociale de l’entreprise</label>
+                        <div class="col-lg-6">
+                            <input name="date" type="text" class="form-control"
+                                   placeholder="Dénomination sociale de l’entreprise"/>
+                        </div>
+                    </div>
+
+                    <h5>Signataire</h5>
+                    <div class="form-group row">
+                        <label class="col-lg-6 control-label text-lg-right pt-4"
+                               for="inputDefault">Nom</label>
+                        <div class="col-lg-6">
+                            <input name="Nom" type="text" class="form-control" placeholder="Nom"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-lg-6 control-label text-lg-right pt-4"
+                               for="inputDefault">Prénom</label>
+                        <div class="col-lg-6">
+                            <input name="Prénom" type="text" class="form-control" placeholder="Prénom"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-lg-6 control-label text-lg-right pt-4"
+                               for="inputDefault">Email</label>
+                        <div class="col-lg-6">
+                            <input name="Email" type="email" class="form-control" placeholder="Email"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-lg-6 control-label text-lg-right pt-4"
+                               for="inputDefault">Téléphone</label>
+                        <div class="col-lg-6">
+                            <input name="Téléphone" type="tel" class="form-control" placeholder="Téléphone"/>
+                        </div>
+                    </div>
+
+                    <h5>Coordonnées</h5>
+                    <div class="form-group row">
+                        <label class="col-lg-6 control-label text-lg-right pt-4"
+                               for="inputDefault">Adresse de l'entreprise</label>
+                        <div class="col-lg-6">
+                            <input name="Adresse de l'entreprise" type="text" class="form-control" placeholder="Adresse de l'entreprise"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-lg-6 control-label text-lg-right pt-4"
+                               for="inputDefault">Adresse de l'entreprise</label>
+                        <div class="col-lg-6">
+                            <input name="Adresse de facturation" type="text" class="form-control" placeholder="Adresse de facturation"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-lg-6 control-label text-lg-right pt-4"
+                               for="inputDefault">Numéro SIRET</label>
+                        <div class="col-lg-6">
+                            <input name="Numéro SIRET" type="text" class="form-control" placeholder="Numéro SIRET"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-lg-6 control-label text-lg-right pt-4"
+                               for="inputDefault">Téléphone</label>
+                        <div class="col-lg-6">
+                            <input name="Remarque" type="text" class="form-control" placeholder="Remarque"/>
+                        </div>
+                    </div>
+                    <div class="gap"></div>
+
+                    <input class="btn btn-primary" type="submit" value="Etre contacté"/>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="gap"></div>
+
+
+    {% include 'client/footer.html' %}
+
+
+</div>
+</body>
+
+</html>
+
+

@@ -76,6 +76,12 @@ def contact(request):
     return render(request, 'client/contact-us.html')
 
 
+def contact_pro(request):
+    if request.method == "POST":
+        return redirect('/')
+    return render(request, 'client/contact_pro.html')
+
+
 def user(request):
     client = Client.objects.filter(user=request.user)[0]
     return render(request, 'client/user-profile.html', {"client": client})

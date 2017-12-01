@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^login', login),
     url(r'^prices', prices),
     url(r'^contact', contact),
+    url(r'^pro', contact_pro),
     url(r'^booking/$', login_required(booking)),
     url(r'^booking/create/$', booking_create),
     url(r'^booking/succeed/(?P<pk>[0-9]+)/$', login_required(booking_succeed)),
