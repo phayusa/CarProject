@@ -10,7 +10,7 @@ from django.shortcuts import render
 from django.utils.dateparse import parse_datetime
 # from django.utils.timezone import datetime  # important if using timezones
 
-from AdminFront.forms import BookingCommercialEditForm, BookingCommercialCreateForm, ClientFormNoUser
+from AdminFront.forms import BookingCommercialEditForm, BookingCommercialCreateForm, ClientFormNoUser, ClientForm
 from Back_Source.models.person import Client, Commercial, BuissnessPartner
 from Back_Source.models.location import Airport
 from Back_Source.models.vehicle import VehicleModel
@@ -141,8 +141,7 @@ def clients_list(request):
     if request.method == "POST":
 
         form = ClientFormNoUser(request.POST)
-        user_form = UserCreationForm(request.POST
-                                     )
+        user_form = UserCreationForm(request.POST)
         if form.is_valid() and user_form.is_valid():
             user = user_form.save()
 
@@ -153,8 +152,8 @@ def clients_list(request):
             tmp.save()
             return redirect('/commercial/clients/')
     else:
-        user_form = UserCreationForm()
         form = ClientFormNoUser()
+        user_form = UserCreationForm()
 
     if request.user.is_superuser or Commercial.objects.filter(user=request.user).exists():
         commercial = Commercial.objects.filter(user=request.user)[0]
@@ -168,5 +167,44 @@ def clients_list(request):
                        "title": "Clients", "user_form": user_form,
                        "custom": True, "clients": clients,
                        "creation": True, "direct": 2})
+    else:
+        return redirect('/')
+
+
+def clients_edit(request, pk):
+    if not request.user.is_authenticated():
+        return redirect('/login/')
+    if not Commercial.objects.filter(user=request.user).exists():
+        return redirect('/')
+
+    try:
+        commercial = Commercial.objects.filter(user=request.user)[0]
+        client = Client.objects.filter(id=pk)[0]
+    except Exception:
+        return redirect('/')
+
+    if request.method == "POST":
+
+        form = ClientForm(request.POST, instance=client)
+        if form.is_valid():
+            tmp = form.save(commit=False)
+            tmp.partner = commercial.partner
+
+            tmp.save()
+            return redirect('/commercial/clients/')
+    else:
+        form = ClientForm(instance=client)
+
+    if request.user.is_superuser or Commercial.objects.filter(user=request.user).exists():
+        commercial = Commercial.objects.filter(user=request.user)[0]
+        if not commercial.partner:
+            clients = Client.objects.all()
+        else:
+            clients = Client.objects.filter(partner=commercial.partner)
+        return render(request, 'commercial/user.html',
+                      {"sections": ["Clients"],
+                       "form": form, "type": 1, "active": 2,
+                       "title": "Clients", "clients": clients,
+                       "direct": 2})
     else:
         return redirect('/')

@@ -72,37 +72,47 @@
 
                             {% if custom %}
 
-
-{#                                {% for field in user_form.visible_fields %}#}
-{#                                    <div class="form-group row fieldWrapper">#}
-{#                                        <label class="col-lg-3 control-label text-lg-right pt-2"#}
-{#                                               for="inputDefault">{{ field.label }}</label>#}
-{#                                        <div class="col-lg-6">#}
-{#                                            {{ field.errors }}#}
-{#                                            {% render_field field class+="form-control" %}#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                {% endfor %}#}
-
-                                <input type="hidden" name="status" value="Mail non confirmé">
-
+                                {% if user_form.errors %}
+                                    {{ user_form.errors }}
+                                {% endif %}
 
                                 {% for field in form.visible_fields %}
                                     <div class="form-group row fieldWrapper">
                                         <label class="col-lg-3 control-label text-lg-right pt-2"
                                                for="inputDefault">{{ field.label }}</label>
                                         <div class="col-lg-6">
-                                            {{ field.errors }}
+                                            {{ field.error }}
                                             {% render_field field class+="form-control" %}
                                         </div>
                                     </div>
                                 {% endfor %}
 
+                                <input type="hidden" name="status" value="Mail non confirmé">
 
+                                {% for field in user_form.visible_fields %}
+                                    <div class="form-group row fieldWrapper">
+                                        <label class="col-lg-3 control-label text-lg-right pt-2"
+                                               for="inputDefault">{{ field.label }}</label>
+                                        <div class="col-lg-6">
+                                            {{ field.error }}
+                                            {% render_field field class+="form-control" %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
 
                             {% else %}
-                                {{ form.as_p }}
-                                {{ form.media }}
+                                {% for field in form.visible_fields %}
+                                    <div class="form-group row fieldWrapper">
+                                        <label class="col-lg-3 control-label text-lg-right pt-2"
+                                               for="inputDefault">{{ field.label }}</label>
+                                        <div class="col-lg-6">
+                                            {{ field.error }}
+                                            {% render_field field class+="form-control" %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                {#                                {{ form.as_p }}#}
+                                {#                                {{ form.media }}#}
                             {% endif %}
 
                         </div>
@@ -127,38 +137,40 @@
             <!-- end: page -->
 
 
-            <!-- start: page -->
-            <section class="card card mb-4">
-                <header class="card-header">
-                    <div class="card-actions">
-                        <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
-                        {#                        <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
+            {% if custom %}
+                <!-- start: page -->
+                <section class="card card mb-4 card-collapsed">
+                    <header class="card-header">
+                        <div class="card-actions">
+                            <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                            {#                        <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
+                        </div>
+
+                        <h2 class="card-title">Clients</h2>
+                    </header>
+                    <div class="card-body col-md-12">
+                        <table class="table table-bordered table-striped" id="table_clients_commercial"
+                                {#                           data-url="{% static "ajax/ajax-datatables-sample.json" %}">#}
+                               data-url="/db/clients/" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nom</th>
+                                <th>Prénom</th>
+                                <th>Téléphone</th>
+                                <th>Mail</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <a class="btn btn-success" href="/partener/client/create">Ajouter</a>
                     </div>
-
-                    <h2 class="card-title">Clients</h2>
-                </header>
-                <div class="card-body col-md-12">
-                    <table class="table table-bordered table-striped" id="table_clients_commercial"
-                            {#                           data-url="{% static "ajax/ajax-datatables-sample.json" %}">#}
-                           data-url="/db/clients/" width="100%" cellspacing="0">
-                        <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Nom</th>
-                            <th>Prénom</th>
-                            <th>Téléphone</th>
-                            <th>Mail</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                        </tbody>
-                    </table>
-                    <a class="btn btn-success" href="/partener/client/create">Ajouter</a>
-                </div>
-            </section>
+                </section>
+            {% endif %}
 
         </section>
     </div>
@@ -218,7 +230,7 @@
         // Create the autocomplete object, restricting the search to geographical
         // location types.
         autocomplete = new google.maps.places.Autocomplete(
-            /** @type {!HTMLInputElement} */(document.getElementById('id_destination')),
+            /** @type {!HTMLInputElement} */(document.getElementById('id_address')),
             {
                 types: ['geocode']
             });

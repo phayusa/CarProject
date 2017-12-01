@@ -105,8 +105,21 @@ class ClientForm(PersonForm):
                   'address', 'user']
 
 
-class ClientFormNoUser(PersonForm):
-    user = forms.CharField(widget=forms.HiddenInput)
+class ClientFormNoUser(ModelForm):
+    gender = forms.ChoiceField(
+        widget=forms.RadioSelect,
+        choices=(
+            ('Homme', 'Homme'),
+            ('Femme', 'Femme'),
+        )
+    )
+
+    mail = forms.EmailField()
+
+    age = forms.IntegerField(validators=[
+        MaxValueValidator(120),
+        MinValueValidator(18)
+    ])
 
     class Meta:
         model = Client
