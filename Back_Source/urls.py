@@ -41,7 +41,7 @@ urlpatterns = [
 
     # vehicle URL
     url(r'^vehicles/$', VehicleList.as_view()),
-    url(r'^vehicle/create/$', login_required(VehicleCreate.as_view())),
+    # url(r'^vehicle/create/$', login_required(VehicleCreate.as_view())),
     url(r'^vehicle/(?P<pk>[0-9]+)/driver/$', VehicleDriverSetter.as_view()),
     # url(r'^vehicle/(?P<pk>[0-9]+)(?P<pk>[0-9]+)/$', VehicleDetail.as_view()),
 
@@ -51,22 +51,22 @@ urlpatterns = [
 
     # clients URL
     url(r'^clients/$', ClientList.as_view()),
-    url(r'^client/create/$', ClientCreate.as_view()),
+    # url(r'^client/create/$', ClientCreate.as_view()),
     url(r'^client/(?P<pk>[0-9]+)/$', login_required(ClientDetail.as_view())),
 
     # commercial URL
     url(r'^commercials/$', CommercialList.as_view()),
-    url(r'^commercial/create/$', CommercialCreate.as_view()),
-    url(r'^commercial/(?P<pk>[0-9]+)/$', login_required(CommercialDetail.as_view())),
+    # url(r'^commercial/create/$', CommercialCreate.as_view()),
+    # url(r'^commercial/(?P<pk>[0-9]+)/$', login_required(CommercialDetail.as_view())),
 
     # partener URL
     url(r'^parteners/$', PartenerList.as_view()),
-    url(r'^partener/create/$', PartenerCreate.as_view()),
-    url(r'^partener/(?P<pk>[0-9]+)/$', login_required(PartenerDetail.as_view())),
+    # url(r'^partener/create/$', PartenerCreate.as_view()),
+    # url(r'^partener/(?P<pk>[0-9]+)/$', login_required(PartenerDetail.as_view())),
 
     # driver URL
     url(r'^drivers/$', login_required(DriverList.as_view())),
-    url(r'^driver/create/$', login_required(DriverCreate.as_view())),
+    # url(r'^driver/create/$', login_required(DriverCreate.as_view())),
     url(r'^driver/(?P<pk>[0-9]+)/$', login_required(DriverDetail.as_view())),
     url(r'^driver/travel/$', DriverBookings.as_view()),
 

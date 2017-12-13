@@ -6,6 +6,8 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from Back_Source.models import Travel, Driver
 from Back_Source.permissions.person import DriverPermission, ClientPermission
 from Back_Source.serializers import TravelSerializer
+from django.http import *
+
 
 
 class TravelBase(generics.GenericAPIView):
@@ -23,10 +25,18 @@ class TravelBase(generics.GenericAPIView):
         return Travel.objects.all()
 
 
+# # Check if we are on mobile
+# def is_mobile_app_access(request):
+#     return request.META.get('HTTP_REFERER', None) is None and request.META.get('HTTP_COOKIE',
+#                                                                                None) is None and request.META.get(
+#         'HTTP_X_REQUESTED_WITH', None) == 'your.app.name.here' and request.META.get('HTTP_ORIGIN', None) == 'file://'
+#
+
 @method_decorator(csrf_exempt, name="dispatch")
 class TravelList(TravelBase, generics.ListCreateAPIView):
-
     def get_queryset(self):
+        # if not is_mobile_app_access(self.request):
+        #     return HttpResponse("[]")
         if self.request.user.groups.filter(name='Drivers').exists():
             return Travel.objects.filter(driver=Driver.objects.filter(user=self.request.user))
         return Travel.objects.all()

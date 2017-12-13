@@ -34,14 +34,26 @@ class LoginViewWeb(TemplateView):
         return HttpResponseRedirect("/")
 
 
+# Check if we are on mobile
+def is_mobile_app_access(request):
+    return (request.META.get('HTTP_REFERER', None) is None) and (request.META.get('HTTP_COOKIE',
+                                                                                  None) is None) and (
+               request.META.get('HTTP_ORIGIN', None) == 'file://')
+
+
+# and (request.META.get(
+#         'HTTP_X_REQUESTED_WITH', None) == 'your.app.name.here')
+
 @method_decorator(csrf_exempt, name="dispatch")
 class LoginView(APIView):
     template_name = 'front/index.html'
     authentication_classes = (SessionAuthentication, BasicAuthentication)
-    permissions_classes = (IsAuthenticated,)
     permission_classes = (AllowAny,)
 
     def post(self, request, **kwargs):
+        # if not is_mobile_app_access(request):
+        #     return HttpResponse("{}")
+
         username = request.data.get('username', False)
         password = request.data.get('password', False)
 

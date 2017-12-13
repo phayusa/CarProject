@@ -25,7 +25,7 @@ SECRET_KEY = 'gio=g00#o6)c7$y#!84@+_*=_pro+h7&=6+!$u=1q6*n^w6-*f'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    u"192.168.0.105", u'127.0.0.1', u'176.31.99.139', u'192.168.0.100', u'localhost', u"aceline.fr",
+    u"192.168.0.105", u'127.0.0.1', u'176.31.99.139', u'192.168.0.102', u'localhost', u"aceline.fr",
 ]
 
 # Application definition
@@ -183,3 +183,6 @@ LOCATION_FIELD = {
 # MEDIA_ROOT = '/Users/msrouji/Desktop/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static', 'media')
 STATIC_ROOT = os.path.join(MEDIA_ROOT, 'collect')
+
+
+

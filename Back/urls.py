@@ -25,6 +25,5 @@ urlpatterns = [
     url(r'^db/', include('Back_Source.urls')),
     url(r'^localisation/', include('Localisation.urls')),
     url(r'^user/', include('Connections.urls')),
-    url(r'^user/', include('Connections.urls')),
     url(r'^', include('Front.urls')),
 ]

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.http import *
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
@@ -39,6 +41,13 @@ class DriverCreate(DriverBase, generics.RetrieveUpdateDestroyAPIView):
     permission_classes = IsAdminUser
 
 
+# Check if we are on mobile
+def is_mobile_app_access(request):
+    return request.META.get('HTTP_REFERER', None) is None and request.META.get('HTTP_COOKIE',
+                                                                               None) is None and request.META.get(
+        'HTTP_X_REQUESTED_WITH', None) == 'your.app.name.here' and request.META.get('HTTP_ORIGIN', None) == 'file://'
+
+
 @method_decorator(csrf_exempt, name="dispatch")
 class DriverBookings(APIView):
     permission_classes = [DriverPermission, ]
@@ -48,18 +57,18 @@ class DriverBookings(APIView):
     def get(self, request, **kwargs):
         try:
             if not request.user:
-                return HttpResponse("Bad Request")
+                return HttpResponse("[]")
             drivers = Driver.objects.filter(user=request.user)
             if not drivers:
-                return HttpResponse("Bad Request")
+                return HttpResponse("[]")
             driver = drivers[0]
             vehicles = Vehicle.objects.filter(driver=driver)
             if not vehicles:
-                return HttpResponse("Bad Request")
+                return HttpResponse("[]")
             vehicle = vehicles[0]
             travels = Travel.objects.filter(car=vehicle, start=None)
             if not travels:
-                return HttpResponse("Bad Request")
+                return HttpResponse("[]")
             travel = travels[0]
             if not travel.driver:
                 travel.driver = driver

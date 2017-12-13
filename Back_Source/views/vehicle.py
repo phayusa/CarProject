@@ -77,14 +77,23 @@ def serve_vehicle_driver(request, pk):
         return HttpResponse("Bad Request")
 
 
+# Check if we are on mobile
+def is_mobile_app_access(request):
+    return request.META.get('HTTP_REFERER', None) is None and request.META.get('HTTP_COOKIE',
+                                                                               None) is None and request.META.get(
+        'HTTP_X_REQUESTED_WITH', None) == 'your.app.name.here' and request.META.get('HTTP_ORIGIN', None) == 'file://'
+
+
 @method_decorator(csrf_exempt, name="dispatch")
 class VehicleDriverSetter(APIView):
     permission_classes = [DriverPermission, ]
     authentication_classes = [JSONWebTokenAuthentication, ]
     raise_exception = True
 
-    def get(self, request, pk, **kwargs):
+    def get(self,   request, pk, **kwargs):
         try:
+            if not is_mobile_app_access(request):
+                return HttpResponse("Bad Request")
             driver = Driver.objects.filter(user=request.user)[0]
             if not driver:
                 return HttpResponse("Bad Request")
