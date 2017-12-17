@@ -183,6 +183,3 @@ LOCATION_FIELD = {
 # MEDIA_ROOT = '/Users/msrouji/Desktop/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static', 'media')
 STATIC_ROOT = os.path.join(MEDIA_ROOT, 'collect')
-
-
-

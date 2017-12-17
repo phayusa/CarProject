@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.utils import timezone
+from django.http import *
 from django.utils.dateparse import parse_datetime
 
 from Back_Source.models import VehicleModel, Client, Booking, Airport, BuissnessPartner, Commercial
@@ -64,6 +65,16 @@ def register(request):
 
 
 def login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username', None)
+        password = request.POST.get('password', None)
+        if not username or not password:
+            return render(request, 'client/login-register.html', {"type": 1})
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login_func(request, user)
+                return HttpResponseRedirect('/')
     return render(request, 'client/login-register.html', {"type": 1})
 
 
