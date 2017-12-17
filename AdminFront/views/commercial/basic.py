@@ -27,10 +27,49 @@ def index(request):
 
     commercial = Commercial.objects.filter(user=request.user)[0]
     client = request.POST.get('client', None)
+    client_form = ClientFormNoUser()
+    user_form = UserCreationForm()
     if not client:
         redirect('/')
 
     if request.method == "POST":
+
+        client_form = ClientFormNoUser(request.POST)
+        user_form = UserCreationForm(request.POST)
+
+        form_selector = request.POST.get('formselector', None)
+        if not form_selector:
+            return redirect('')
+
+        if form_selector == "1":
+            client = request.POST.get('client', None)
+            if not client:
+                return redirect('/404/')
+            if not request.POST._mutable:
+                request.POST._mutable = True
+            request.POST['client'] = client
+            request.POST['status'] = "En cours de validation"
+            request.POST['account'] = 5
+            request.POST._mutable = False
+        elif form_selector == "2":
+
+            if client_form.is_valid():
+                client_obj = client_form.save(commit=False)
+                if user_form.is_valid():
+                    user = user_form.save()
+                    client_obj.user = user
+                    client_obj.partner = commercial.partner
+                    client_obj.save()
+                    client = client_obj.id
+                    if not request.POST._mutable:
+
+                        request.POST._mutable = True
+                        request.POST['status'] = "En cours de validation"
+                        request.POST['account'] = 5
+                        request.POST['client'] = client_obj
+                        request.POST._mutable = False
+        else:
+            return redirect('/')
 
         form = BookingCommercialCreateForm(request.POST)
         if form.is_valid():
@@ -67,7 +106,7 @@ def index(request):
                        "airports": Airport.objects.all(), "models": VehicleModel.objects.all(),
                        "custom": True, "clients": clients,
                        "passengers_list": range(1, 7), "luggage_list": range(1, 6), "creation": True,
-                       "direct": 2})
+                       "direct": 2, "clientForm": client_form, "userForm": user_form})
     else:
         return redirect('/')
 
@@ -89,8 +128,8 @@ def edit_booking(request, pk):
         client = request.POST.get('client', None)
         if not client:
             return redirect('/404/')
-
         form = BookingCommercialEditForm(request.POST, instance=booking)
+
         if form.is_valid():
             tmp = form.save(commit=False)
             tmp.commercial = commercial

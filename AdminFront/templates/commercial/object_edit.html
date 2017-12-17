@@ -78,7 +78,7 @@
                                     <div class="col-lg-6">
                                         <select data-plugin-selectTwo class="form-control populate" name="client"
                                                 id="id_client">
-                                            <option value="None">...</option>
+{#                                            <option value="None">...</option>#}
                                             {% for client in clients %}
                                                 <option value="{{ client.id }}"
                                                         {% if client.id == form.client.value %}selected{% endif %}>{{ client }}</option>
