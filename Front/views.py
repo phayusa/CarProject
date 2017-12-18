@@ -12,7 +12,7 @@ from django.utils import timezone
 from django.http import *
 from django.utils.dateparse import parse_datetime
 
-from Back_Source.models import VehicleModel, Client, Booking, Airport, BuissnessPartner, Commercial
+from Back_Source.models import VehicleModel, Client, Booking, Airport, BuissnessPartner, Commercial, Operator
 from Localisation.views import upload_distance, set_booking_car
 from forms import BookingForm, ClientForm
 
@@ -28,6 +28,8 @@ def index(request):
 
     if request.user.is_superuser:
         return redirect("/admin/")
+    if Operator.objects.filter(user=request.user).exists():
+        return redirect("/operator/")
     if BuissnessPartner.objects.filter(user=request.user).exists():
         return redirect("/partener/")
     if Commercial.objects.filter(user=request.user).exists():

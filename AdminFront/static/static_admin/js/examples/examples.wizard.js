@@ -228,13 +228,11 @@ Theme Version: 	2.0.0
 
             var form = $('#booking_form');
             form.submit();
-            // form.attr('method',"post")
-            // form.attr('action',"")
         } else {
             new PNotify({
                 title: 'Echec',
                 text: 'Une erreur est survenue',
-                type: 'error',
+                type: 'error'
             });
         }
     });

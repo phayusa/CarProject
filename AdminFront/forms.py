@@ -9,7 +9,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.forms import ModelForm
 from django.utils.dateparse import parse_datetime
 
-from Back_Source.models.booking import Booking, BookingPartner, BookingCommecial
+from Back_Source.models.booking import Booking, BookingPartner, BookingCommecial, BookingOperator
 from Back_Source.models.location import Airport
 from Back_Source.models.person import Client, Driver, Commercial, BuissnessPartner
 from Back_Source.models.vehicle import Vehicle, VehicleModel
@@ -163,6 +163,7 @@ class BookingForm(ModelForm):
         widget=forms.RadioSelect,
         choices=(
             ('En cours de validation', 'En cours de validation'),
+            ('Validé', 'Validé'),
             ('Chauffeur choisit', 'Chauffeur choisit'),
             ('Effectué', 'Effectué'),
         )
@@ -185,7 +186,7 @@ class BookingForm(ModelForm):
         model = Booking
         fields = ["airport", "destination", "client", "passengers", "luggage_number",
                   "flight", "arrive_time", "model_choose", "vehicle_choose", "status",
-                  "account", "accountType"]
+                  "accountType"]
 
 
 class BookingPartenerForm(BookingForm):
@@ -199,7 +200,20 @@ class BookingPartenerForm(BookingForm):
         model = BookingPartner
         fields = ["airport", "destination", "client", "passengers", "luggage_number",
                   "flight", "model_choose", "vehicle_choose", "status", "arrive_time",
-                  "account", "accountType"]
+                  "accountType"]
+
+
+class BookingOperatorForm(ModelForm):
+    date = forms.CharField(max_length=100)
+
+    time = forms.CharField(max_length=100, label="Heure")
+
+    arrive_time = forms.CharField(widget=forms.HiddenInput, required=False)
+
+    class Meta:
+        model = BookingOperator
+        fields = ["airport", "destination", "client", "passengers", "luggage_number",
+                  "flight", "model_choose", "vehicle_choose", "status", "arrive_time"]
 
 
 class BookingCommercialEditForm(BookingForm):
@@ -210,8 +224,8 @@ class BookingCommercialEditForm(BookingForm):
     class Meta:
         model = BookingCommecial
         fields = ["airport", "destination", "destination_location", "passengers", "luggage_number",
-                  "flight", "model_choose", "status", "arrive_time",
-                  "account", "accountType"]
+                  "flight", "model_choose", "status", "arrive_time", "account",
+                  "accountType"]
 
 
 class BookingCommercialCreateForm(BookingForm):
@@ -229,7 +243,7 @@ class BookingCommercialCreateForm(BookingForm):
     class Meta:
         model = BookingCommecial
         fields = ["airport", "destination", "destination_location", "passengers", "luggage_number",
-                  "flight", "model_choose", "status", "arrive_time", "account", "accountType"]
+                  "flight", "model_choose", "status", "arrive_time", "accountType"]
 
 
 class AirportForm(ModelForm):
