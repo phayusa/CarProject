@@ -58,6 +58,11 @@ class BuissnessPartner(Person):
         verbose_name_plural = "Partenaire Commerciaux"
 
 
+class Operator(BuissnessPartner):
+    class Meta:
+        verbose_name = u"Opérateur"
+
+
 # Commercial information
 class Commercial(Person):
     revenues = models.IntegerField(default=0, blank=True, null=True, verbose_name="Revenues")

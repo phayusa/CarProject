@@ -18,6 +18,7 @@ from django.contrib.auth.decorators import login_required
 
 from views.booking import BookingCreate, BookingList, BookingDetail
 from views.booking import BookingCommercialList, BookingPartenerList
+from views.booking import BookingOperatorList
 from views.vehicle import VehicleCreate, VehicleList, VehicleDetail
 from views.vehicle import VehicleModelList, serve_image, serve_vehicle_driver, VehicleDriverSetter
 from views.client import ClientCreate, ClientDetail, ClientList
@@ -38,6 +39,8 @@ urlpatterns = [
 
     # bookings URL
     url(r'^bookings-parteners/$', login_required(BookingPartenerList.as_view())),
+
+    url(r'^bookings-operators/$', login_required(BookingOperatorList.as_view())),
 
     # vehicle URL
     url(r'^vehicles/$', VehicleList.as_view()),

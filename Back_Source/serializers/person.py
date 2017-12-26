@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from Back_Source.models.person import Client, Driver, Commercial, BuissnessPartner
+from Back_Source.models.person import Client, Driver, Commercial, BuissnessPartner, Operator
 
 
 class ClientSerializer(serializers.ModelSerializer):
@@ -17,6 +17,12 @@ class DriverSerializer(serializers.ModelSerializer):
 class CommercialSerizalizer(serializers.ModelSerializer):
     class Meta:
         model = Commercial
+        fields = '__all__'
+
+
+class OperatorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Operator
         fields = '__all__'
 
 

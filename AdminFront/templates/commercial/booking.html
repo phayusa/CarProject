@@ -21,22 +21,26 @@
     {#    <link rel="stylesheet" href="{% static "vendor/select2-bootstrap-theme/select2-bootstrap.min.css" %}"/>#}
     {#    <link rel="stylesheet" href="{% static "vendor/datatables/media/css/dataTables.bootstrap4.css" %}"/>#}
 
-    <!-- Specific Page Vendor CSS -->
-    <link rel="stylesheet" href="{% static "static_admin/vendor/jquery-ui/jquery-ui.css" %}"/>
-    <link rel="stylesheet" href="{% static "static_admin/vendor/jquery-ui/jquery-ui.theme.css" %}"/>
-    <link rel="stylesheet" href="{% static "static_admin/vendor/select2/css/select2.css" %}"/>
-    <link rel="stylesheet" href="{% static "static_admin/vendor/select2-bootstrap-theme/select2-bootstrap.min.css" %}"/>
-    <link rel="stylesheet" href="{% static "static_admin/vendor/bootstrap-multiselect/bootstrap-multiselect.css" %}"/>
-    <link rel="stylesheet" href="{% static "static_admin/vendor/bootstrap-tagsinput/bootstrap-tagsinput.css" %}"/>
-    <link rel="stylesheet"
-          href="{% static "static_admin/vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.css" %}"/>
-    <link rel="stylesheet" href="{% static "static_admin/vendor/bootstrap-timepicker/css/bootstrap-timepicker.css" %}"/>
-    <link rel="stylesheet" href="{% static "static_admin/vendor/dropzone/basic.css" %}"/>
-    <link rel="stylesheet" href="{% static "static_admin/vendor/dropzone/dropzone.css" %}"/>
-    <link rel="stylesheet" href="{% static "static_admin/vendor/bootstrap-markdown/css/bootstrap-markdown.min.css" %}"/>
-    <link rel="stylesheet" href="{% static "static_admin/vendor/summernote/summernote-bs4.css" %}"/>
-    <link rel="stylesheet" href="{% static "static_admin/vendor/codemirror/lib/codemirror.css" %}"/>
-    <link rel="stylesheet" href="{% static "static_admin/vendor/codemirror/theme/monokai.css" %}"/>
+    {#    <!-- Specific Page Vendor CSS -->#}
+    {#    <link rel="stylesheet" href="{% static "static_admin/vendor/jquery-ui/jquery-ui.css" %}"/>#}
+    {#    <link rel="stylesheet" href="{% static "static_admin/vendor/jquery-ui/jquery-ui.theme.css" %}"/>#}
+    {#    <link rel="stylesheet" href="{% static "static_admin/vendor/select2/css/select2.css" %}"/>#}
+    {#    <link rel="stylesheet" href="{% static "static_admin/vendor/select2-bootstrap-theme/select2-bootstrap.min.css" %}"/>#}
+    {#    <link rel="stylesheet" href="{% static "static_admin/vendor/bootstrap-multiselect/bootstrap-multiselect.css" %}"/>#}
+    {#    <link rel="stylesheet" href="{% static "static_admin/vendor/bootstrap-tagsinput/bootstrap-tagsinput.css" %}"/>#}
+    {#    <link rel="stylesheet"#}
+    {#          href="{% static "static_admin/vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.css" %}"/>#}
+    {#    <link rel="stylesheet" href="{% static "static_admin/vendor/bootstrap-timepicker/css/bootstrap-timepicker.css" %}"/>#}
+    {#    <link rel="stylesheet" href="{% static "static_admin/vendor/dropzone/basic.css" %}"/>#}
+    {#    <link rel="stylesheet" href="{% static "static_admin/vendor/dropzone/dropzone.css" %}"/>#}
+    {#    <link rel="stylesheet" href="{% static "static_admin/vendor/bootstrap-markdown/css/bootstrap-markdown.min.css" %}"/>#}
+    {#    <link rel="stylesheet" href="{% static "static_admin/vendor/summernote/summernote-bs4.css" %}"/>#}
+    {#    <link rel="stylesheet" href="{% static "static_admin/vendor/codemirror/lib/codemirror.css" %}"/>#}
+    {#    <link rel="stylesheet" href="{% static "static_admin/vendor/codemirror/theme/monokai.css" %}"/>#}
+
+
+    <!-- Notification -->
+    <link rel="stylesheet" href="{% static "static_admin/vendor/pnotify/pnotify.custom.css" %}"/>
 
 
 </head>
@@ -53,95 +57,275 @@
 
             {% include 'admin_bis/head_line.html' with Name=title %}
 
-            <!-- start: page -->
-            <section class="card">
-                <header class="card-header">
-                    <div class="card-actions">
-                        <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
-                        {#                        <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
-                    </div>
+            <div class="row">
+                <div class="col">
+                    <section class="card form-wizard" id="w4">
+                        <header class="card-header">
+                            <div class="card-actions">
+                                <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                                <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+                            </div>
 
-                    <h2 class="card-title">{{ title }}</h2>
-                </header>
-                <form method="post" class="form-horizontal form-bordered"
-                      {% if file %}enctype="multipart/form-data"{% endif %}>
-                    {% csrf_token %}
-                    <div class="card-body col-md-12">
-                        <div>
-                            {% if form.errors %}
-                                {{ form.errors }}
-                            {% endif %}
-
-                            {% if custom %}
-
-
-
-                                <div class="form-group row fieldWrapper">
-                                    <label class="col-lg-3 control-label text-lg-right pt-2">Client</label>
-                                    <div class="col-lg-6">
-                                        <select data-plugin-selectTwo class="form-control populate" name="client"
-                                                id="id_client">
-                                            {% for client in clients %}
-                                                <option value="{{ client.id }}">{{ client }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-
+                            <h2 class="card-title">Réservation</h2>
+                        </header>
+                        <div class="card-body">
+                            <div class="wizard-progress wizard-progress-lg">
+                                <div class="steps-progress">
+                                    <div class="progress-indicator"></div>
                                 </div>
+                                <ul class="nav wizard-steps">
+                                    <li class="nav-item active">
+                                        <a class="nav-link" href="#w4-account"
+                                           data-toggle="tab"><span>1</span>Client</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#w4-profile"
+                                           data-toggle="tab"><span>2</span>Voyage</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#w4-billing"
+                                           data-toggle="tab"><span>3</span>Voiture</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#w4-confirm"
+                                           data-toggle="tab"><span>4</span>Validation</a>
+                                    </li>
+                                </ul>
+                            </div>
 
+                            <form class="form-horizontal p-3" novalidate="novalidate" id="booking_form" action=""
+                                  method="post">
+                                {% csrf_token %}
+                                <div class="tab-content">
+                                    {{ form.errors }}
+                                    <div id="w4-account" class="tab-pane active">
+                                        <div class="form-group row">
+                                            <div class="row">
+                                                <label class="col-lg-7 control-label text-lg-left"><input value="1"
+                                                                                                          type="radio"
+                                                                                                          name="formselector"
+                                                                                                          onclick="displayForm(this)">Existant</label>
 
-
-                                {% with WIDGET_ERROR_CLASS='my_error' WIDGET_REQUIRED_CLASS='my_required' %}
-                                    {% for field in form.visible_fields %}
-                                        <div class="form-group row fieldWrapper">
-                                            <label class="col-lg-3 control-label text-lg-right pt-2"
-                                                   for="inputDefault">{{ field.label }}</label>
-                                            <div class="col-lg-6">
-                                                {{ field.errors }}
-                                                {% render_field field class+="form-control"%}
+                                                <label class="col-lg-7 control-label text-lg-left"><input value="2"
+                                                                                                          type="radio"
+                                                                                                          name="formselector"
+                                                                                                          onclick="displayForm(this)">Nouveau</label>
                                             </div>
                                         </div>
-                                    {% endfor %}
-                                {% endwith %}
 
-                                {{ form.destination_location }}
+                                        <script type="text/javascript">
+                                            function displayForm(c) {
+                                                if (c.value == "1") {
 
-                                <input type="hidden" name="status" value="En cours de validation">
+                                                    document.getElementById("exist_user").style.display = 'inline';
+                                                    document.getElementById("new_user").style.display = 'none';
+                                                }
+                                                else if (c.value == "2") {
+                                                    document.getElementById("exist_user").style.display = 'none';
+
+                                                    document.getElementById("new_user").style.display = 'inline';
+                                                }
+                                                else {
+                                                }
+                                            }
+                                        </script>
+
+                                        <div style="display:none" id="new_user" class="form-group row">
+
+                                            <H2>Information Personelles</H2>
+
+                                            {% for field in clientForm.visible_fields %}
+                                                <div class="form-group row fieldWrapper">
+                                                    <label class="col-lg-3 control-label text-lg-right pt-2"
+                                                           for="inputDefault">{{ field.label }}</label>
+                                                    <div class="col-lg-6">
+                                                        {{ field.errors }}
+                                                        {% render_field field class+="form-control" %}
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+
+                                            <br>
+                                            <H2>Information de connexion</H2>
+                                            <br>
 
 
+                                            {% for field in userForm %}
+                                                <div class="form-group row fieldWrapper">
+                                                    <label class="col-lg-3 control-label text-lg-right pt-2"
+                                                           for="inputDefault">{{ field.label }}</label>
+                                                    <div class="col-lg-6">
+                                                        {{ field.errors }}
+                                                        {% render_field field class+="form-control" %}
 
-                                {#                                 <div class="mt-3 mb-3 slider-primary" data-plugin-slider#}
-                                {#                                     data-plugin-options='{ "value": 50, "range": "min", "max": 100 }'#}
-                                {#                                     data-plugin-slider-output="#listenSlider">#}
-                                {#                                    <input id="listenSlider" type="hidden" value="50"/>#}
-                                {#                                </div>#}
-                                {#                                <p class="output">The current value is: <b>50</b></p>#}
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
 
-                            {% else %}
-                                {{ form.as_p }}
-                                {{ form.media }}
-                            {% endif %}
+                                        </div>
 
+                                        <div style="display:none" id="exist_user" class="form-group row">
+                                            <div class="form-group row fieldWrapper">
+                                                <label class="col-lg-3 control-label text-lg-right pt-2">Client</label>
+                                                <div class="col-lg-6">
+                                                    <select data-plugin-selectTwo class="form-control populate"
+                                                            name="client">
+                                                        {% for client in clients %}
+                                                            <option value="{{ client.id }}">{{ client }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="w4-profile" class="tab-pane">
+
+
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 control-label text-sm-right pt-1"
+                                                   for="w4-first-name">Date</label>
+                                            <div class="col-sm-9">
+                                                {% render_field form.date class+="form-control" %}
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 control-label text-sm-right pt-1"
+                                                   for="w4-first-name">Heure d'arrivée</label>
+                                            <div class="col-sm-9">
+                                                {% render_field form.time class+="form-control" %}
+                                            </div>
+
+                                        </div>
+
+
+                                        <br>
+
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 control-label text-sm-right pt-1"
+                                                   for="w4-first-name">Aéroport</label>
+                                            <div class="col-sm-9">
+                                                {% render_field form.airport class+="form-control" %}
+                                            </div>
+                                        </div>
+
+                                        <br>
+
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 control-label text-sm-right pt-1" for="w4-last-name">Destination</label>
+                                            <div class="col-sm-9">
+                                                {% render_field form.destination class+="form-control" %}
+
+                                            </div>
+                                        </div>
+
+
+                                        <br>
+
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 control-label text-sm-right pt-1" for="w4-last-name">Numéro
+                                                de Vol</label>
+                                            <div class="col-sm-9">
+                                                {% render_field form.flight class+="form-control" placeholder="Numéro de Vol" %}
+
+                                            </div>
+                                        </div>
+
+                                        <br>
+
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 control-label text-sm-right pt-1" for="w4-last-name">Passagers</label>
+                                            <div class="col-sm-9">
+                                                {% render_field form.passengers class+="form-control" %}
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 control-label text-sm-right pt-1" for="w4-last-name">Baggages</label>
+                                            <div class="col-sm-9">
+                                                {% render_field form.luggage_number class+="form-control" %}
+
+                                            </div>
+                                        </div>
+
+                                        {% render_field form.destination_location %}
+
+                                        <br>
+                                    </div>
+                                    <div id="w4-billing" class="tab-pane">
+                                        <div class="pricing-table row no-gutters mt-3 mb-3">
+                                            {% for car in models %}
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <div class="plan">
+                                                        <a>
+                                                            <h3>{{ car.brand }} {{ car.model }}<span>{{ car.price }}€</span>
+                                                            </h3>
+                                                            <p>
+                                                                <img class="img-responsive center-block"
+                                                                     src="{{ car.image_default }}" width="100%"
+                                                                     height="200">
+                                                            </p>
+                                                            <p>
+                                                                <input value="{{ car.id }}"
+                                                                       type="radio" name="model_choose">
+                                                            </p>
+                                                            <ul>
+
+                                                                <li>
+                                                                    <strong>{{ car.category }}</strong>
+                                                                </li>
+                                                                <li>
+                                                                    <strong>{{ car.number_place }}</strong>
+                                                                    Places
+                                                                </li>
+                                                                <li>
+                                                                    <strong>{{ car.doors }}</strong>
+                                                                    Portes
+                                                                </li>
+                                                                {#                                                                {% if car.child_seat %}#}
+                                                                {#                                                                    <li>#}
+                                                                {#                                                                        <input type="checkbox" name="child_seat">#}
+                                                                {#                                                                        <strong>Chaise Enfant</strong>#}
+                                                                {#                                                                    </li>#}
+                                                                {#                                                                {% endif %}#}
+                                                            </ul>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <div id="w4-confirm" class="tab-pane">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 control-label text-sm-right pt-1" for="w4-last-name">Réglement
+                                                de l'accompte</label>
+                                            <div class="col-sm-9">
+                                                {% render_field form.accountType %}
+
+                                            </div>
+                                        </div>
+                                    </div>
+                            </form>
                         </div>
-
-                    </div>
-                    <div class="card-footer">
-                        {% if type == 2 %}
-                            {#                            {{ form_user.as_p }}#}
-                            <button type="submit" class="btn btn-success    ">Créer</button>
-                        {% else %}
-                            <button type="submit" class="btn btn-primary">Modifier</button>
-                        {% endif %}
-                        <a class="btn btn-secondary"
-                           href="/commercial/">Annuler</a>
-                    </div>
-
-                </form>
-
-            </section>
-
-
-            <!-- end: page -->
+                        <div class="card-footer">
+                            <ul class="pager">
+                                <li class="previous disabled">
+                                    <a><i class="fa fa-angle-left"></i> Retour</a>
+                                </li>
+                                <li class="finish hidden float-right">
+                                    <a>Réserver</a>
+                                </li>
+                                <li class="next">
+                                    <a>Valider <i class="fa fa-angle-right"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                </div>
+            </div>
 
 
             <!-- start: page -->
@@ -184,10 +368,6 @@
 {% include "admin_bis/base_script.html" %}
 
 <!-- Specific Page Vendor -->
-{#<script src="{% static "vendor/select2/js/select2.js" %}"></script>#}
-{#<script src="{% static "vendor/datatables/media/js/jquery.dataTables.min.js" %}"></script>#}
-{#<script src="{% static "vendor/datatables/media/js/dataTables.bootstrap4.min.js" %}"></script>#}
-{#<script src="{% static "vendor/pnotify/pnotify.custom.js" %}"></script>#}
 <script src="{% static "static_admin/vendor/jquery-ui/jquery-ui.js" %}"></script>
 <script src="{% static "static_admin/vendor/jqueryui-touch-punch/jqueryui-touch-punch.js" %}"></script>
 <script src="{% static "static_admin/vendor/select2/js/select2.js" %}"></script>
@@ -215,19 +395,24 @@
 <script src="{% static "static_admin/vendor/datatables/media/js/dataTables.bootstrap4.min.js" %}"></script>
 
 
-<!-- Examples -->
+<!-- Datatable-->
 <script src="{% static "static_admin/js/examples/examples.advanced.form.js" %}"></script>
 <script src="{% static "static_admin/js/datatable/booking_commercial_own_manager_datatable.js" %}"></script>
 
 
 <!-- Sliders -->
-<script src="{% static "static_admin/vendor/jquery-ui/jquery-ui.js" %}"></script>
-<script src="{% static "static_admin/vendor/jqueryui-touch-punch/jqueryui-touch-punch.js" %}"></script>
+{#<script src="{% static "static_admin/vendor/jquery-ui/jquery-ui.js" %}"></script>#}
+{#<script src="{% static "static_admin/vendor/jqueryui-touch-punch/jqueryui-touch-punch.js" %}"></script>#}
 
-<!-- Examples -->
-{#<script src="{% static "static_admin/js/datatable/client_manager_datatable.js" %}"></script>#}
-{#<script src="{% static "static_admin/js/examples/examples.modal=s.js" %}"></script>#}
 
+<!-- Wizard -->
+<script src="{% static "static_admin/vendor/jquery-validation/jquery.validate.js" %}"></script>
+<script src="{% static "static_admin/vendor/bootstrap-wizard/jquery.bootstrap.wizard.js" %}"></script>
+<script src="{% static "static_admin/vendor/pnotify/pnotify.custom.js" %}"></script>
+
+
+<!-- Examples of wizard -->
+<script src="{% static "static_admin/js/examples/examples.wizard.js" %}"></script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAb1NNSLUT7vzTIezPAqKumMB7wNXa2hMg&libraries=places&callback=initAutocomplete"
         async defer></script>
@@ -256,20 +441,6 @@
         // Get the place details from the autocomplete object.
         var place = autocomplete.getPlace();
         document.getElementById("id_destination_location").value = place.geometry.location;
-        {#        for (var component in componentForm) {#}
-        {#            document.getElementById(component).value = '';#}
-        {#            document.getElementById(component).disabled = false;#}
-        {#        }#}
-        {##}
-        {#        // Get each component of the address from the place details#}
-        {#        // and fill the corresponding field on the form.#}
-        {#        for (var i = 0; i < place.address_components.length; i++) {#}
-        {#            var addressType = place.address_components[i].types[0];#}
-        {#            if (componentForm[addressType]) {#}
-        {#                var val = place.address_components[i][componentForm[addressType]];#}
-        {#                document.getElementById(addressType).value = val;#}
-        {#            }#}
-        {#        }#}
     }
 </script>
 
