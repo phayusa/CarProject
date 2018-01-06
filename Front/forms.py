@@ -93,6 +93,11 @@ class PersonForm(ModelForm):
 
 
 class ClientForm(PersonForm):
+    username = forms.CharField(max_length=1000, label="Nom d'utilisateur", required=True)
+
+    password = forms.CharField(widget=forms.PasswordInput(), label="Mot de Passe", required=True)
+    password_bis = forms.CharField(widget=forms.PasswordInput(), label="Confirmer Mot de Passe", required=True)
+
     class Meta:
         model = Client
         fields = ['first_name', 'last_name', 'mail', 'phone_number', 'age', 'gender', 'status',

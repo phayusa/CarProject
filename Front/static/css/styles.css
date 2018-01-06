@@ -1836,7 +1836,7 @@ h5.thumb-title {
   border-radius: 0;
 }
 body {
-  overflow: hidden;
+  overflow: auto;
 }
 @media (min-width:992px) {
   body.boxed .global-wrap {

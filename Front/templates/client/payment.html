@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Traveler - Car payment registered card</title>
+    <title>Aceline Services - Réservation</title>
 
 
     {% include 'client/head.html' %}
@@ -52,32 +52,48 @@
                 <div class="gap gap-small"></div>
                 <h4>Nouvelle Carte</h4>
                 <form class="cc-form" action="/booking/succeed/{{ booking.id }}">
-                    <div class="clearfix">
-                        <div class="form-group form-group-cc-number">
-                            <label>Numéro de Carte</label>
-                            <input class="form-control" placeholder="xxxx xxxx xxxx xxxx" type="text"/><span
-                                class="cc-card-icon"></span>
+                    {#                    <div class="clearfix">#}
+                    {#                        <div class="form-group form-group-cc-number">#}
+                    {#                            <label>Numéro de Carte</label>#}
+                    {#                            <input class="form-control" placeholder="xxxx xxxx xxxx xxxx" type="text"/><span#}
+                    {#                                class="cc-card-icon"></span>#}
+                    {#                        </div>#}
+                    {#                        <div class="form-group form-group-cc-cvc">#}
+                    {#                            <label>CVC</label>#}
+                    {#                            <input class="form-control" placeholder="xxxx" type="text"/>#}
+                    {#                        </div>#}
+                    {#                    </div>#}
+                    {#                    <div class="clearfix">#}
+                    {#                        <div class="form-group form-group-cc-name">#}
+                    {#                            <label>Nom du Porteur de la Carte</label>#}
+                    {#                            <input class="form-control" type="text"/>#}
+                    {#                        </div>#}
+                    {#                        <div class="form-group form-group-cc-date">#}
+                    {#                            <label>Date fin de validité</label>#}
+                    {#                            <input class="form-control" placeholder="mm/yy" type="text"/>#}
+                    {#                        </div>#}
+                    {#                    </div>#}
+                    {#                    <div class="checkbox checkbox-small">#}
+                    {#                        <label>#}
+                    {#                            <input class="i-check" type="checkbox" checked/>Add to My Cards</label>#}
+                    {#                    </div>#}
+                    {#                    <input class="btn btn-primary" type="submit" value="Payer"/>#}
+                    <form action="/charge" method="post" id="payment-form">
+                        <div class="form-row">
+                            <label for="card-element">
+                                Carte Bancaire
+                            </label>
+                            <div id="card-element">
+                                <!-- a Stripe Element will be inserted here. -->
+                            </div>
+
+                            <!-- Used to display Element errors -->
+                            <div id="card-errors" role="alert"></div>
                         </div>
-                        <div class="form-group form-group-cc-cvc">
-                            <label>CVC</label>
-                            <input class="form-control" placeholder="xxxx" type="text"/>
-                        </div>
-                    </div>
-                    <div class="clearfix">
-                        <div class="form-group form-group-cc-name">
-                            <label>Nom du Porteur de la Carte</label>
-                            <input class="form-control" type="text"/>
-                        </div>
-                        <div class="form-group form-group-cc-date">
-                            <label>Date fin de validité</label>
-                            <input class="form-control" placeholder="mm/yy" type="text"/>
-                        </div>
-                    </div>
-                    <div class="checkbox checkbox-small">
-                        <label>
-                            <input class="i-check" type="checkbox" checked/>Add to My Cards</label>
-                    </div>
-                    <input class="btn btn-primary" type="submit" value="Payer"/>
+                        <div class="gap"></div>
+
+                        <button class="btn btn-primary">Payer</button>
+                    </form>
                 </form>
             </div>
 
@@ -105,8 +121,12 @@
                             <h5>Voiture ({{ booking.passengers }} passagers)</h5>
                             <ul class="booking-item-payment-price">
                                 <li>
-                                    <p class="booking-item-payment-price-title">Voyage</p>
+                                    <p class="booking-item-payment-price-title">Prix au Km</p>
                                     <p class="booking-item-payment-price-amount">{{ booking.model_choose.price }}€</p>
+                                </li>
+                                <li>
+                                    <p class="booking-item-payment-price-title">Réservation</p>
+                                    <p class="booking-item-payment-price-amount">5€</p>
                                 </li>
                                 {#                                    <li>#}
                                 {#                                        <p class="booking-item-payment-price-title">Siège Enfant</p>#}
@@ -115,7 +135,7 @@
                             </ul>
                         </li>
                     </ul>
-                    <p class="booking-item-payment-total">Total TTC: <span>{{ booking.model_choose.price }}€</span>
+                    <p class="booking-item-payment-total">Total de la réservation : <span>5€</span>
                     </p>
                 </div>
             </div>
@@ -123,6 +143,9 @@
         <div class="gap"></div>
     </div>
 
+
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="{% static "js/stripeManage.js" %}"></script>
 
     {% include 'client/footer.html' %}
 

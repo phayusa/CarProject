@@ -31,12 +31,12 @@
                     <img src="{% static "img/logo-white.png" %}" alt="Image Alternative text" title="Image Title"/>
                 </a>
                 <div class="full-center">
-                    <div align="center">
-                        {% if form.errors %}
-                            <label>Erreurs !!!!</label>
-                            {{ form.errors }}
-                        {% endif %}
-                    </div>
+{#                    <div align="center">#}
+{#                        {% if form.errors %}#}
+{#                            <label>Erreurs !!!!</label>#}
+{#                            {{ form.errors }}#}
+{#                        {% endif %}#}
+{#                    </div>#}
 
                     <div class="container">
                         <div class="row row-wrap" data-gutter="60">
@@ -88,8 +88,9 @@
 
                                     <div class="col-md-4">
                                         <div class="form-group form-group-ghost form-group-icon-left"><i
-                                                class="fa fa-user input-icon input-icon-show"></i>
+                                                class="fa fa-user input-icon input-icon-show "></i>
                                             <label>Nom d'utilisateur</label>
+                                            {{ form.username.errors }}
                                             <input class="form-control" name="username"
                                                    placeholder="ex : Beau Utilisateur"
                                                    type="text" value="{{ form.username.value|default_if_none:"" }}"/>
@@ -97,6 +98,7 @@
                                         <div class="form-group form-group-ghost form-group-icon-left"><i
                                                 class="fa fa-envelope input-icon input-icon-show"></i>
                                             <label>Email</label>
+                                            <label>{{ form.mail.errors }}</label>
                                             <input class="form-control" name="mail"
                                                    placeholder="e.g. Beau@gmail.com"
                                                    type="text" value="{{ form.mail.value|default_if_none:"" }}"/>
@@ -104,6 +106,7 @@
                                         <div class="form-group form-group-ghost form-group-icon-left"><i
                                                 class="fa fa-lock input-icon input-icon-show"></i>
                                             <label>Mot de Passe</label>
+                                            <label>{{ form.password.errors }}</label>
                                             <input class="form-control" name="password" type="password"
                                                    placeholder="MotDePasse"
                                                    value="{{ form.password.value|default_if_none:"" }}"/>
@@ -111,6 +114,7 @@
                                         <div class="form-group form-group-ghost form-group-icon-left"><i
                                                 class="fa fa-lock input-icon input-icon-show"></i>
                                             <label>Mot de Passe</label>
+                                            <label>{{ form.password_bis.errors }}</label>
                                             <input class="form-control" name="password_bis" type="password"
                                                    placeholder="MotDePasse (confirmation)"/>
                                         </div>
@@ -121,12 +125,14 @@
                                         <div class="form-group form-group-ghost form-group-icon-left"><i
                                                 class="fa fa-user input-icon input-icon-show"></i>
                                             <label>Nom</label>
+                                            <label>{{ form.first_name.errors }}</label>
                                             <input class="form-control" name="first_name" placeholder="ex : Lepic"
                                                    type="text" value="{{ form.first_name.value|default_if_none:"" }}"/>
                                         </div>
                                         <div class="form-group form-group-ghost form-group-icon-left"><i
                                                 class="fa fa-user input-icon input-icon-show"></i>
                                             <label>Prénom</label>
+                                            <label>{{ form.last_name.errors }}</label>
                                             <input class="form-control" name="last_name" placeholder="ex : Henri"
                                                    type="text" value="{{ form.last_name.value|default_if_none:"" }}"/>
                                         </div>
@@ -134,6 +140,7 @@
                                         <div class="form-group form-group-ghost form-group-icon-left"><i
                                                 class="fa fa- input-icon input-icon-show"></i>
                                             <label>Age</label>
+                                            <label>{{ form.age.errors }}</label>
                                             <input class="form-control" name="age" type="number" step="1" min="18"
                                                    max="100" placeholder="18"
                                                    value="{{ form.age.value|default_if_none:"" }}"/>
@@ -142,6 +149,7 @@
                                         <div class="form-group form-group-ghost form-group-icon-left"><i
                                                 class="fa fa-user input-icon input-icon-show"></i>
                                             <label>Sexe</label>
+                                            <label>{{ form.gender.errors }}</label>
                                             <div class="radio-inline">
                                                 <label>
                                                     <input class="i-radio" type="radio" name="gender"
@@ -157,6 +165,7 @@
                                         <div class="form-group form-group-ghost form-group-icon-left"><i
                                                 class="fa fa-phone input-icon input-icon-show"></i>
                                             <label>Teléphone</label>
+                                            <label>{{ form.phone_number.errors }}</label>
                                             <input class="form-control" name="phone_number" type="tel"
                                                    placeholder="+336000000"
                                                    value="{{ form.phone_number.value|default_if_none:"" }}"/>
