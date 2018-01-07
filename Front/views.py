@@ -4,16 +4,14 @@
 import datetime
 
 import pytz
+import stripe
 from django.contrib.auth import login as login_func, authenticate
-from django.contrib.auth.models import User
+from django.http import *
 from django.shortcuts import redirect
 from django.shortcuts import render
-from django.utils import timezone
-from django.http import *
 from django.utils.dateparse import parse_datetime
 
 from Back_Source.models import VehicleModel, Client, Booking, Airport, BuissnessPartner, Commercial, Operator
-from Localisation.views import upload_distance, set_booking_car
 from forms import BookingForm, ClientForm
 
 
@@ -35,8 +33,11 @@ def index(request):
     if Commercial.objects.filter(user=request.user).exists():
         return redirect("/commercial/")
 
-    return render(request, 'client/index-2.html',
-                  {"Airports": Airport.objects.all(), "cars": VehicleModel.objects.all()})
+    if request.method == "GET":
+        return render(request, 'client/index-2.html',
+                      {"Airports": Airport.objects.all(), "cars": VehicleModel.objects.all()})
+    else:
+        return redirect("/404")
 
 
 def about(request):
@@ -76,6 +77,8 @@ def login(request):
         if user is not None:
             if user.is_active:
                 login_func(request, user)
+                # Force the user logout after 5 minutes of inactivity
+                request.session.set_expiry(300)
                 return HttpResponseRedirect('/')
     return render(request, 'client/login-register.html', {"type": 1})
 
@@ -139,77 +142,112 @@ def booking_succeed(request, pk):
 def booking_create(request, *args, **kwargs):
     if not request.user.is_authenticated():
         return redirect('/login/')
+    if not request.method == "POST":
+        return redirect('/404')
 
-    # print request.POST
-    # return render(request, 'client/contact-us.html')
-    data = request.POST
-    # form = BookingForm(data)
-    # # if form.is_valid():
-    # if not data['destination_0'] or not data['destination_1']:
-    #     return redirect('/booking', {'form': form})
-    # if not data['departure_0'] or not data['departure_1']:
-    #     return redirect('/booking', {'form': form})
-    # if not data['arrive_time']:
-    #     return redirect('/booking', {'form': form})
-    # if not data['luggage_number']:
-    #     return redirect('/booking', {'form': form})
-    # if not data['model_choose']:
-    #     return redirect('/booking', {'form': form})
-    # if not data['passengers']:
-    #     return redirect('/booking', {'form': form})
-    date = data.get('date', None)
-    time = data.get('time', None)
+    try:
+        data = request.POST
+        date = data.get('date', None)
+        time = data.get('time', None)
 
-    clients = Client.objects.filter(user=request.user)
-    if not clients:
-        client = Client.objects.all()[0]
+        clients = Client.objects.filter(user=request.user)
+        if not clients:
+            client = Client.objects.all()[0]
+        else:
+            client = clients[0]
+
+        if not time or not date:
+            return redirect('/')
+        raw_date = datetime.datetime.strptime(date + ' ' + time, "%Y-%m-%d %I:%M %p")
+        date_time = raw_date.strftime("%Y-%m-%dT%H:%M")
+
+        date_w_timezone = pytz.timezone("Europe/Helsinki").localize(parse_datetime(date_time), is_dst=None)
+        # booking, created = Booking.objects.get_or_create(destination=data["destination"],
+        booking = Booking.objects.create(destination=data["destination"],
+                                         destination_location=data["destination_location"].replace('(',
+                                                                                                   '').replace(
+                                             ')',
+                                             ''),
+                                         airport=Airport.objects.filter(id=data["airport"])[0],
+                                         arrive_time=date_w_timezone,
+                                         luggage_number=int(data['luggage_number']),
+                                         passengers=int(data['passengers']),
+                                         model_choose=
+                                         VehicleModel.objects.filter(id=data['model_choose'])[
+                                             0],
+                                         client=client,
+                                         flight=data["flight"])
+        # if not created:
+        #     return redirect("/404/")
+
+
+        # must be reseingned during the initialisation
+        # upload_distance(booking)
+        # booking.save()
+
+        # after = timezone.now() + datetime.timedelta(hours=1)
+        # before = timezone.now() - datetime.timedelta(hours=1)
+        #  If the booking is for the current moment update
+        # if before < booking.arrive_time < after:
+        #     set_booking_car(booking)
+
+        # return render(request, 'client/payment.html', {"booking": booking})
+        # serialize_data = BookingSerializer(booking).data
+        request.session['Booking_id'] = booking.id
+        request.session.modified = True
+        return redirect('/booking/payment/')
+
+    except Exception as e:
+        raise Http404("Page non trouvé")
+        # else:
+        #     return redirect('/booking', {'form': form})
+        # parsed_uri = urlparse(request.build_absolute_uri())
+        # baseurl = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
+        # post_data = {}
+        # post_data['destination'] = Geoposition(data['destination_0'], data['destination_1'])
+        # post_data['departure'] = Geoposition(data['departure_0'], data['departure_1'])
+        # for key in data.keys():
+        #     post_data[key] = data[key]
+        #
+        # print baseurl+'db/booking/create/'
+        # result = urllib2.urlopen(baseurl+'db/booking/create/', urllib.urlencode(post_data))
+        # content = result.read()
+        # # print content
+        # return render(request,content)
+
+
+def booking_payment(request):
+    # try:
+    booking_pending_id = request.session.get('Booking_id', False)
+    if not booking_pending_id:
+        raise Http404("Page non trouvé")
+    if request.method == "GET":
+        booking_pending = Booking.objects.filter(id=booking_pending_id).first()
+        return render(request, 'client/payment.html', {"booking": booking_pending})
+    elif request.method == "POST":
+        booking_pending = Booking.objects.filter(id=booking_pending_id).first()
+
+        # Set your secret key: remember to change this to your live secret key in production
+        # See your keys here: https://dashboard.stripe.com/account/apikeys
+        stripe.api_key = "sk_test_Tpj31pCyqiySY9503dvp2VEq"
+
+        # Token is created using Checkout or Elements!
+        # Get the payment token ID submitted by the form:
+        token = request.POST['stripeToken']  # Using Flask
+
+        # Charge the user's card:
+        charge = stripe.Charge.create(
+            amount=500,
+            currency="eur",
+            description="Reservation Aceline Services",
+            # metadata={"booking_id", booking_pending_id},
+            source=token
+        )
+
+        request.session['Booking_id'] = None
+        return redirect('/booking/succeed/' + str(booking_pending_id))
     else:
-        client = clients[0]
-
-    if not time or not date:
-        return redirect('/')
-    raw_date = datetime.datetime.strptime(date + ' ' + time, "%Y-%m-%d %I:%M %p")
-    date_time = raw_date.strftime("%Y-%m-%dT%H:%M")
-
-    date_w_timezone = pytz.timezone("Europe/Helsinki").localize(parse_datetime(date_time), is_dst=None)
-    booking, created = Booking.objects.get_or_create(destination=data["destination"],
-                                                     destination_location=data["destination_location"].replace('(',
-                                                                                                               '').replace(
-                                                         ')',
-                                                         ''),
-                                                     airport=Airport.objects.filter(id=data["airport"])[0],
-                                                     arrive_time=date_w_timezone,
-                                                     luggage_number=int(data['luggage_number']),
-                                                     passengers=int(data['passengers']),
-                                                     model_choose=VehicleModel.objects.filter(id=data['model_choose'])[
-                                                         0],
-                                                     client=client,
-                                                     flight=data["flight"])
-    if not created:
-        return redirect("/404/")
-    upload_distance(booking)
-    booking.save()
-    after = timezone.now() + datetime.timedelta(hours=1)
-    before = timezone.now() - datetime.timedelta(hours=1)
-    #  If the booking is for the current moment update
-    if before < booking.arrive_time < after:
-        set_booking_car(booking)
-    return render(request, 'client/payment.html', {"booking": booking})
-    # else:
-    #     return redirect('/booking', {'form': form})
-    # parsed_uri = urlparse(request.build_absolute_uri())
-    # baseurl = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
-    # post_data = {}
-    # post_data['destination'] = Geoposition(data['destination_0'], data['destination_1'])
-    # post_data['departure'] = Geoposition(data['departure_0'], data['departure_1'])
-    # for key in data.keys():
-    #     post_data[key] = data[key]
-    #
-    # print baseurl+'db/booking/create/'
-    # result = urllib2.urlopen(baseurl+'db/booking/create/', urllib.urlencode(post_data))
-    # content = result.read()
-    # # print content
-    # return render(request,content)
+        raise Http404("Page non trouvé")
 
 
 def booking(request, *args, **kwargs):

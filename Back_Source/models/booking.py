@@ -25,6 +25,7 @@ class Booking(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE, null=True)
     passengers = models.IntegerField(verbose_name="Nombre de passagers")
     luggage_number = models.IntegerField(verbose_name="Nombre de baggages")
+    child_seat = models.BooleanField(verbose_name="Siège enfant", default=False)
 
     # Flight info
     flight = models.CharField(max_length=200, verbose_name="Vol")
@@ -38,7 +39,7 @@ class Booking(models.Model):
     # To know the nth booking selected for the travel
     distance = models.IntegerField(blank=True, null=True, verbose_name="Distance Départ-Destination")
 
-    status = models.CharField(max_length=100, default="En cours de validation")
+    status = models.CharField(max_length=100, default="Ajout dans panier")
 
     account = models.IntegerField(default=5, verbose_name="Accompte")
     accountType = models.CharField(max_length=5, default="CB", verbose_name="Réglement de l'accompte")
@@ -54,6 +55,7 @@ class Booking(models.Model):
         verbose_name = u'Réservation'
 
 
+# Booking made by operator; Payment are made on agency
 class BookingOperator(models.Model):
     airport = models.ForeignKey(Airport, on_delete=models.CASCADE, verbose_name="Aéroport")
     destination = models.CharField(max_length=255)
