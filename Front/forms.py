@@ -80,8 +80,7 @@ class PersonForm(ModelForm):
     def clean_mail(self):
         mail = self.cleaned_data.get('mail', None)
         if mail and Client.objects.filter(mail=mail).exists():
-            raise forms.ValidationError(
-                "Adresse mail déja utilisé")
+            raise forms.ValidationError("Adresse mail déja utilisé")
         return mail
 
     def clean(self):
