@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.forms import ModelForm
 from django.utils import timezone
+from django.db import IntegrityError
 
 from Back_Source.models.booking import Booking
 from Back_Source.models.person import Client
@@ -68,6 +69,21 @@ class PersonForm(ModelForm):
 
     user = forms.ModelChoiceField(label='Utilisateur', queryset=User.objects.all().order_by("username"), required=False)
 
+    def clean_username(self):
+        username = self.cleaned_data.get('username', None)
+        if username is None:
+            raise forms.ValidationError('Champ utilisateur non renseigné')
+        if Client.objects.filter(user__username=username):
+            raise forms.ValidationError('Nom d\'utilisateur déja utilisé')
+        return username
+
+    def clean_mail(self):
+        mail = self.cleaned_data.get('mail', None)
+        if mail and Client.objects.filter(mail=mail).exists():
+            raise forms.ValidationError(
+                "Adresse mail déja utilisé")
+        return mail
+
     def clean(self):
         cleaned_data = super(PersonForm, self).clean()
         username = cleaned_data.get('username', None)
@@ -77,7 +93,7 @@ class PersonForm(ModelForm):
         # print username
         # print user_select
         if not username:
-            raise forms.ValidationError('Aucun nom d\'utilisateur choisit')
+            return None
         else:
             try:
                 if not password or not password_confirm:

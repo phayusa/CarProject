@@ -183,3 +183,11 @@ LOCATION_FIELD = {
 # MEDIA_ROOT = '/Users/msrouji/Desktop/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static', 'media')
 STATIC_ROOT = os.path.join(MEDIA_ROOT, 'collect')
+
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'courstesttt@gmail.com'
+EMAIL_HOST_PASSWORD = 'ELmdp345***23'
+EMAIL_PORT = 587
+
