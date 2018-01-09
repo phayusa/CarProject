@@ -71,8 +71,6 @@ class PersonForm(ModelForm):
 
     def clean_username(self):
         username = self.cleaned_data.get('username', None)
-        if username is None:
-            raise forms.ValidationError('Champ utilisateur non renseigné')
         if Client.objects.filter(user__username=username):
             raise forms.ValidationError('Nom d\'utilisateur déja utilisé')
         return username
@@ -89,22 +87,18 @@ class PersonForm(ModelForm):
         password = cleaned_data.get('password', None)
         password_confirm = cleaned_data.get('password_bis', None)
 
-        # print username
-        # print user_select
-        if not username:
-            return None
-        else:
-            try:
-                if not password or not password_confirm:
-                    raise forms.ValidationError('Aucun Mot de Passe non renseigné')
+        try:
+            if password is password_confirm:
+                raise forms.ValidationError('Les mot de passes ne sont pas identique')
+            user = User.objects.create_user(username=username, password=password,
+                                            email=self.cleaned_data['mail'])
+            user.is_active = False
+            user.save()
 
-                if password is password_confirm:
-                    raise forms.ValidationError('Les mot de passes ne sont pas identique')
-                cleaned_data["user"] = User.objects.create_user(username=username, password=password,
-                                                                email=self.cleaned_data['mail'])
-                return cleaned_data
-            except Exception as exception:
-                raise forms.ValidationError(exception.message)
+            cleaned_data["user"] = user
+            return cleaned_data
+        except Exception as exception:
+            raise forms.ValidationError(exception.message)
 
 
 class ClientForm(PersonForm):
