@@ -53,6 +53,10 @@ def not_found(request):
     return render(request, 'client/404.html')
 
 
+def account_activation_sent(request):
+    return render(request, 'mail/mail_to_confirm.html')
+
+
 def register(request):
     if request.method == "POST":
         form = ClientForm(request.POST)
@@ -93,12 +97,11 @@ def activate(request, uidb64, token):
 
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
-        user.profile.email_confirmed = True
         user.save()
         login_func(request, user)
         return redirect('home')
     else:
-        return render(request, 'account_activation_invalid.html')
+        return render(request, 'mail/mail_invalid.html')
 
 
 def login(request):
@@ -193,6 +196,7 @@ def booking_create(request, *args, **kwargs):
         if not time or not date:
             return redirect('/')
         raw_date = datetime.datetime.strptime(date + ' ' + time, "%Y-%m-%d %I:%M %p")
+        print raw_date
         date_time = raw_date.strftime("%Y-%m-%dT%H:%M")
 
         date_w_timezone = pytz.timezone("Europe/Helsinki").localize(parse_datetime(date_time), is_dst=None)

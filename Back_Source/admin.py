@@ -13,9 +13,9 @@ class VehicleAdmin(admin.ModelAdmin):
 
 class BookingAdmin(admin.ModelAdmin):
     model = Booking
-    list_display = ('date', 'client', 'airport', 'destination', 'flight', 'arrive_time')
-    search_fields = ('client__first_name', 'client__last_name', 'flight', 'arrive_time')
-    list_filter = ('date', 'arrive_time')
+    list_display = ('date', 'client', 'airport', 'destination', 'flight', 'arrive_time', 'status')
+    search_fields = ('client__first_name', 'client__last_name', 'flight', 'arrive_time', 'status')
+    list_filter = ('date', 'arrive_time', 'status')
     ordering = ('date',)
 
 
