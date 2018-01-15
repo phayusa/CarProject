@@ -25,6 +25,8 @@ from io import BytesIO
 from xhtml2pdf import pisa
 
 from django.core.mail import EmailMessage
+
+
 # Create your views here.
 
 
@@ -53,10 +55,12 @@ def index(request):
 def about(request):
     return render(request, 'client/about.html')
 
+
 def events(request):
     if request.method == "POST":
         return redirect('/')
     return render(request, 'client/events.html')
+
 
 def not_found(request):
     return render(request, 'client/404.html')
@@ -107,6 +111,12 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
+
+        # Update the client
+        client = Client.objects.filter(user=user)[0]
+        client.status = 'Actif'
+        client.save()
+
         login_func(request, user)
         return redirect('home')
     else:
@@ -124,7 +134,7 @@ def login(request):
             if user.is_active:
                 login_func(request, user)
                 # Force the user logout after 5 minutes of inactivity
-                request.session.set_expiry(300)
+                request.session.set_expiry(3000)
                 return HttpResponseRedirect('/')
     return render(request, 'client/login-register.html', {"type": 1})
 
@@ -186,7 +196,7 @@ def booking_succeed(request, pk):
     message = EmailMessage('Hello', 'Body goes here', 'myprojecttest0114@gmail.com',
                            ['yahiaoui.fakhri@gmail.com'],
                            headers={'Reply-To': 'another@example.com'})
-#    attachment = open(generatePdf(), 'rb')
+    #    attachment = open(generatePdf(), 'rb')
     message.attach("test", generatePdf(), 'application/pdf')
     message.send()
     return render(request, 'client/success-payment.html', {"client": client, "booking": booking})
@@ -201,7 +211,7 @@ def booking_create(request, *args, **kwargs):
     try:
         data = request.POST
         date = data.get('date', None)
-#        time = data.get('time', None)
+        #        time = data.get('time', None)
 
         clients = Client.objects.filter(user=request.user)
         if not clients:
@@ -209,11 +219,11 @@ def booking_create(request, *args, **kwargs):
         else:
             client = clients[0]
 
-#        if not time or not date:
+        # if not time or not date:
         if not date:
             return redirect('/')
-        raw_date = datetime.datetime.strptime(date, "%d/%m/%Y %H:%M")#(date + ' ' + time, "%Y-%m-%d %I:%M %p")
-#        print raw_date
+        raw_date = datetime.datetime.strptime(date, "%d/%m/%Y %H:%M")  # (date + ' ' + time, "%Y-%m-%d %I:%M %p")
+        #        print raw_date
         date_time = raw_date.strftime("%Y-%m-%dT%H:%M")
 
         date_w_timezone = pytz.timezone("Europe/Paris").localize(parse_datetime(date_time), is_dst=None)
@@ -225,7 +235,7 @@ def booking_create(request, *args, **kwargs):
                                              ')',
                                              ''),
                                          airport=Airport.objects.filter(id=data["airport"])[0],
-                                        # time_booking= datetimeNow.strftime("%d/%m/%Y %H:%M"),
+                                         # time_booking= datetimeNow.strftime("%d/%m/%Y %H:%M"),
                                          arrive_time=date_w_timezone,
                                          luggage_number=int(data['luggage_number']),
                                          passengers=int(data['passengers']),
@@ -342,14 +352,16 @@ def booking(request, *args, **kwargs):
     form = BookingForm(tmp)
     return render(request, 'client/booking.html', {'form': form})
 
+
 def renderToPdf(template_src, context_dict={}):
     template = get_template(template_src)
     html = template.render(context_dict)
     result = BytesIO()
     pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
     if not pdf.err:
-        return result.getvalue()#HttpResponse(result.getValue(), content_type='application/pdf')
+        return result.getvalue()  # HttpResponse(result.getValue(), content_type='application/pdf')
     return None
+
 
 def generatePdf():
     template = get_template('pdf/invoice.html')
@@ -368,9 +380,9 @@ def generatePdf():
     pdf = renderToPdf('pdf/invoice.html', context)
     if pdf:
         response = HttpResponse(pdf, content_type='application/pdf')
-        filename = "Invoice_%s.pdf" %"12341231"
-        content = "inline; filename='%s'" %filename
-        content = "attachment; filename='%s'" %filename
+        filename = "Invoice_%s.pdf" % "12341231"
+        content = "inline; filename='%s'" % filename
+        content = "attachment; filename='%s'" % filename
         response['Content-Disposition'] = content
-#        return response
-    return pdf#HttpResponse("Not Found")
+    # return response
+    return pdf  # HttpResponse("Not Found")

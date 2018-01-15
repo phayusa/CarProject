@@ -12,6 +12,8 @@
 
     {% load static %}
 
+    {% load widget_tweaks %}
+
     {% include 'admin_bis/style.html' %}
 
     <!-- Specific Page Vendor CSS -->
@@ -52,7 +54,17 @@
                         {##}
                         {#                        </table>#}
                         <div>
-                            {{ form.as_p }}
+{#                                                        {{ form.as_p }}#}
+                            {% for field in form.visible_fields %}
+                                <div class="form-group row fieldWrapper {% if field.errors %}has-danger{% endif %}">
+                                    <label class="col-lg-3 control-label text-lg-right pt-2"
+                                           for="inputDefault">{{ field.label }}</label>
+                                    <div class="col-lg-6">
+                                        {{ field.errors }}
+                                        {% render_field field class+="form-control" %}
+                                    </div>
+                                </div>
+                            {% endfor %}
                             {{ form.media }}
                         </div>
                         {#                        <div class="card-body">#}
