@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+{% load static %}
+
+{% for car in cars %}
+    <a href="#"
+       class="cars"
+       data-toggle="modal"
+       data-target="#carModal"
+       data-image="{{ car.image_default }}"
+       data-description="{{ car.brand }} {{ car.model }}"
+       data-name="{{ car.id }}" >{{ car }}">
+    {{ car }}
+    </a>
+{% endfor %}
+
+<div class="modal fade" id="carModal" role="dialog" tabindex="-1"  aria-labelledby="car01">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="car01">Choisissez une voiture</h4>
+            </div>
+            <div class="modal-body">YOYOYOYO
+            <div id="owl-demo">
+                {% for car in models %}
+{#                    <img src="{{ car.image_default }}">#}
+                    <div class="item"><img src="{{ car.image_default }}" alt="Owl Image"></div>
+                {% endfor %}
+            </div>
+{% comment %}
+                <p id="car-description"></p>
+                <img id="car-img" src=""/>
+{#                <img src="{% static "img/cars/renault trafic.jpg" %}">#}
+{% endcomment %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-prev" id="prev" onclick="onClickPrev()">Prev</button>
+                <button type="button" class="btn btn-default btn-next">Next</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% comment %}<script>
+    function init() {
+         prev = document.getElementById("prev");
+         prev.onclick = function () { onClickPrev(); };
+    }
+
+    function onClickPrev(){
+        alert("Yo poto");
+    }
+    
+</script>{% endcomment %}
+
+<script>
+    $(document).ready(function() {
+  $("#owl-demo").owlCarousel({
+      autoPlay: 3000, //Set AutoPlay to 3 seconds
+      items : 4,
+      itemsDesktop : [1199,3],
+      itemsDesktopSmall : [979,3]
+  });
+});
+{% comment %}    function onClickPrev() {
+        $('.cars').click(function () {
+            $('#car-description').html($(this).data('description'));
+            $('#car-img').src($(this).data('img'));
+        });
+    }{% endcomment %}
+</script>
+{% include 'client/scriptLoading.html' %}
+</html>
