@@ -76,7 +76,7 @@
                         {#                        </div>#}
                         <h1 class="owl-cap-title fittext">Disponible</h1>
                         <div class="owl-cap-price">
-                            <small>Joingnable</small>
+                            <small>Joignable</small>
                             <h5>24h/24h</h5>
                         </div>
                         {#                        <a class="btn btn-white btn-ghost" href="#"><i class="fa fa-angle-right"></i> Réserver</a>#}
@@ -173,21 +173,24 @@
                                     <input class="hidden" id="arrive_time" name="arrive_time"/>
                                     <div class="col-md-4">
                                         <div class="form-group form-group-lg form-group-icon-right"><i
-                                                class="fa fa-calendar input-icon input-icon-highlight"></i>
+                                                class="fa fa-calendar fa-clock-o input-icon input-icon-highlight"></i>
                                             <label>Date d'arrivée</label>
+                                            <input class="form-control input-group" name="date" id="datetimepicker1"/>
+                                            {% comment %}
                                             <input class="form-control" name="date" type="date" id="datetimepicker1"
                                                    placeholder="2017-12-15"/>
+{% endcomment %}
                                             {#                                            <input class="date-pick form-control" name="date" type="text"/>#}
                                         </div>
                                     </div>
 
-                                    <div class="col-md-3">
+{% comment %}                                   <div class="col-md-3">
                                         <div class="form-group form-group-lg form-group-icon-right"><i
                                                 class="fa fa-clock-o input-icon input-icon-highlight"></i>
                                             <label>Heure</label>
                                             <input class="time-pick form-control" type="text" name="time" id="time"/>
                                         </div>
-                                    </div>
+                                    </div>{% endcomment %}
                                 </div>
 
                                 <div class="row">
@@ -196,11 +199,14 @@
                                         <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
                                             <i class="fa fa-car input-icon"></i>
                                             <label>Modèle</label>
-                                            <select class="form-control format-option" name="model_choose">
+{#                                            <input type="text" placeholder="Choisissez une voiture" data-toggle="modal" data-target="#carModal">#}
+
+                                           <select class="form-control format-option" name="model_choose">
                                                 {% for car in cars %}
-                                                    <option value="{{ car.id }}">{{ car }}</option>
+                                                    <option value="{{ car.id }}" >{{ car }} </option>
                                                 {% endfor %}
                                             </select>
+
                                         </div>
                                     </div>
 
@@ -279,8 +285,8 @@
                 <div class="thumb-caption">
                     <h5 class="thumb-title">QUALITÉ DE SERVICE</h5>
                     <p class="thumb-desc">Quelle que soit votre destination, quels que soient vos besoins, nous nous
-                        engageons à rendre votre expérience à bord de nos vehicule , en vous proposant la meilleure
-                        qualité de notre servicess</p>
+                        engageons à rendre votre expérience à bord de nos vehicules , en vous proposant la meilleure
+                        qualitée de nos services.</p>
                 </div>
             </div>
         </div>
@@ -288,11 +294,11 @@
             <div class="thumb"><i
                     class="fa fa-dollar box-icon-right round box-icon-gray animate-icon-top-to-bottom"></i>
                 <div class="thumb-caption">
-                    <h5 class="thumb-title">Une prestation haut de gamme</h5>
+                    <h5 class="thumb-title">Une prestation haute gamme</h5>
                     <p class="thumb-desc">Nous mettons à votre disposition un ou plusieurs véhicules VIP, pour vous
                         proposer un service d’excellence. Une large gamme de voitures est disponible (Mercedes Classe S,
-                        Mercedes Viano VIP, Tesla Model S), ainsi que des options (guides touristiques) ou de nombreux
-                        services à bord (iPad, chargeurs smartphone).</p>
+                        Mercedes Viano VIP, Tesla Model S, ...), ainsi que des options (guides touristiques, ...) ou de nombreux
+                        services à bord (Tablettes tactiles, chargeurs smartphones).</p>
                 </div>
             </div>
         </div>
@@ -300,9 +306,9 @@
             <div class="thumb"><i
                     class="fa fa-clock-o box-icon-right round box-icon-gray animate-icon-top-to-bottom"></i>
                 <div class="thumb-caption">
-                    <h5 class="thumb-title">Réservez d’un véhicule à l'avance ou en demande immédiatee</h5>
-                    <p class="thumb-desc">Avec AceLine, vous pourrez faire des demandes immédiates ou des réservations à
-                        l'avance pour répondre aux besoins d'anticipation des voyageurs. </p>
+                    <h5 class="thumb-title">Réservez un véhicule à l'avance ou en demande immédiate</h5>
+                    <p class="thumb-desc">Avec Aceline, vous pourrez faire des demandes immédiates ou des réservations à
+                        l'avance pour répondre à tous vos besoins. </p>
                 </div>
             </div>
         </div>
@@ -310,10 +316,11 @@
             <div class="thumb"><i
                     class="fa fa-car box-icon-right round box-icon-gray animate-icon-top-to-bottom"></i>
                 <div class="thumb-caption">
-                    <h5 class="thumb-title">Accès à une flotte de 300 berlines haut de gamme et aux Van VIP</h5>
+                    <h5 class="thumb-title">Accès à de multiples berlines haut de gamme et aux Vans VIP</h5>
                     <p class="thumb-desc">Accès aux véhicules Club Affaires à la demande : Class S, Tesla, Serie 7, Audi
-                        A8...Service haut de gamme à bord des véhicules. Chauffeurs VIP sélectionnés pour leur sens du
-                        service et signataires de la charte qualité la plus exigeante de Ace Line.</p>
+                        A8... Service haute gamme à bord des véhicules. Chauffeurs VIP, représentant de la charte qualité
+                        la plus exigeante de Aceline, sont sélectionnés pour leurs sens du
+                        service distinqué et impeccable.</p>
                 </div>
             </div>
         </div>
@@ -325,8 +332,27 @@
 
 {% include 'client/scriptLoading.html' %}
 
+{% include 'client/carModal.html' %}
+
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAb1NNSLUT7vzTIezPAqKumMB7wNXa2hMg&libraries=places&callback=initAutocomplete"
         async defer></script>
+
+<script type="text/javascript">
+    $(function()
+    {
+        $("#datetimepicker1").datetimepicker({
+            defaultDate: new Date(),
+            format: "DD/MM/YYYY HH:mm",
+            minDate: new Date(),
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-arrow-up",
+                down: "fa fa-arrow-down"
+            }
+        });
+    });
+</script>
 
 <script>
     var placeSearch, autocomplete;
