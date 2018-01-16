@@ -82,7 +82,7 @@ def register(request):
             user_client = client.user
             current_site = get_current_site(request)
 
-            subject = 'Activate Your MySite Account'
+            subject = 'Aceline Services : Confirmation du Compte'
             message = render_to_string('mail/mail_confirmation.html', {
                 'user': user_client,
                 'domain': current_site.domain,
@@ -124,11 +124,15 @@ def activate(request, uidb64, token):
 
 
 def login(request):
+    errors = {}
     if request.method == 'POST':
         username = request.POST.get('username', None)
         password = request.POST.get('password', None)
-        if not username or not password:
-            return render(request, 'client/login-register.html', {"type": 1})
+        if not username:
+            errors['username'] = 'Champs requis'
+        if not password:
+            errors['password'] = 'Champs requis'
+            return render(request, 'client/login-register.html', {"type": 1, "errors": errors})
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
@@ -136,7 +140,9 @@ def login(request):
                 # Force the user logout after 5 minutes of inactivity
                 request.session.set_expiry(3000)
                 return HttpResponseRedirect('/')
-    return render(request, 'client/login-register.html', {"type": 1})
+        else:
+            errors['username'] = 'Nom d\'utilisateur ou Mot de passe incorrecte'
+    return render(request, 'client/login-register.html', {"type": 1, "errors": errors})
 
 
 def prices(request):

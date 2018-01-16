@@ -88,7 +88,9 @@ class PersonForm(ModelForm):
         password_confirm = cleaned_data.get('password_bis', None)
 
         try:
-            if password is password_confirm:
+            if password is not password_confirm:
+                self._errors['password'] = self.error_class(['Les mots de passes ne sont pas identiques'])
+                self._errors['password_bis'] = self.error_class(['Les mots de passes ne sont pas identiques'])
                 raise forms.ValidationError('Les mot de passes ne sont pas identique')
             user = User.objects.create_user(username=username, password=password,
                                             email=self.cleaned_data['mail'])
