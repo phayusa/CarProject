@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<head>
+    <title>Aceline Services | ÉVÈNEMENTS</title>
+
+    {% include 'client/head.html' %}
+    {% load static %}
+</head>
+<body>
+    {% include 'client/facebook_widget.html' %}
+    <!-- /FACEBOOK WIDGET -->
+    <div class="global-wrap">
+        {% include 'client/header.html' with active=4 %}
+
+        <div class="container">
+            <h1 class="page-title">Évènements</h1>
+        </div>
+
+        <div class="container">
+            <div class="gap"></div>
+            <h2>Une aventure qui trouve son origine au Maroc</h2>
+            <div class="row">
+                <div class="col-md-8">
+                    <p class="text-bigger">Comme point de départ à notre expansion, Aceline Services a choisi de
+                        s’implanter en premier lieu au Maroc, car nous nous sommes rendu compte du manque de considération
+                        que pouvait ressentir toute personne prise en charge à son arrivée dans ce pays. Ainsi nous avons
+                        investit les aéroports marocains tels que Casablanca, Agadir, Rabat, Tanger ou Marrakech, afin de
+                        devenir un partenaire de choix. Sorte de trait d’union entre le Maroc et la France, nous nous
+                        assurons que le relai se fasse entre les deux pays, pour que chacun soit accompagné tout au long du
+                        voyage, jusqu’à sa résidence ou son hôtel. Depuis, nous aspirons à pouvoir offrir prochainement la
+                        même assistance dans l’ensemble des pays du Maghreb… et pourquoi pas dans le reste du monde
+                        ? </p>
+                    <video width="320" height="240" preload="auto" controls>
+                        <source src={% static "media/small.mp4" %} type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+
+{% comment %}
+                    <video width="320" height="240" preload="auto" controls>
+                        <source src="http://techslides.com/demos/sample-videos/small.mp4" type="video/mp4"/>
+                        Your browser does not support the video tag.
+                    </video>
+
+                    <video preload="auto" controls src="small.mp4" type="video/mp4">Ici la description alternative</video>
+{% endcomment %}
+
+                </div>
+            </div>
+        </div>
+
+    {% include 'client/footer.html' %}
+
+    {% include 'client/scriptLoading.html' %}
+    </div>
+</body>
+</html>

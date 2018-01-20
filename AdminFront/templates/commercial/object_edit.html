@@ -127,7 +127,7 @@
                                 {#                                {{ form.media }}#}
 
                                 {% for field in form.visible_fields %}
-                                    <div class="form-group row fieldWrapper">
+                                    <div class="form-group row fieldWrapper {% if field.errors %}has-danger{% endif %}">
                                         <label class="col-lg-3 control-label text-lg-right pt-2"
                                                for="inputDefault">{{ field.label }}</label>
                                         <div class="col-lg-6">
