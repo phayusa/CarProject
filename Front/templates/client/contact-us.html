@@ -66,24 +66,31 @@
                     faciliter les démarches. Sinon, nos agents seront toujours présents sur les plateformes aériennes
                     pour répondre à vos moindres questions et même réserver un chauffeur juste avant le décollage de
                     votre avion.</p>
-                <form class="mt30">
+                <form class="mt30"method="post">
+                    {% csrf_token %}
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Name</label>
-                                <input class="form-control" type="text"/>
+                                {{ form.name.errors }}
+                                <input class="form-control" type="text" name="name"
+                                       value="{{ form.name.value|default_if_none:"" }}"/>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>E-mail</label>
-                                <input class="form-control" type="text"/>
+                                {{ form.email.errors }}
+                                <input class="form-control" name="email" type="text"
+                                value="{{ form.email.value|default_if_none:"" }}"/>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Message</label>
-                        <textarea class="form-control"></textarea>
+                        {{ form.message.errors }}
+                        <textarea class="form-control" name="message"
+                                  value="{{ form.message.value|default_if_none:""}}"></textarea>
                     </div>
                     <input class="btn btn-primary" type="submit" value="Send Message"/>
                 </form>

@@ -37,9 +37,11 @@
                     <div class="form-group row">
                         <label class="col-lg-6 control-label text-lg-right pt-4"
                                for="inputDefault">Dénomination sociale de l’entreprise</label>
+                                {{ form.nameCompany.errors }}
                         <div class="col-lg-6">
-                            <input name="date" type="text" class="form-control"
-                                   placeholder="Dénomination sociale de l’entreprise"/>
+                            <input name="nameCompany" type="text" class="form-control"
+                                   placeholder="Dénomination sociale de l’entreprise"
+                            value="{{ form.nameCompany.value|default_if_none:"" }}"/>
                         </div>
                     </div>
 

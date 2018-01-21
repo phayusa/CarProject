@@ -199,13 +199,14 @@
                                         <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
                                             <i class="fa fa-car input-icon"></i>
                                             <label>Modèle</label>
-{#                                            <input type="text" placeholder="Choisissez une voiture" data-toggle="modal" data-target="#carModal">#}
-
-                                           <select class="form-control format-option" name="model_choose">
-                                                {% for car in cars %}
-                                                    <option value="{{ car.id }}" >{{ car }} </option>
-                                                {% endfor %}
-                                            </select>
+                                                <input type="text" placeholder="Choisissez une voiture" data-toggle="modal" data-target="#carModal"
+                                                       id="modelCar_option" value="">
+                                                <input type="hidden" name="model_choose" id="modelCar_Id" value="">
+{#                                           <select class="form-control format-option" name="model_choose">#}
+{#                                                {% for car in cars %}#}
+{#                                                    <option value="{{ car.id }}" >{{ car }} </option>#}
+{#                                                {% endfor %}#}
+{#                                            </select>#}
 
                                         </div>
                                     </div>
