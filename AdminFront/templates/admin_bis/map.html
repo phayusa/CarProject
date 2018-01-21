@@ -1,0 +1,147 @@
+<!doctype html>
+<html class="fixed">
+<head>
+
+    <!-- Basic -->
+    <meta charset="UTF-8">
+
+    <title>Temps Réel | Aceline Services</title>
+    <meta name="keywords" content="HTML5 Admin Template"/>
+    <meta name="description" content="Porto Admin - Responsive HTML5 Template">
+    <meta name="author" content="okler.net">
+
+    {% load static %}
+
+    {% include 'admin_bis/style.html' %}
+</head>
+<body>
+<section class="body">
+
+    {% include "admin_bis/header.html" with role="Administrateur" %}
+
+    <div class="inner-wrapper">
+
+        {% include "admin_bis/navigation_bar.html" with active=2 %}
+
+        <section role="main" class="content-body">
+
+            {% include 'admin_bis/head_line.html' with Name="Temps Réel" %}
+
+            <!-- start: page -->
+            {#            <div id="map"></div>#}
+            <div class="row">
+                <div class="col">
+                    <section class="card">
+                        <header class="card-header">
+                            <h2 class="card-title">Temps Réel</h2>
+                        </header>
+                        <div class="card-body">
+                            <div id="map" style="height: 500px; width: 100%;"></div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            {#            <form method="post" action="/admin/areas/">#}
+            {#                {% csrf_token %}#}
+            {#                {% for area in areas %}#}
+            {#                    <input class="hidden" name="{{ area.id }}" type="text" id="{{ area.id }}"#}
+            {#                           value="{{ area.north }};{{ area.south }};{{ area.west }};{{ area.east }}"/>#}
+            {#                {% endfor %}#}
+            {#                <button class="mb-1 mt-1 mr-1 btn btn-primary btn-lg btn-block" type="submit">#}
+            {#                    Mettre à jour#}
+            {#                </button>#}
+            {#            </form>#}
+            <!-- end: page -->
+        </section>
+    </div>
+
+</section>
+
+
+{% include "admin_bis/base_script.html" %}
+{##}
+{#<!-- Examples -->#}
+{#<script src="{% static "static_admin/js/examples/examples.dashboard.js" %}"></script>#}
+
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBXfBFzhg0-fVZcIno2kX-ZBSbqibk_-RE&callback=initMap">
+</script>
+
+
+<script>
+    var infoWindow;
+    var map;
+    var arrMarkers = [];
+    var beaches = [];
+
+    function setMarkers(map, locations) {
+        for (var i = 0; i < locations.length; i++) {
+            var beach = locations[i];
+            var myLatLng = new google.maps.LatLng(beach[1], beach[2]);
+            var marker = new google.maps.Marker({
+                position: myLatLng,
+                map: map,
+                title: beach[0],
+                zIndex: 4
+            });
+
+            arrMarkers.push(marker);
+        }
+    }
+
+    function initMap() {
+
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: 48.863350, lng: 2.344559},
+            zoom: 11
+        });
+
+        // Define an info window on the map.
+        infoWindow = new google.maps.InfoWindow();
+
+        setMarkers(map, beaches);
+
+    }
+
+    function removeMarkers() {
+        var i;
+        for (i = 0; i < arrMarkers.length; i++) {
+            arrMarkers[i].setMap(null);
+        }
+        arrMarkers = [];
+
+    }
+
+    setInterval(function () {
+        updateTheMarkers();
+    }, 5000);
+
+    function updateTheMarkers() {
+        $.ajax({
+            type: "GET",
+            url: "/db/vehicles/",
+            success: function (data) {
+                //We remove the old markers
+                removeMarkers();
+
+                beaches = [];//Erasing the beaches array
+
+                //Adding the new ones
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].pos) {
+                        var slitPos = data[i].pos.split(',');
+                        beaches.push([data[i].registration, slitPos[0], slitPos[1]]);
+                    }
+                }
+
+                //Adding them to the map
+                setMarkers(map, beaches);
+            }
+        });
+    }
+</script>
+
+
+</body>
+</html>

@@ -1,21 +1,21 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from itertools import groupby
-from django.db.models import Count
 
-from django.contrib.auth import authenticate, login
+from django.db.models import Count
+from django.db.models.functions import ExtractMonth
+from django.http import Http404
 from django.shortcuts import redirect
 from django.shortcuts import render
-from django.db.models.functions import ExtractMonth
+from django.utils.timezone import datetime  # important if using timezones
 
 from Back_Source.models import Area, Booking, BookingPartner, BookingCommecial, Driver
 from Back_Source.models import Client
-from django.utils.timezone import datetime  # important if using timezones
+from common import test_admin_login
 
 
 def index(request):
-    if not request.user.is_authenticated():
-        return redirect('/admin/login')
+    if not test_admin_login(request.user):
+        raise Http404
 
     # Getting the number of booking today
     today_booking = Booking.objects.filter(
@@ -111,101 +111,69 @@ def index(request):
     #     return redirect('/')
 
 
-# def get_month_label(month):
-#     if month == 1:
-#         return 'jan'
-#     elif month == 2:
-#         return 'fev'
-#     elif month == 3:
-#         return 'mars'
-#     elif month == 4:
-#         return 'avril'
-#     elif month == 5:
-#         return 'mai'
-#     elif month == 6:
-#         return 'juin'
-#     elif month == 7:
-#         return 'juillet'
-#     elif month == 8:
-#         return 'août'
-#     elif month == 9:
-#         return 'sept'
-#     elif month == 10:
-#         return 'oct'
-#     elif month == 11:
-#         return 'nov'
-#     elif month == 12:
-#         return 'dec'
-
-
 def base_manager(request):
-    if not request.user.is_authenticated():
-        return redirect('/admin/login')
+    if not test_admin_login(request.user):
+        raise Http404
 
     if request.user.is_superuser:
         return render(request, 'admin_bis/person_manager.html', {"sections": ["Gestion Comptes"]})
-    else:
-        return redirect('/')
 
 
 def booking_manager(request):
-    if not request.user.is_authenticated():
-        return redirect('/admin/login')
+    if not test_admin_login(request.user):
+        raise Http404
 
     if request.user.is_superuser:
         return render(request, 'admin_bis/booking_manager.html', {"sections": ["Gestion Réservation"]})
-    else:
-        return redirect('/')
 
 
 def car_manager(request):
-    if not request.user.is_authenticated():
-        return redirect('/admin/login')
-
-    if request.user.is_superuser:
-        return render(request, 'admin_bis/car_manager.html', {"sections": ["Gestion Voitures"]})
-    else:
-        return redirect('/')
+    if not test_admin_login(request.user):
+        raise Http404
+    return render(request, 'admin_bis/car_manager.html', {"sections": ["Gestion Voitures"]})
 
 
 def areas(request):
-    if not request.user.is_authenticated():
-        return redirect('/admin/login')
+    if not test_admin_login(request.user):
+        raise Http404
 
-    if request.user.is_superuser:
-        if request.method == "GET":
-            return render(request, 'admin_bis/areas.html', {"sections": ["Zones"], "areas": Area.objects.all()})
-        else:
-            if request.method == "POST":
-                data = request.POST
-                print data
-                for area in Area.objects.all():
-                    print area.id
-                    if str(area.id) in data:
-                        raw_data = data[str(area.id)].replace(",", ".").split(";")
-                        if len(raw_data) == 4:
-                            area.north = raw_data[0]
-                            area.south = raw_data[1]
-                            area.west = raw_data[2]
-                            area.east = raw_data[3]
-                            area.save()
-                return redirect("/admin/areas/")
-    else:
-        return redirect('/')
-
-
-def login_view(request):
     if request.method == "GET":
-        return render(request, 'admin_bis/login.html')
+        return render(request, 'admin_bis/areas.html',
+                      {"sections": ["Carte", "Zones"], "areas": Area.objects.all(), "sub_active": 2})
     else:
         if request.method == "POST":
-            username = request.POST['username']
-            password = request.POST['password']
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                if user.is_superuser:
-                    return redirect('/admin/')
-                return redirect('/')
-            else:
-                return render(request, 'admin_bis/login.html')
+            data = request.POST
+            print data
+            for area in Area.objects.all():
+                print area.id
+                if str(area.id) in data:
+                    raw_data = data[str(area.id)].replace(",", ".").split(";")
+                    if len(raw_data) == 4:
+                        area.north = raw_data[0]
+                        area.south = raw_data[1]
+                        area.west = raw_data[2]
+                        area.east = raw_data[3]
+                        area.save()
+            return redirect("/admin/areas/")
+
+
+def map_view(request):
+    if not test_admin_login(request.user):
+        raise Http404
+    return render(request, 'admin_bis/map.html', {"sections": ["Carte", "Temps Réels"], "sub_active": 1})
+
+# def login_view(request):
+#     if request.method == "GET":
+#         return render(request, 'admin_bis/login.html')
+#     else:
+#         if request.method == "POST":
+#             username = request.POST['username']
+#             password = request.POST['password']
+#             user = authenticate(request, username=username, password=password)
+#             if user is not None:
+#                 login(request, user)
+#                 if user.is_superuser:
+#                     return redirect('/admin/')
+#                 return redirect('/')
+#             else:
+#                 return render(request, 'admin_bis/login.html')

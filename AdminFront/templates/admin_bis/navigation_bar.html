@@ -25,11 +25,29 @@
                             <span>Acceuil</span>
                         </a>
                     </li>
-                    <li {% if active == 2 %}class="nav-active"{% endif %}>
-                        <a class="nav-link" href="/admin/areas/">
+                    {#                    <li {% if active == 2 %}class="nav-active"{% endif %}>#}
+                    {#                        <a class="nav-link" href="/admin/areas/">#}
+                    {#                            <i class="fa fa-map" aria-hidden="true"></i>#}
+                    {#                            <span>Zones</span>#}
+                    {#                        </a>#}
+                    {#                    </li>#}
+                    <li class="nav-parent {% if active == 2 %}nav-expanded nav-active{% endif %}">
+                        <a class="nav-link">
                             <i class="fa fa-map" aria-hidden="true"></i>
-                            <span>Zones</span>
+                            <span>Carte</span>
                         </a>
+                        <ul class="nav nav-children">
+                            <li {% if sub_active == 1 %}class="nav-active"{% endif %}>
+                                <a class="nav-link" href="/admin/map/">
+                                    Temps Réeel
+                                </a>
+                            </li>
+                            <li {% if sub_active == 2 %}class="nav-active"{% endif %}>
+                                <a class="nav-link" href="/admin/areas/">
+                                    Zones
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li {% if active == 5 %}class="nav-active"{% endif %}>
                         <a class="nav-link" href="/admin/cars/">
