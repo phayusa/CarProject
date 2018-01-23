@@ -1,74 +1,109 @@
 <!DOCTYPE html>
 <html lang="fr">
 {% load static %}
+    {% include 'client/head.html' %}
+{% include 'client/facebook_widget.html' %}
 
-{% for car in cars %}
-    <a href="#"
-       class="cars"
-       data-toggle="modal"
-       data-target="#carModal"
-       data-image="{{ car.image_default }}"
-       data-description="{{ car.brand }} {{ car.model }}"
-       data-name="{{ car.id }}" >{{ car }}">
-    {{ car }}
-    </a>
-{% endfor %}
 
-<div class="modal fade" id="carModal" role="dialog" tabindex="-1"  aria-labelledby="car01">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="car01">Choisissez une voiture</h4>
-            </div>
-            <div class="modal-body">YOYOYOYO
-            <div id="owl-demo">
-                {% for car in models %}
-{#                    <img src="{{ car.image_default }}">#}
-                    <div class="item"><img src="{{ car.image_default }}" alt="Owl Image"></div>
-                {% endfor %}
-            </div>
-{% comment %}
-                <p id="car-description"></p>
-                <img id="car-img" src=""/>
-{#                <img src="{% static "img/cars/renault trafic.jpg" %}">#}
+<div class="modal fade" id="carModal" role="dialog" tabindex="-1"  aria-labelledby="carModal">
+    <div class="modal-dialog" role="document" style="width: 900px">
+        <form name="booking-form" method="post">
+            <div class="modal-body">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="form-group form-group-lg form-group-icon-right"><i
+                                class="fa input-icon"></i>
+                            <ul class="booking-list">
+                                {% for car in cars %}
+                                    <li>
+                                        <a class="booking-item" href="#">
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <div class="booking-item-car-img">
+                                                        <img src="{{ car.image_default }}"
+                                                             alt="Pas d'image disponible"
+                                                             title="Image Title"/>
+                                                        <p class="booking-item-car-title">{{ car.brand }} {{ car.model }}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="row">
+                                                        <div class="col-md-8">
+                                                            <ul class="booking-item-features booking-item-features-sign clearfix">
+                                                                <li rel="tooltip" data-placement="top" title="Passagers"><i
+                                                                        class="fa fa-male"></i><span
+                                                                        class="booking-item-feature-sign">x {{ car.number_place }}</span>
+                                                                </li>
+                                                                <li rel="tooltip" data-placement="top" title="Portes"><i
+                                                                        class="im im-car-doors"></i><span
+                                                                        class="booking-item-feature-sign">x {{ car.doors }}</span>
+                                                                </li>
+                                                                <li rel="tooltip" data-placement="top" title="Coffre"><i
+                                                                        class="fa fa-briefcase"></i><span
+                                                                        class="booking-item-feature-sign">{{ car.luggage_number }}L</span>
+                                                                </li>
+                                                                <li rel="tooltip" data-placement="top" title="Siège enfant"><i
+                                                                        class="im im-children"></i><span
+                                                                        class="booking-item-feature-sign">
+                                                        {% if car.child_seat %}
+                                                            Option
+                                                        {% else %}
+                                                            Non
+                                                        {% endif %}
+                                                    </span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <ul class="booking-item-features booking-item-features-dark">
+                                                                <li rel="tooltip" data-placement="top"
+                                                                    title="Récupération à l'aéroport"><i
+                                                                        class="fa fa-plane"></i>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <span class="booking-item-price">{{ car.price }}€/km</span>
+                                                    <div class="form-group">
+                                                        <p class="booking-item-flight-class">{{ car.category }}</p>
+                                                        {#                                            <span class="btn btn-primary">Réserver</span>#}
+                                                        {#                                            <input class="btn btn-primary" type="submit" value="Réserver">#}
+                                                        <!-- Trigger/Open the Modal -->
+{% comment %}onclick="changeSelect({{ car.id }})"
+                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#carModal" id="modelCar_option"
+                                                                data-dismiss="modal"onclick="changeSelect({{ car.id }})">Choisir</button>
 {% endcomment %}
+
+                                                        <button class="btn btn-primary" type="submit" data-toggle="modal" id="modelCar_option" data-target="carModal"
+                                                                class="close" data-dismiss="modal" onclick="changeSelect( {{ car.id }}, '{{ car }}' )">Séléctionner
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                {%  endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default btn-prev" id="prev" onclick="onClickPrev()">Prev</button>
-                <button type="button" class="btn btn-default btn-next">Next</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
+        </form>
     </div>
 </div>
 
-{% comment %}<script>
-    function init() {
-         prev = document.getElementById("prev");
-         prev.onclick = function () { onClickPrev(); };
-    }
-
-    function onClickPrev(){
-        alert("Yo poto");
-    }
-    
-</script>{% endcomment %}
-
-<script>
-    $(document).ready(function() {
-  $("#owl-demo").owlCarousel({
-      autoPlay: 3000, //Set AutoPlay to 3 seconds
-      items : 4,
-      itemsDesktop : [1199,3],
-      itemsDesktopSmall : [979,3]
-  });
-});
-{% comment %}    function onClickPrev() {
-        $('.cars').click(function () {
-            $('#car-description').html($(this).data('description'));
-            $('#car-img').src($(this).data('img'));
-        });
-    }{% endcomment %}
-</script>
 {% include 'client/scriptLoading.html' %}
+
+<script type="text/javascript">
+    function changeSelect(carId, xcar) {
+{#        $("#modelCarTest_option").val(xcar.toString());#}
+
+        document.getElementById("modelCar_option").value = xcar;
+        document.getElementById("modelCar_Id").value = carId;
+    }
+</script>
+
 </html>
