@@ -52,8 +52,15 @@
                         {##}
                         {#                        </table>#}
                         <div>
-                            {{ form.as_p }}
-                            {{ form.media }}
+                            {% if title == "Aéroports" %}
+                                <input id="address" class="form-control" name="address"
+                                       placeholder="Adresse de l'aéroport" type="text" value="{{ form.address.value|default_if_none:"" }}"/>
+                                <input id="location" class="form-control" name="location"
+                                       placeholder="location de l'aéroport" type="text" value="{{ form.location.value|default_if_none:"" }}" readonly/>
+                            {% else %}
+                                {{ form.as_p }}
+                                {{ form.media }}
+                            {% endif %}
                         </div>
                         {#                        <div class="card-body">#}
                         {#                            <form class="form-horizontal form-bordered" method="get">#}
@@ -102,7 +109,42 @@
 <!-- Examples -->
 {#<script src="{% static "static_admin/js/datatable/client_manager_datatable.js" %}"></script>#}
 {#<script src="{% static "static_admin/js/examples/examples.modal=s.js" %}"></script>#}
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAb1NNSLUT7vzTIezPAqKumMB7wNXa2hMg&libraries=places&callback=AirportAutocomplete"
+        async defer></script>
 
+<script>
+var placeSearch, autocomplete;
+
+    function AirportAutocomplete() {
+        // Create the autocomplete object, restricting the search to geographical
+        // location types.
+        autocomplete = new google.maps.places.Autocomplete(
+            /** @type {!HTMLInputElement} */(document.getElementById('address')),
+            {
+                types: ["geocode"],
+                componentRestrictions: {country: "fr"}
+            });
+        {#            {types: ['geocode']});#}
+
+
+        // When the user selects an address from the dropdown, populate the address
+        // fields in the form.
+        autocomplete.addListener('place_changed', fillInAddress);
+    }
+
+     function fillInAddress() {
+        // Get the place details from the autocomplete object.
+        var place = autocomplete.getPlace();
+        var placeLocation = String(place.geometry.location);
+        placeLocation = placeLocation.replace('(', '').replace(')', '');
+        document.getElementById("location").value = placeLocation;
+    }
+</script>
+
+
+<script>
+
+</script>
 
 </body>
 </html>

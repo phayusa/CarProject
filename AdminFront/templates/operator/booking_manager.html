@@ -33,80 +33,61 @@
 
             {% include 'admin_bis/head_line.html' with Name="Réservation" %}
 
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#test">Home</a></li>
+                    <li><a data-toggle="tab" href="#toto">Menu 1</a></li>
+                    <li><a data-toggle="tab" href="#bobo">Menu 2</a></li>
+                    <li><a data-toggle="tab" href="#yoyo">Menu 3</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="test" class="tab-pane active">
+                        <section class="card card mb-4">
+                            <header class="card-header">
+                                <div class="card-actions">
+                                    <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                                </div>
 
-            <!-- start: page -->
-            <section class="card card mb-4">
-                <header class="card-header">
-                    <div class="card-actions">
-                        <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
-                        {#                        <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
+                                <h2 class="card-title">Réservations Commerciaux</h2>
+                            </header>
+                            <div class="card-body col-md-12">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>Commercial</th>
+                                        <th>Aéroport</th>
+                                        <th>Destination</th>
+                                        <th>Date de réservation</th>
+                                        <th>Client</th>
+                                        <th>Date d'arrivée</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
                     </div>
-
-                    <h2 class="card-title">Réservations Clients</h2>
-                </header>
-                <div class="card-body col-md-12">
-                    <table class="table table-bordered table-striped" id="booking_partener_bis_table"
-                            {#                           data-url="{% static "ajax/ajax-datatables-sample.json" %}">#}
-                           data-url="/db/bookings-operators/" width="100%" cellspacing="0">
-                        <thead>
-                        <tr>
-                            <th>Aéroport</th>
-                            <th>Destination</th>
-                            <th>Date de réservation</th>
-                            <th>Client</th>
-                            <th>Date d'arrivée</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                        </tbody>
-                    </table>
-                    <a class="btn btn-success" href="/operator/booking/create">Ajouter</a>
-
+                    <div id="toto" class="tab-pane fade">wesh ma gueule</div>
                 </div>
-            </section>
-
-
-            <!-- start: page -->
-            <section class="card card mb-4">
-                <header class="card-header">
-                    <div class="card-actions">
-                        <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
-                        {#                        <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
-                    </div>
-
-                    <h2 class="card-title">Réservations Commerciaux</h2>
-                </header>
-                <div class="card-body col-md-12">
-                    <table class="table table-bordered table-striped" id="booking_commercial_table"
-                            {#                           data-url="{% static "ajax/ajax-datatables-sample.json" %}">#}
-                           data-url="/db/bookings-commercials/" width="100%" cellspacing="0">
-                        <thead>
-                        <tr>
-                            <th>Commercial</th>
-                            <th>Aéroport</th>
-                            <th>Destination</th>
-                            <th>Date de réservation</th>
-                            <th>Client</th>
-                            <th>Date d'arrivée</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
         </section>
-
     </div>
-
 </section>
+
+            {% comment %}<div id="tabs">
+                <ul class="nav nav-tabs" id="prodTabs">
+                    <li class="active"><a href="#tab_basic">Basic</a></li>
+                    <li><a href="#tab_images" data-url="?action=images">Images</a></li>
+                    <li><a href="#tab_videos" data-url="?action=videos">Videos</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="tab_basic" class="tab-pane active">yoyoyoyoyoyo</div>
+                    <div id="tab_images" class="tab-pane active"></div>
+                    <div id="tab_videos" class="tab-pane active"></div>
+                </div>
+            </div>{% endcomment %}
 
 
 {% include "admin_bis/base_script.html" %}
@@ -123,7 +104,6 @@
 <script src="{% static "static_admin/js/datatable/booking_partener_own_manager_datatable.js" %}"></script>
 
 {#<script src="{% static "static_admin/js/examples/examples.modals.js" %}"></script>#}
-
 
 </body>
 </html>

@@ -25,6 +25,9 @@ from io import BytesIO
 from xhtml2pdf import pisa
 
 from django.core.mail import EmailMessage
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 import json, urllib
 # Create your views here.
@@ -140,6 +143,7 @@ def contact(request):
     if request.method == "POST":
         form = ContactUsForm(request.POST)
         if form.is_valid(): # Pour le moment jusqu'à j'ajoute l'envoi d'email
+            sendMail('test', 'mail/mail_invoice.html')
             return render(request, 'client/contact-us.html', {'form': form})
     else:
         form = ContactUsForm()
@@ -397,3 +401,11 @@ def computeDistance(origin, destination):
     result = json.load(urllib.urlopen(urlApi))
     distance = result['routes'][0]['legs'][0]['distance']['text']
     return distance
+
+def sendMail(object, html_template):
+    html_content = render_to_string(html_template)
+    text_content = strip_tags(html_content)
+
+    msg = EmailMultiAlternatives(object, text_content, 'yahiaoui.fakhri@gmail.com', ['myprojecttest0114@gmail.com'])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()

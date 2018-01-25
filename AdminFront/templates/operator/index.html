@@ -31,7 +31,8 @@
 
         <section role="main" class="content-body">
 
-            {% include 'admin_bis/head_line.html' with Name="Acceuil" %}
+            {% include 'admin_bis/head_line.html' with Name="Acceuil" redirect="/operator/"%}
+
 
             <!-- start: page -->
 
@@ -56,7 +57,7 @@
                                             </div>
                                         </div>
                                         <div class="summary-footer">
-                                            <a class="text-muted text-uppercase" href="/partener/manager/">(Gérer)</a>
+                                            <a class="text-muted text-uppercase" href="/operator/manager/">(Gérer)</a>
                                         </div>
                                     </div>
                                 </div>
@@ -128,7 +129,7 @@
                                             </div>
                                         </div>
                                         <div class="summary-footer">
-                                            <a class="text-muted text-uppercase" href="/partener/manager/">(Voir
+                                            <a class="text-muted text-uppercase" href="/operator/manager/">(Voir
                                                 plus)</a>
                                         </div>
                                     </div>
@@ -338,7 +339,7 @@
             {#                </div>#}
             {##}
             {#            </div>#}
-            <div class="row">
+            {% comment %}<div class="row">
                 <div class="col-md-12">
                     <section class="card">
                         <header class="card-header">
@@ -413,7 +414,7 @@
                         </div>
                     </section>
                 </div>
-            </div>
+            </div>{% endcomment %}
 {##}
 {##}
 {#            <h4 class="mb-0 mt-5 pt-4">Chartist - Simple Responsive Charts</h4>#}

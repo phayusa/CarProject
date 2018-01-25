@@ -37,6 +37,103 @@
     <link rel="stylesheet" href="{% static "static_admin/vendor/codemirror/lib/codemirror.css" %}"/>
     <link rel="stylesheet" href="{% static "static_admin/vendor/codemirror/theme/monokai.css" %}"/>
 
+    {#    <link rel="stylesheet" href="{% static "static_admin/vendor/bootstrap/css/bootstrap.css" %}"/>#}
+    {#    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">#}
+
+    <style>
+        .take-all-space-you-can{
+            width:100%;
+        }
+
+        .nav-tabs {  border-bottom: 1px solid #dfd7ca;}
+        .nav-tabs > li {
+            float: left;
+            margin-bottom: -1px;
+            text-align: center;
+        }
+        .nav-tabs > li > a {
+            margin-right: 2px;
+            line-height: 1.42857143;
+            border: 1px solid transparent;
+            border-radius: 4px 4px 0 0;
+        }
+        .nav-tabs > li > a:hover {
+            border-color: #dfd7ca #dfd7ca #dfd7ca;
+        }
+        .nav-tabs > li.active > a,
+        .nav-tabs > li.active > a:hover,
+        .nav-tabs > li.active > a:focus {
+            color: #98978b;
+            background-color: #ffffff;
+            border: 1px solid #dfd7ca;
+            border-bottom-color: transparent;
+            cursor: default;
+        }
+        .nav-tabs.nav-justified {
+            width: 100%;
+            border-bottom: 0;
+        }
+        .nav-tabs.nav-justified > li {
+            float: none;
+        }
+        .nav-tabs.nav-justified > li > a {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        .nav-tabs.nav-justified > .dropdown .dropdown-menu {
+            top: auto;
+            left: auto;
+        }
+        @media (min-width: 768px) {
+            .nav-tabs.nav-justified > li {
+                display: table-cell;
+                width: 1%;
+            }
+            .nav-tabs.nav-justified > li > a {
+                margin-bottom: 0;
+            }
+        }
+        .nav-tabs.nav-justified > li > a {
+            margin-right: 0;
+            border-radius: 4px;
+        }
+        .nav-tabs.nav-justified > .active > a,
+        .nav-tabs.nav-justified > .active > a:hover,
+        .nav-tabs.nav-justified > .active > a:focus {
+            border: 1px solid #dfd7ca;
+        }
+        @media (min-width: 768px) {
+            .nav-tabs.nav-justified > li > a {
+                border-bottom: 1px solid #dfd7ca;
+                border-radius: 4px 4px 0 0;
+            }
+            .nav-tabs.nav-justified > .active > a,
+            .nav-tabs.nav-justified > .active > a:hover,
+            .nav-tabs.nav-justified > .active > a:focus {
+                border-bottom-color: #ffffff;
+            }
+        }
+    </style>
+    {% comment %}<style>
+body {font-family: Arial;}
+
+.nav-tabs{
+  background-color:#161616;
+}
+.tab-content{
+    background-color:#303136;
+    color:#fff;
+    padding:5px
+}
+
+.nav-tabs > li > a:hover{
+  background-color: #303136 !important;
+    border: medium none;
+    border-radius: 0;
+    color:#fff;
+}
+</style>{% endcomment %}
+
 </head>
 <body>
 <section class="body">
@@ -44,6 +141,7 @@
     {% include "admin_bis/header.html" %}
 
     <div class="inner-wrapper">
+
 
         {% include "commercial/navigation_bar.html" with active=active sub_active=sub_active %}
 
@@ -55,89 +153,133 @@
             <section class="card">
                 <header class="card-header">
                     <div class="card-actions">
-                        <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                        {#                        <a href="#" class="card-action card-action-toggle" data-card-toggle></a>#}
                         {#                        <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
                     </div>
+                    {#take-all-space-you-can#}
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#CreateClients">Créer un nouveau client</a></li>
+                        <li ><a data-toggle="tab" href="#Clients">{{ title }}</a></li>
+                    </ul>
 
-                    <h2 class="card-title">{{ title }}</h2>
+                    {#                    <h2 class="card-title">{{ title }}</h2>#}
                 </header>
-                <form method="post" class="form-horizontal form-bordered"
-                      {% if file %}enctype="multipart/form-data"{% endif %}>
-                    {% csrf_token %}
-                    <div class="card-body col-md-12">
-                        <div>
-                            {% if form.errors %}
-                                {{ form.errors }}
-                            {% endif %}
+                <div class="tab-content">
+                    <div id="CreateClients" class="tab-pane active">
+                        <form method="post" class="form-horizontal form-bordered"
+                              {% if file %}enctype="multipart/form-data"{% endif %}>
+                            {% csrf_token %}
+                            <div class="card-body col-md-12">
+                                <div>
+                                    {% if form.errors %}
+                                        {{ form.errors }}
+                                    {% endif %}
 
-                            {% if custom %}
+                                    {% if custom %}
 
-                                {% if user_form.errors %}
-                                    {{ user_form.errors }}
+                                        {% if user_form.errors %}
+                                            {{ user_form.errors }}
+                                        {% endif %}
+
+                                        {% for field in form.visible_fields %}
+                                            <div class="form-group row fieldWrapper">
+                                                <label class="col-lg-3 control-label text-lg-right pt-2"
+                                                       for="inputDefault">{{ field.label }}</label>
+                                                <div class="col-lg-6">
+                                                    {{ field.error }}
+                                                    {% render_field field class+="form-control" %}
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+
+                                        <input type="hidden" name="status" value="Mail non confirmé">
+
+                                        {% for field in user_form.visible_fields %}
+                                            <div class="form-group row fieldWrapper">
+                                                <label class="col-lg-3 control-label text-lg-right pt-2"
+                                                       for="inputDefault">{{ field.label }}</label>
+                                                <div class="col-lg-6">
+                                                    {{ field.error }}
+                                                    {% render_field field class+="form-control" %}
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+
+                                    {% else %}
+                                        {% for field in form.visible_fields %}
+                                            <div class="form-group row fieldWrapper">
+                                                <label class="col-lg-3 control-label text-lg-right pt-2"
+                                                       for="inputDefault">{{ field.label }}</label>
+                                                <div class="col-lg-6">
+                                                    {{ field.error }}
+                                                    {% render_field field class+="form-control" %}
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                        {#                                {{ form.as_p }}#}
+                                        {#                                {{ form.media }}#}
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+                            <div class="card-footer">
+                                {% if type == 2 %}
+                                    {#                            {{ form_user.as_p }}#}
+                                    <button type="submit" class="btn btn-success    ">Créer</button>
+                                {% else %}
+                                    <button type="submit" class="btn btn-primary">Modifier</button>
                                 {% endif %}
+                                <a class="btn btn-secondary"
+                                   href="/commercial/">Annuler</a>
+                            </div>
 
-                                {% for field in form.visible_fields %}
-                                    <div class="form-group row fieldWrapper">
-                                        <label class="col-lg-3 control-label text-lg-right pt-2"
-                                               for="inputDefault">{{ field.label }}</label>
-                                        <div class="col-lg-6">
-                                            {{ field.error }}
-                                            {% render_field field class+="form-control" %}
-                                        </div>
-                                    </div>
-                                {% endfor %}
-
-                                <input type="hidden" name="status" value="Mail non confirmé">
-
-                                {% for field in user_form.visible_fields %}
-                                    <div class="form-group row fieldWrapper">
-                                        <label class="col-lg-3 control-label text-lg-right pt-2"
-                                               for="inputDefault">{{ field.label }}</label>
-                                        <div class="col-lg-6">
-                                            {{ field.error }}
-                                            {% render_field field class+="form-control" %}
-                                        </div>
-                                    </div>
-                                {% endfor %}
-
-                            {% else %}
-                                {% for field in form.visible_fields %}
-                                    <div class="form-group row fieldWrapper">
-                                        <label class="col-lg-3 control-label text-lg-right pt-2"
-                                               for="inputDefault">{{ field.label }}</label>
-                                        <div class="col-lg-6">
-                                            {{ field.error }}
-                                            {% render_field field class+="form-control" %}
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                                {#                                {{ form.as_p }}#}
-                                {#                                {{ form.media }}#}
-                            {% endif %}
-
-                        </div>
-
+                        </form>
                     </div>
-                    <div class="card-footer">
-                        {% if type == 2 %}
-                            {#                            {{ form_user.as_p }}#}
-                            <button type="submit" class="btn btn-success    ">Créer</button>
-                        {% else %}
-                            <button type="submit" class="btn btn-primary">Modifier</button>
+                    <div id="Clients" class="tab-pane fade">
+                        {% if custom %}
+                            <!-- start: page -->
+                            <section class="card card mb-4 ">
+                                {% comment %}                                <header class="card-header">
+                                    <div class="card-actions">
+                                        <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                                        {#                        <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
+                                    </div>
+
+                                    <h2 class="card-title">Clients</h2>
+                                </header>{% endcomment %}
+                                <div class="card-body col-md-12">
+                                    <table class="table table-bordered table-striped" id="table_clients_commercial"
+                                            {#                           data-url="{% static "ajax/ajax-datatables-sample.json" %}">#}
+                                           data-url="/db/clients/" width="100%" cellspacing="0">
+                                        <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Nom</th>
+                                            <th>Prénom</th>
+                                            <th>Téléphone</th>
+                                            <th>Mail</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                    <a class="btn btn-success" href="/partener/client/create">Ajouter</a>
+                                </div>
+                            </section>
                         {% endif %}
-                        <a class="btn btn-secondary"
-                           href="/commercial/">Annuler</a>
                     </div>
-
-                </form>
-
+                </div>
             </section>
 
 
             <!-- end: page -->
 
 
-            {% if custom %}
+            {% comment %}            {% if custom %}
                 <!-- start: page -->
                 <section class="card card mb-4 card-collapsed">
                     <header class="card-header">
@@ -172,7 +314,7 @@
                 </section>
             {% endif %}
 
-        </section>
+        </section>{% endcomment %}
     </div>
 
 </section>
@@ -265,4 +407,6 @@
 
 
 </body>
+{#    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>#}
+
 </html>

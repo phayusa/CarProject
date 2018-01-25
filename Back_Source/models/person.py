@@ -20,6 +20,7 @@ class Person(models.Model):
     address = models.CharField(max_length=255, blank=True, null=True, verbose_name="Adresse")
     location = PlainLocationField(blank=True, null=True, based_fields=['address'], zoom=7)
 
+    # city = models.CharField(max_length=255, blank=True, verbose_name="Ville")
     def __str__(self):
         return self.last_name + ' ' + self.first_name
 

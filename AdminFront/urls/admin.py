@@ -25,6 +25,7 @@ urlpatterns = [
     # create URL
     url(r'^client/create/$', client_create),
     url(r'^driver/create/$', driver_create),
+    url(r'^airport/create/$', airport_create),
     url(r'^commercial/create/$', commercial_create),
     url(r'^partener/create/$', partener_create),
     url(r'^car-model/create/$', car_model_create),

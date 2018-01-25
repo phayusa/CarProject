@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 
 from AdminFront.forms import ClientForm, DriverForm, CommercialForm, PartenerForm, UserForm
-from AdminFront.forms import VehicleModelForm, VehicleForm
+from AdminFront.forms import VehicleModelForm, VehicleForm, AirportForm
 
 
 def client_create(request):
@@ -133,5 +133,27 @@ def car_create(request):
                        "form": form, "type": 2, "direct": 3,
                        "title": "Voiture", "active": 5,
                        "file": True})
+    else:
+        return redirect('/')
+
+def airport_create(request):
+    if not request.user.is_authenticated():
+        return redirect('/admin/login')
+
+    if request.method == "POST":
+        form = AirportForm(request.POST)
+        if form.is_valid():
+            print("form is valid")
+            form.save()
+            return redirect("/admin/bookings/")
+    else:
+        form = AirportForm()
+        print("nope")
+    if request.user.is_superuser:
+        print("punaise")
+        return render(request, 'admin_bis/object_edit.html',
+                      {"sections": ["Gestion", "Création"],
+                       "form": form, "type": 2, "direct": 2,
+                       "title": "Aéroports", "active": 4})
     else:
         return redirect('/')

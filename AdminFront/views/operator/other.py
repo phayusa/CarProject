@@ -12,7 +12,7 @@ from django.utils.timezone import datetime  # important if using timezones
 
 def index(request):
     if not request.user.is_authenticated():
-        return redirect('/partener/login')
+        return redirect('/operator/login')
 
     today_booking = BookingOperator.objects.filter(
         date__contains=datetime.today().date(), operator__user=request.user).count() + BookingCommecial.objects.filter(

@@ -140,7 +140,7 @@ def edit_booking(request, pk):
             raw_date = datetime.datetime.strptime(date + ' ' + time, "%Y-%m-%d %H:%M")
             date_time = raw_date.strftime("%Y-%m-%dT%H:%M")
 
-            date_w_timezone = pytz.timezone("Europe/Helsinki").localize(parse_datetime(date_time), is_dst=None)
+            date_w_timezone = pytz.timezone("Europe/Paris").localize(parse_datetime(date_time), is_dst=None)
 
             tmp.arrive_time = date_w_timezone
 

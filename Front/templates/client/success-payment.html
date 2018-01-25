@@ -34,7 +34,8 @@
                                 </h5>
                                 <p>
 {#                                     <small>{{ booking.time_booking }}</small>#}
-                                    <small>Jeudi 23 Novembre 2017</small>
+{#                                    <small>Jeudi 23 Novembre 2017</small>#}
+                                    <small id="date"></small>
                                 </p>
                             </div>
                             <div class="col-xs-3">
@@ -68,6 +69,18 @@
     {% include 'client/scriptLoading.html' %}
 </div>
 </body>
+
+<script>
+    var monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
+  "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
+];
+
+    n =  new Date();
+    y = n.getFullYear();
+    m = monthNames[n.getMonth()];//n.getMonth()+1; //
+    d = n.getDate();
+    document.getElementById("date").innerHTML = d + " " + m + " " + y;
+</script>
 
 </html>
 

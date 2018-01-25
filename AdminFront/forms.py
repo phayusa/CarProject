@@ -102,7 +102,8 @@ class ClientForm(PersonForm):
     class Meta:
         model = Client
         fields = ['first_name', 'last_name', 'mail', 'phone_number', 'age', 'gender', 'status',
-                  'address', 'user']
+                  'address', #'city',
+                  'user']
 
 
 class ClientFormNoUser(ModelForm):
@@ -124,7 +125,7 @@ class ClientFormNoUser(ModelForm):
     class Meta:
         model = Client
         fields = ['first_name', 'last_name', 'mail', 'phone_number', 'age', 'gender',
-                  'address']
+                  'address']#, 'city']
 
 
 class DriverForm(PersonForm):
@@ -138,7 +139,7 @@ class CommercialForm(PersonForm):
     class Meta:
         model = Commercial
         fields = ['first_name', 'last_name', 'mail', 'phone_number', 'age', 'gender', 'status', 'user',
-                  'address']
+                  'address']#, 'city']
 
 
 class PartenerForm(PersonForm):

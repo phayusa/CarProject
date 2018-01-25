@@ -168,8 +168,12 @@
                                             <div class="form-group row fieldWrapper">
                                                 <label class="col-lg-3 control-label text-lg-right pt-2">Client</label>
                                                 <div class="col-lg-6">
+
+
+
+
                                                     <select data-plugin-selectTwo class="form-control populate"
-                                                            name="client">
+                                                            name="client" >
                                                         {% for client in clients %}
                                                             <option value="{{ client.id }}">{{ client }}</option>
                                                         {% endfor %}
