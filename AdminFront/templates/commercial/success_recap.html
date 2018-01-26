@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmation | Aceline Services</title>
+    <meta name="keywords" content="HTML5 Admin Template"/>
+    <meta name="description" content="Porto Admin - Responsive HTML5 Template">
+    <meta name="author" content="okler.net">
+
+    {% load static %}
+
+    {% load widget_tweaks %}
+
+    {% include 'admin_bis/style.html' %}
+
+    <link rel="stylesheet" href="{% static "static_admin/vendor/jquery-ui/jquery-ui.css" %}"/>
+    <link rel="stylesheet" href="{% static "static_admin/vendor/jquery-ui/jquery-ui.theme.css" %}"/>
+    <link rel="stylesheet" href="{% static "static_admin/vendor/select2/css/select2.css" %}"/>
+    <link rel="stylesheet" href="{% static "static_admin/vendor/select2-bootstrap-theme/select2-bootstrap.min.css" %}"/>
+    <link rel="stylesheet" href="{% static "static_admin/vendor/bootstrap-multiselect/bootstrap-multiselect.css" %}"/>
+    <link rel="stylesheet" href="{% static "static_admin/vendor/bootstrap-tagsinput/bootstrap-tagsinput.css" %}"/>
+    <link rel="stylesheet" href="{% static "static_admin/vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.css" %}"/>
+    <link rel="stylesheet" href="{% static "static_admin/vendor/bootstrap-timepicker/css/bootstrap-timepicker.css" %}"/>
+    <link rel="stylesheet" href="{% static "static_admin/vendor/dropzone/basic.css" %}"/>
+    <link rel="stylesheet" href="{% static "static_admin/vendor/dropzone/dropzone.css" %}"/>
+    <link rel="stylesheet" href="{% static "static_admin/vendor/bootstrap-markdown/css/bootstrap-markdown.min.css" %}"/>
+    <link rel="stylesheet" href="{% static "static_admin/vendor/summernote/summernote-bs4.css" %}"/>
+    <link rel="stylesheet" href="{% static "static_admin/vendor/codemirror/lib/codemirror.css" %}"/>
+    <link rel="stylesheet" href="{% static "static_admin/vendor/codemirror/theme/monokai.css" %}"/>
+    <link rel="stylesheet" href="{% static "static_admin/vendor/pnotify/pnotify.custom.css" %}"/>
+
+</head>
+<body>
+
+<section class="body">
+{#    {% include "admin_bis/header.html" %}#}
+{% include 'client/facebook_widget.html' %}
+    <div class="inner-wrapper">
+        {#    {% include 'client/header.html' %}#}
+        {% include "commercial/navigation_bar.html" with active=active sub_active=sub_active %}
+
+        <section role="main" class="content-body">
+
+                         {% include 'admin_bis/head_line.html' with Name=Confirmation %}
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <i class="fa fa-check round box-icon-large box-icon-center box-icon-success mb30"></i>
+                        <h2 class="text-center">
+                            {#                    {{ user.username }}#}
+                            Pute
+                            , le payement est réussit!</h2>
+                        <h5 class="text-center mb30">Une confirmation de commande à été envoyé à
+                            toto@gogo.com
+                            {#                    {{ user.email }}#}
+                        </h5>
+                        <ul class="order-payment-list list mb30">
+                            <li>
+                                <div class="row">
+                                    <div class="col-xs-9">
+                                        <h5><i class="fa fa-car"></i>
+                                            putain de sa mère
+                                            {#                                    {{ booking.airport.address }} - {{ booking.destination }}#}
+                                        </h5>                              <p>
+                                        {#                                     <small>{{ booking.time_booking }}</small>#}
+                                        {#                                    <small>Jeudi 23 Novembre 2017</small>#}
+                                        {#                                    <small id="date"></small>#}
+                                    </p>
+                                    </div>
+                                    <div class="col-xs-3">
+                                        <p class="text-right"><span class="text-lg">
+                                    50000 Boules
+                                            {#                                    {{ booking.model_choose.price }}€#}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        {#                    <h4 class="text-center">You might also need in New York</h4>#}
+                    </div>
+                </div>
+                <div class="gap"></div>
+        </section>
+    </div>
+</section>
+</body>
+<script>
+    {% comment %}    var monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
+      "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
+    ];
+
+        n =  new Date();
+        y = n.getFullYear();
+        m = monthNames[n.getMonth()];//n.getMonth()+1; //
+        d = n.getDate();
+        document.getElementById("date").innerHTML = d + " " + m + " " + y;{% endcomment %}
+</script>
+
+</html>

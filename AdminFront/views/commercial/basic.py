@@ -168,6 +168,14 @@ def edit_booking(request, pk):
     else:
         return redirect('/')
 
+def bookingSucceed(request):
+    if not request.user.is_authenticated():
+        return redirect('/login/')
+    # client = Client.objects.filter(user=request.user)[0]
+    # booking = Booking.objects.filter(id=pk)[0]
+    #
+    return render(request, 'commercial/success_recap.html')#, {"client": client, "booking": booking})
+
 
 def clients_list(request):
     if not request.user.is_authenticated():

@@ -69,6 +69,8 @@ class BookingOperator(models.Model):
     passengers = models.IntegerField(verbose_name="Nombre de passagers")
     luggage_number = models.IntegerField(verbose_name="Nombre de baggages")
 
+    city = models.CharField(max_length=200, verbose_name="Ville")
+
     # Flight info
     flight = models.CharField(max_length=200, verbose_name="Vol")
     arrive_time = models.DateTimeField(blank=True, verbose_name="Date d\'Arrivée")

@@ -33,7 +33,7 @@ Theme Version: 	2.0.0
                         "render": function (value) {
                             if (value === null) return "";
                             var dt = new Date(value);
-                            return (dt.getDate() + 1) + "/" + dt.getMonth() + "/" + dt.getFullYear();
+                            return dt.getDate() + "/" + ("0" + (getMonth() + 1)).slice(-2) + "/" + dt.getFullYear();
                         }
                     },
                     {data: 'client'},
@@ -44,7 +44,7 @@ Theme Version: 	2.0.0
                             if (value === null) return "";
 
                             var dt = new Date(value);
-                            return (dt.getDate() + 1) + "/" + dt.getMonth() + "/" + dt.getFullYear()+" "+dt.getUTCHours()+"H"+dt.getUTCMinutes();
+                            return dt.getDate() + "/" + ("0" + (getMonth() + 1)).slice(-2) + "/" + dt.getFullYear()+" "+dt.getUTCHours()+"H"+dt.getUTCMinutes();
                         }
                     },
                     {data: 'status'},
