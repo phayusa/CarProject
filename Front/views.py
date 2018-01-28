@@ -27,6 +27,8 @@ from xhtml2pdf import pisa
 from django.core.mail import EmailMessage
 
 import json, urllib
+
+
 # Create your views here.
 
 
@@ -153,7 +155,7 @@ def prices(request):
 def contact(request):
     if request.method == "POST":
         form = ContactUsForm(request.POST)
-        if form.is_valid(): # Pour le moment jusqu'à j'ajoute l'envoi d'email
+        if form.is_valid():  # Pour le moment jusqu'à j'ajoute l'envoi d'email
             return render(request, 'client/contact-us.html', {'form': form})
     else:
         form = ContactUsForm()
@@ -163,9 +165,9 @@ def contact(request):
 def contact_pro(request):
     if request.method == "POST":
         form = ContactProForm(request.POST)
-        if form.is_valid(): # Pour le moment jusqu'à j'ajoute l'envoi d'email
+        if form.is_valid():  # Pour le moment jusqu'à j'ajoute l'envoi d'email
             return render(request, 'client/contact_pro.html', {'form': form})
-#            return redirect('/')
+        #            return redirect('/')
     else:
         form = ContactProForm()
     return render(request, 'client/contact_pro.html', {'form': form})
@@ -267,7 +269,7 @@ def booking_create(request, *args, **kwargs):
         origin = str(Airport.objects.filter(id=data["airport"])[0]).replace(' ', '+').replace(',', '')
         destination = data["destination"].replace(' ', '+').replace(',', '')
         distance = computeDistance(origin, destination)
-        print "la distance est de %s" %distance
+        print "la distance est de %s" % distance
         # must be reseingned during the initialisation
         # upload_distance(booking)
         # booking.save()
@@ -404,11 +406,12 @@ def generatePdf():
         content = "inline; filename='%s'" % filename
         content = "attachment; filename='%s'" % filename
         response['Content-Disposition'] = content
-#        return response
-    return pdf#HttpResponse("Not Found")
+    #        return response
+    return pdf  # HttpResponse("Not Found")
+
 
 def computeDistance(origin, destination):
-    urlApi = "https://maps.googleapis.com/maps/api/directions/json?origin="+origin+"&destination="+destination+"&units=metric&key=AIzaSyCCPv4PqIoLNcenh0WzmLD8NnCpgzkl1lw"
+    urlApi = "https://maps.googleapis.com/maps/api/directions/json?origin=" + origin + "&destination=" + destination + "&units=metric&key=AIzaSyCCPv4PqIoLNcenh0WzmLD8NnCpgzkl1lw"
     urlApi = urlApi.encode('utf8')
     result = json.load(urllib.urlopen(urlApi))
     distance = result['routes'][0]['legs'][0]['distance']['text']

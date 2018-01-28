@@ -31,6 +31,7 @@ Theme Version: 	2.0.0
                     {data: 'phone_number'},
                     {data: 'mail'},
                     {data: 'status'},
+                    {data: 'partner'},
                     {data: 'tt'}
                 ],
                 "columnDefs": [{

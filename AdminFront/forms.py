@@ -255,8 +255,7 @@ class AirportForm(ModelForm):
 class VehicleModelForm(ModelForm):
     class Meta:
         model = VehicleModel
-        fields = ["brand", "model", "year", "child_seat", "number_place", "luggage_number", "category", "doors",
-                  "image_default", "price"]
+        fields = ["name", "number_place", "luggage_number", "doors", "image_default", "price", "child_seat"]
 
 
 class VehicleForm(ModelForm):

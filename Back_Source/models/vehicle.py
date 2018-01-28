@@ -11,19 +11,13 @@ from location_field.models.plain import PlainLocationField
 
 class VehicleModel(models.Model):
     # Classical attributes
-    brand = models.CharField(max_length=200, verbose_name="Marque")
-    model = models.CharField(max_length=200, verbose_name="Modèle")
-    year = models.CharField(max_length=4, verbose_name="Année")
+    name = models.CharField(max_length=100, verbose_name="Nom")
+    doors = models.IntegerField(default=5, verbose_name="Portes")
+    luggage_number = models.IntegerField(help_text="Nombre de bagage authorisé", verbose_name="Nombre de baggage maximun")
 
     # Seats fields
     child_seat = models.BooleanField(verbose_name="Siège enfant")
-    number_place = models.IntegerField(verbose_name="Places")
-    luggage_number = models.IntegerField(help_text="Nombre de bagage authorisé", verbose_name="Nombre de baggage")
-
-    # Category of the vehicle
-    category = models.CharField(max_length=100, verbose_name="Catégorie")
-
-    doors = models.IntegerField(default=5, verbose_name="Portes")
+    number_place = models.IntegerField(verbose_name="Passager(s) par voyage")
 
     # Name of the image
     image_default = models.URLField(null=True, blank=True, verbose_name="Image")
@@ -32,11 +26,11 @@ class VehicleModel(models.Model):
     price = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.category + ' : ' + self.brand + ' ' + self.model + ' ' + str(self.year)
+        return self.name
 
     class Meta:
-        verbose_name = "Modèle de voiture"
-        verbose_name_plural = "Modèles de voiture"
+        verbose_name = "Catégorie de voiture"
+        verbose_name_plural = "Catégories de voiture"
 
 
 # Vehicle information
