@@ -23,7 +23,7 @@
 <body>
 <section class="body">
 
-    {% include "admin_bis/header.html" with role="Administrateur"%}
+    {% include "admin_bis/header.html" with role="Administrateur" redirect='/admin/'%}
 
     <div class="inner-wrapper">
 
@@ -31,7 +31,7 @@
 
         <section role="main" class="content-body">
 
-            {% include 'admin_bis/head_line.html' with Name="Voitures" %}
+            {% include 'admin_bis/../common/head_line.html' with Name="Voitures" %}
 
 
             <section class="card card mb-4">

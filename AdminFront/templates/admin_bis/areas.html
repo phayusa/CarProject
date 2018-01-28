@@ -17,7 +17,7 @@
 <body>
 <section class="body">
 
-    {% include "admin_bis/header.html" with role="Administrateur" %}
+    {% include "admin_bis/header.html" with role="Administrateur" redirect='/admin/'%}
 
     <div class="inner-wrapper">
 
@@ -25,7 +25,7 @@
 
         <section role="main" class="content-body">
 
-            {% include 'admin_bis/head_line.html' with Name="Zones" %}
+            {% include 'admin_bis/../common/head_line.html' with Name="Zones" %}
 
             <!-- start: page -->
             {#            <div id="map"></div>#}
