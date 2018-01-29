@@ -23,7 +23,7 @@
 <body>
 <section class="body">
 
-    {% include "admin_bis/header.html" %}
+    {% include "admin_bis/header.html" with role="Administrateur" redirect='/admin/' %}
 
     <div class="inner-wrapper">
 
@@ -31,7 +31,7 @@
 
         <section role="main" class="content-body">
 
-            {% include 'admin_bis/head_line.html' with Name="Acceuil" %}
+            {% include 'admin_bis/../common/head_line.html' with Name="Acceuil" %}
 
             <!-- start: page -->
 
@@ -51,7 +51,7 @@
                                         <div class="summary">
                                             <h4 class="title">Nombre de chauffeurs</h4>
                                             <div class="info">
-                                                <strong class="amount">50</strong>
+                                                <strong class="amount">{{ drivers }}</strong>
                                                 <span class="text-primary">(0 en circulation)</span>
                                             </div>
                                         </div>
@@ -159,18 +159,18 @@
                             <script type="text/javascript">
 
                                 var flotBarsData = [
-                                    ["Jan", 28],
-                                    ["Fev", 42],
-                                    ["Mars", 25],
-                                    ["Avr", 23],
-                                    ["Mai", 37],
-                                    ["Juin", 33],
-                                    ["Juil", 18],
-                                    ["Août", 14],
-                                    ["Sep", 18],
-                                    ["Oct", 15],
-                                    ["Nov", {{ all }}],
-                                    ["Déc", 0]
+                                    ["Jan", {{ booking_by_months.1 }}],
+                                    ["Fev", {{ booking_by_months.2 }}],
+                                    ["Mars",{{ booking_by_months.3 }}],
+                                    ["Avr", {{ booking_by_months.4 }}],
+                                    ["Mai", {{ booking_by_months.5 }}],
+                                    ["Juin",{{ booking_by_months.6 }}],
+                                    ["Juil",{{ booking_by_months.7 }}],
+                                    ["Août",{{ booking_by_months.8 }}],
+                                    ["Sep", {{ booking_by_months.9 }}],
+                                    ["Oct", {{ booking_by_months.10 }}],
+                                    ["Nov", {{ booking_by_months.11 }}],
+                                    ["Déc", {{ booking_by_months.12  }}]
                                 ];
 
                                 // See: js/examples/examples.charts.js for more settings.
@@ -361,52 +361,52 @@
 
                                 var morrisBarData = [{
                                     y: 'Jan',
-                                    a: 18,
-                                    b: 10
+                                    a: {{ booking_gender.1.Homme }},
+                                    b: {{ booking_gender.1.Femme }}
                                 }, {
                                     y: 'Fev',
-                                    a: 32,
-                                    b: 10
+                                    a: {{ booking_gender.2.Homme }},
+                                    b: {{ booking_gender.2.Femme}}
                                 }, {
                                     y: 'Mars',
-                                    a: 10,
-                                    b: 15
+                                    a: {{ booking_gender.3.Homme }},
+                                    b: {{ booking_gender.3.Femme}}
                                 }, {
                                     y: 'Avril',
-                                    a: 11,
-                                    b: 12
+                                    a: {{ booking_gender.4.Homme }},
+                                    b: {{ booking_gender.4.Femme}}
                                 }, {
                                     y: 'Mai',
-                                    a: 11,
-                                    b: 26
+                                    a: {{ booking_gender.5.Homme }},
+                                    b: {{ booking_gender.5.Femme}}
                                 }, {
                                     y: 'Juin',
-                                    a: 22,
-                                    b: 11
+                                    a: {{ booking_gender.6.Homme }},
+                                    b: {{ booking_gender.6.Femme}}
                                 }, {
                                     y: 'Juil',
-                                    a: 14,
-                                    b: 14
+                                    a: {{ booking_gender.7.Homme }},
+                                    b: {{ booking_gender.7.Femme}}
                                 }, {
                                     y: 'Août',
-                                    a: 7,
-                                    b: 7
+                                    a: {{ booking_gender.8.Homme }},
+                                    b: {{ booking_gender.8.Femme}}
                                 }, {
                                     y: 'Sep',
-                                    a: 8,
-                                    b: 10
+                                    a: {{ booking_gender.9.Homme }},
+                                    b: {{ booking_gender.9.Femme}}
                                 }, {
                                     y: 'Oct',
-                                    a: 10,
-                                    b: 5
+                                    a: {{ booking_gender.10.Homme }},
+                                    b: {{ booking_gender.10.Femme}}
                                 }, {
                                     y: 'Nov',
-                                    a: 5,
-                                    b: 0
+                                    a: {{ booking_gender.11.Homme }},
+                                    b: {{ booking_gender.11.Femme}}
                                 }, {
                                     y: 'Dec',
-                                    a: 0,
-                                    b: 0
+                                    a: {{ booking_gender.12.Homme }},
+                                    b: {{ booking_gender.12.Femme}}
                                 }];
 
                                 // See: js/examples/examples.charts.js for more settings.

@@ -5,8 +5,9 @@ from ..views.admin import *
 
 urlpatterns = [
     url(r'^$', index),
-    url(r'^login/$', login_view),
+    # url(r'^login/$', login_view),
     url(r'^areas/$', areas),
+    url(r'^map/$', map_view),
     url(r'^manager/$', base_manager),
     url(r'^bookings/$', booking_manager),
     url(r'^cars/$', car_manager),

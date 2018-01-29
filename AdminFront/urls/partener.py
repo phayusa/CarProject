@@ -4,7 +4,7 @@ from ..views.partener import *
 
 urlpatterns = [
     url(r'^$', index),
-    url(r'^login/$', login_view),
+    # url(r'^login/$', login_view),
     url(r'^manager/$', base_manager),
     url(r'^bookings/$', booking_manager),
     # url(r'^clients/$', client_manager),
