@@ -102,7 +102,7 @@ class ClientForm(PersonForm):
     class Meta:
         model = Client
         fields = ['first_name', 'last_name', 'mail', 'phone_number', 'age', 'gender', 'status',
-                  'address', #'city',
+                  'address', 'city',
                   'user']
 
 
@@ -183,11 +183,13 @@ class BookingForm(ModelForm):
         MinValueValidator(5)
     ])
 
+    departureCity = forms.CharField(max_length=100, label="Ville de depart");
+
     class Meta:
         model = Booking
         fields = ["airport", "destination", "client", "passengers", "luggage_number",
                   "flight", "arrive_time", "model_choose", "vehicle_choose", "status",
-                  "accountType"]
+                  "accountType", "departureCity"]
 
 
 class BookingPartenerForm(BookingForm):

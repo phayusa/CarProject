@@ -79,6 +79,10 @@ def index(request):
             date = request.POST.get('date', None)
             time = request.POST.get('time', None)
 
+
+            test = request.POST.get('departureCity', None)
+            print test
+
             raw_date = datetime.datetime.strptime(date + ' ' + time, "%Y-%m-%d %H:%M")
             date_time = raw_date.strftime("%Y-%m-%dT%H:%M")
 
@@ -171,10 +175,13 @@ def edit_booking(request, pk):
 def bookingSucceed(request):
     if not request.user.is_authenticated():
         return redirect('/login/')
-    # client = Client.objects.filter(user=request.user)[0]
-    # booking = Booking.objects.filter(id=pk)[0]
-    #
-    return render(request, 'commercial/success_recap.html')#, {"client": client, "booking": booking})
+    client = Client.objects.all();#filter(user=request.user)[0]
+
+#    print Client.objects.filter(user=request.user)[0]
+
+#    booking = Booking.objects.all();#.filter(id=pk)[0]
+
+    return render(request, 'commercial/success_recap.html', {"client": client});#, "booking": booking})
 
 
 def clients_list(request):

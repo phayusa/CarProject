@@ -1016,7 +1016,7 @@ ul.slimmenu li.slimmenu-sub-menu a {
 }
 ul.slimmenu li.active > a,
 ul.slimmenu li:hover > a {
-  background:  #0088cc;
+    background:  #0088cc/* 333333; */;
   color: #fff;
 }
 ul.slimmenu li.active .slimmenu-sub-collapser > i,

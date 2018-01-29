@@ -217,24 +217,26 @@ Theme Version: 	2.0.0
     $w4finish.on('click', function (ev) {
         ev.preventDefault();
         var validated = $('#w4 form').valid();
-        if (validated) {
-            new PNotify({
-                title: 'Congratulations',
-                text: 'You completed the wizard form.',
-                type: 'custom',
-                addclass: 'notification-success',
-                icon: 'fa fa-check'
-            });
+        // if (validated) {
+        //     new PNotify({
+        //         title: 'Congratulations',
+        //         text: 'You completed the wizard form.',
+        //         type: 'custom',
+        //         addclass: 'notification-success',
+        //         icon: 'fa fa-check'
+        //     });
 
-            var form = $('#booking_form');
-            form.submit();
-        } else {
-            new PNotify({
-                title: 'Echec',
-                text: 'Une erreur est survenue',
-                type: 'error'
-            });
-        }
+        var form = $('#booking_form');
+	form.action = "/commercial/succeed/";
+	form.submit();
+	// $("#btnRecap").location.href="/commercial/succeed/";
+        // } else {
+        //     new PNotify({
+        //         title: 'Echec',
+        //         text: 'Une erreur est survenue',
+        //         type: 'error'
+        //     });
+        // }
     });
 
     $('#w4').bootstrapWizard({

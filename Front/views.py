@@ -41,8 +41,8 @@ def index(request):
 
     if request.user.is_superuser:
         return redirect("/admin/")
-    if Operator.objects.filter(user=request.user).exists():
-        return redirect("/operator/")
+    # if Operator.objects.filter(user=request.user).exists():
+    #     return redirect("/operator/")
     if BuissnessPartner.objects.filter(user=request.user).exists():
         return redirect("/partener/")
     if Commercial.objects.filter(user=request.user).exists():

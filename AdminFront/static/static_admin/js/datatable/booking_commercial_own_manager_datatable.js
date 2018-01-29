@@ -31,11 +31,9 @@ Theme Version: 	2.0.0
                         "render": function (value) {
                             if (value === null) return "";
                             var dt = new Date(value);
-<<<<<<< HEAD
+
                             return dt.getDate() + "/" + ("0" + (dt.getMonth() + 1)).slice(-2) + "/" + dt.getFullYear();
-=======
-                            return (dt.getDate() + 1) + "/" + (dt.getMonth() + 1) + "/" + dt.getFullYear();
->>>>>>> Test_User_As_Key
+
                         }
                     },
                     {data: 'airport'},
@@ -50,11 +48,9 @@ Theme Version: 	2.0.0
                             if (value === null) return "";
 
                             var dt = new Date(value);
-<<<<<<< HEAD
+
                             return dt.getDate() + "/" + ("0" + (dt.getMonth() + 1)).slice(-2) + "/" + dt.getFullYear() + " " + dt.getUTCHours() + "H" + dt.getUTCMinutes();
-=======
-                            return (dt.getDate() + 1) + "/" + (dt.getMonth() +1) + "/" + dt.getFullYear() + " " + dt.getUTCHours() + "H" + dt.getUTCMinutes();
->>>>>>> Test_User_As_Key
+
                         }
                     },
                     {data: 'status'},
