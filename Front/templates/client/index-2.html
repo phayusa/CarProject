@@ -6,12 +6,36 @@
 
     {% include 'client/head.html' %}
     {% load static %}
+    {#    <style>#}
+    {#            #test {#}
+    {#                background-image: url({% static "img/backgrounds/login.jpg" %});#}
+    {#                background-position: center;#}
+    {#                background-repeat: no-repeat;#}
+    {#                background-size: cover;#}
+    {#                height: 100%;#}
+    {##}
+    {#<div class="bg-parallax" style="background-image:url({% static "img/backgrounds/login.jpg" %});">#}
+    {##}
+    {#            }#}
+    {#    </style>#}
 
+    <style>
+        #test{
+            background-image: url({% static "img/backgrounds/login.jpg" %});
+            background-size: cover;
+        }
+
+{#        .tab-pane {#}
+{#            background-color: #303136 !important;#}
+{#            border: medium;#}
+{#            border-radius: 0;#}
+{#            color:#fff;#}
+{#        }#}
+
+    </style>
 </head>
 
-<style>
-    input[type="button"].
-</style>
+
 
 <body>
 
@@ -21,74 +45,224 @@
     {% include 'client/header.html' with active=1 %}
 
     <!-- TOP AREA -->
-    <div class="top-area show-onload">
-        <div class="owl-carousel owl-slider owl-carousel-area" id="owl-carousel-slider">
-            <div class="bg-holder full text-center text-white">
-                <div class="bg-mask"></div>
-                <div class="bg-img" style="background-image:url({% static "img/backgrounds/index1.jpg" %});"></div>
-                <div class="bg-front full-center">
-                    <div class="owl-cap">
-                        {#                        <div class="owl-cap"><span>Plus de 100</span><i class="im im-car-doors"></i>#}
-                        {#                        </div>#}
-                        <h1 class="owl-cap-title fittext">Chauffeurs Pro</h1>
-                        <div class="owl-cap-price">
-                            <small>Dans plus de</small>
-                            <h5>20 villes</h5>
+    <div class="top-area show-onload" id="test">
+        <div class="container">
+
+            <div class="search-tabs search-tabs-bg search-tabs-nobox search-tabs-lift-top">
+                <div class="tabbable" id="test2">
+                    <ul class="nav nav-tabs" id="myTab">
+                        <li class="active"><a href="#tab-1" data-toggle="tab"><i class="fa fa-car"></i>
+                            <span>Réservation</span></a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="test2">
+                        <div class="tab-pane fade in active" id="tab-1" style="background: transparent">
+                            <h2>Départ - Destination</h2>
+                            <form name="booking-form" onsubmit="return validateForm()" method="post"
+                                  action="booking/create/">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group form-group-lg form-group-icon-right"><i
+                                                        class="fa fa-map-marker input-icon"></i>
+                                                    <label>Départ</label>
+                                                    {#                                            <input class="typeahead form-control" name="start"#}
+                                                    {#                                                   placeholder="Aéroport" type="text"/>#}
+                                                    <select class="format-option form-control" name="airport">
+                                                        {% for airport in Airports %}
+                                                            <option value="{{ airport.id }}">{{ airport.address }}</option>
+                                                        {% endfor %}
+                                                    </select>
+
+                                                <br>
+
+                                                <label>Destination</label>
+                                                    <input id="arrive_adress" class="form-control" name="destination"
+                                                           placeholder="Adresse, Ville, Lieux" type="text"/>
+                                                    <input class="hidden" name="destination_location" type="text"
+                                                           id="destination_location"/>
+
+                                                </div>
+                                            </div>
+{#                                            <div class="col-md-6">#}
+{#                                                <div class="form-group form-group-lg form-group-icon-right"><i#}
+{#                                                        class="fa fa-map-marker input-icon"></i>#}
+{#                                                    <label>Destination</label>#}
+{#                                                    <input id="arrive_adress" class="form-control" name="destination"#}
+{#                                                           placeholder="Adresse, Ville, Lieux" type="text"/>#}
+{#                                                    <input class="hidden" name="destination_location" type="text"#}
+{#                                                           id="destination_location"/>#}
+{##}
+{#                                                </div>#}
+{#                                            </div>#}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="row">
+                                            <input class="hidden" id="arrive_time" name="arrive_time"/>
+                                            <div class="col-md-4">
+                                                <div class="form-group form-group-lg form-group-icon-right"><i
+                                                        class="fa fa-calendar fa-clock-o input-icon input-icon-highlight"></i>
+                                                    <label>Date d'arrivée</label>
+                                                    <input class="form-control input-group" name="date" id="datetimepicker1"/>
+                                                    {% comment %}
+                                            <input class="form-control" name="date" type="date" id="datetimepicker1"
+                                                   placeholder="2017-12-15"/>
+{% endcomment %}
+                                                    {#                                            <input class="date-pick form-control" name="date" type="text"/>#}
+                                                </div>
+                                            </div>
+
+                                            {% comment %}                                   <div class="col-md-3">
+                                        <div class="form-group form-group-lg form-group-icon-right"><i
+                                                class="fa fa-clock-o input-icon input-icon-highlight"></i>
+                                            <label>Heure</label>
+                                            <input class="time-pick form-control" type="text" name="time" id="time"/>
+                                        </div>
+                                    </div>{% endcomment %}
+                                        </div>
+
+                                        <div class="row">
+
+                                            <div class="col-md-4">
+                                                <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
+                                                    <i class="fa fa-car input-icon"></i>
+                                                    <label>Modèle</label>
+                                                    <input type="text" placeholder="Choisissez une voiture" data-toggle="modal" data-target="#carModal"
+                                                           id="modelCar_option" value="">
+                                                    <input type="hidden" name="model_choose" id="modelCar_Id" value="">
+                                                    {#                                           <select class="form-control format-option" name="model_choose">#}
+                                                    {#                                                {% for car in cars %}#}
+                                                    {#                                                    <option value="{{ car.id }}" >{{ car }} </option>#}
+                                                    {#                                                {% endfor %}#}
+                                                    {#                                            </select>#}
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
+                                                    <i class="fa fa-users input-icon input-icon-highlight"></i>
+                                                    <label>Passagers</label>
+                                                    <select class="form-control format-option" name="passengers">
+                                                        <option>1</option>
+                                                        <option>2</option>
+                                                        <option>3</option>
+                                                        <option>4</option>
+                                                        <option>5</option>
+                                                        <option>6</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
+                                                    <i class="fa fa-suitcase input-icon input-icon-highlight"></i>
+                                                    <label>Baggages</label>
+                                                    <select class="form-control format-option" name="luggage_number">
+                                                        <option>1</option>
+                                                        <option>2</option>
+                                                        <option>3</option>
+                                                        <option>4</option>
+                                                        <option>5</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-8">
+                                                <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
+                                                    <i class="fa fa-plane input-icon input-icon-highlight"></i>
+                                                    <label>Vol</label>
+                                                    <input class="form-control" type="text" name="flight"/>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-8">
+                                        <div class="row">
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary btn-lg" type="submit">Réserver une voiture</button>
+                            </form>
                         </div>
-                        {#                        <a class="btn btn-white btn-ghost" href="#"><i class="fa fa-angle-right"></i> Réserver</a>#}
                     </div>
                 </div>
             </div>
-            <div class="bg-holder full text-center text-white">
-                <div class="bg-mask"></div>
-                <div class="bg-img" style="background-image:url({% static "img/backgrounds/index2.jpg" %});"></div>
-                <div class="bg-front full-center">
-                    <div class="owl-cap">
-                        {#                        <div class="owl-cap"><span>Plus de 100</span><i class="im im-car-doors"></i>#}
-                        {#                        </div>#}
-                        <h1 class="owl-cap-title fittext">Accompagné</h1>
-                        <div class="owl-cap-price">
-                            <small>Prise en charge directement depuis</small>
-                            <h5>L'Aéroport</h5>
-                        </div>
-                        {#                        <a class="btn btn-white btn-ghost" href="#"><i class="fa fa-angle-right"></i> Réserver</a>#}
-                    </div>
-                </div>
-            </div>
-            <div class="bg-holder full text-center text-white">
-                <div class="bg-mask"></div>
-                <div class="bg-img" style="background-image:url({% static "img/backgrounds/index3.jpg" %});"></div>
-                <div class="bg-front full-center">
-                    <div class="owl-cap">
-                        {#                        <div class="owl-cap"><span>Plus de 100</span><i class="im im-car-doors"></i>#}
-                        {#                        </div>#}
-                        <h1 class="owl-cap-title fittext">Grand choix</h1>
-                        <div class="owl-cap-price">
-                            <small>Plus de 10 types de</small>
-                            <h5>Véhicules</h5>
-                        </div>
-                        {#                        <a class="btn btn-white btn-ghost" href="#"><i class="fa fa-angle-right"></i> Réserver</a>#}
-                    </div>
-                </div>
-            </div>
-            <div class="bg-holder full text-center text-white">
-                <div class="bg-mask"></div>
-                <div class="bg-img" style="background-image:url({% static "img/backgrounds/index4.jpg" %});"></div>
-                <div class="bg-front full-center">
-                    <div class="owl-cap">
-                        {#                        <div class="owl-cap"><span>Plus de 100</span><i class="im im-car-doors"></i>#}
-                        {#                        </div>#}
-                        <h1 class="owl-cap-title fittext">Disponible</h1>
-                        <div class="owl-cap-price">
-                            <small>Joignable</small>
-                            <h5>24h/24h</h5>
-                        </div>
-                        {#                        <a class="btn btn-white btn-ghost" href="#"><i class="fa fa-angle-right"></i> Réserver</a>#}
-                    </div>
-                </div>
-            </div>
+            <div class="gap gap-small"></div>
         </div>
     </div>
+    {#            <div class="owl-carousel owl-slider owl-carousel-area" id="owl-carousel-slider">#}
+    {#                <div class="bg-holder full text-center text-white">#}
+    {#                    <div class="bg-mask"></div>#}
+    {#                    <div class="bg-img" style="background-image:url({% static "img/backgrounds/index1.jpg" %});"></div>#}
+    {#                    <div class="bg-front full-center">#}
+    {#                        <div class="owl-cap">#}
+    {#                            <div class="owl-cap"><span>Plus de 100</span><i class="im im-car-doors"></i>#}
+    {#                            </div>#}
+    {#                            <h1 class="owl-cap-title fittext">Chauffeurs Pro</h1>#}
+    {#                            <div class="owl-cap-price">#}
+    {#                                <small>Dans plus de</small>#}
+    {#                                <h5>20 villes</h5>#}
+    {#                            </div>#}
+    {#                            <a class="btn btn-white btn-ghost" href="#"><i class="fa fa-angle-right"></i> Réserver</a>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#                <div class="bg-holder full text-center text-white">#}
+    {#                    <div class="bg-mask"></div>#}
+    {#                    <div class="bg-img" style="background-image:url({% static "img/backgrounds/index2.jpg" %});"></div>#}
+    {#                    <div class="bg-front full-center">#}
+    {#                        <div class="owl-cap">#}
+    {#                            <div class="owl-cap"><span>Plus de 100</span><i class="im im-car-doors"></i>#}
+    {#                            </div>#}
+    {#                            <h1 class="owl-cap-title fittext">Accompagné</h1>#}
+    {#                            <div class="owl-cap-price">#}
+    {#                                <small>Prise en charge directement depuis</small>#}
+    {#                                <h5>L'Aéroport</h5>#}
+    {#                            </div>#}
+    {#                            <a class="btn btn-white btn-ghost" href="#"><i class="fa fa-angle-right"></i> Réserver</a>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#                <div class="bg-holder full text-center text-white">#}
+    {#                    <div class="bg-mask"></div>#}
+    {#                    <div class="bg-img" style="background-image:url({% static "img/backgrounds/index3.jpg" %});"></div>#}
+    {#                    <div class="bg-front full-center">#}
+    {#                        <div class="owl-cap">#}
+    {#                            <div class="owl-cap"><span>Plus de 100</span><i class="im im-car-doors"></i>#}
+    {#                            </div>#}
+    {#                            <h1 class="owl-cap-title fittext">Grand choix</h1>#}
+    {#                            <div class="owl-cap-price">#}
+    {#                                <small>Plus de 10 types de</small>#}
+    {#                                <h5>Véhicules</h5>#}
+    {#                            </div>#}
+    {#                            <a class="btn btn-white btn-ghost" href="#"><i class="fa fa-angle-right"></i> Réserver</a>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#                <div class="bg-holder full text-center text-white">#}
+    {#                    <div class="bg-mask"></div>#}
+    {#                    <div class="bg-img" style="background-image:url({% static "img/backgrounds/index4.jpg" %});"></div>#}
+    {#                    <div class="bg-front full-center">#}
+    {#                        <div class="owl-cap">#}
+    {#                            <div class="owl-cap"><span>Plus de 100</span><i class="im im-car-doors"></i>#}
+    {#                            </div>#}
+    {#                            <h1 class="owl-cap-title fittext">Disponible</h1>#}
+    {#                            <div class="owl-cap-price">#}
+    {#                                <small>Joignable</small>#}
+    {#                                <h5>24h/24h</h5>#}
+    {#                            </div>#}
+    {#                            <a class="btn btn-white btn-ghost" href="#"><i class="fa fa-angle-right"></i> Réserver</a>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
 </div>
 <!-- END TOP AREA  -->
 
@@ -129,145 +303,10 @@
     }
 </script>
 
-<div class="container">
-    <div class="search-tabs search-tabs-bg search-tabs-nobox search-tabs-lift-top">
-        <div class="tabbable">
-            <ul class="nav nav-tabs" id="myTab">
-                <li class="active"><a href="#tab-1" data-toggle="tab"><i class="fa fa-car"></i>
-                    <span>Réservation</span></a>
-                </li>
-            </ul>
-            <div class="tab-content">
-                <div class="tab-pane fade in active" id="tab-1">
-                    <h2>Départ - Destination</h2>
-                    <form name="booking-form" onsubmit="return validateForm()" method="post"
-                          action="booking/create/">
-                        {% csrf_token %}
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group form-group-lg form-group-icon-right"><i
-                                                class="fa fa-map-marker input-icon"></i>
-                                            <label>Départ</label>
-                                            {#                                            <input class="typeahead form-control" name="start"#}
-                                            {#                                                   placeholder="Aéroport" type="text"/>#}
-                                            <select class="format-option form-control" name="airport">
-                                                {% for airport in Airports %}
-                                                    <option value="{{ airport.id }}">{{ airport.address }}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group form-group-lg form-group-icon-right"><i
-                                                class="fa fa-map-marker input-icon"></i>
-                                            <label>Destination</label>
-                                            <input id="arrive_adress" class="form-control" name="destination"
-                                                   placeholder="Adresse, Ville, Lieux" type="text"/>
-                                            <input class="hidden" name="destination_location" type="text"
-                                                   id="destination_location"/>
+<div class="gap gap-big"></div>
 
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="row">
-                                    <input class="hidden" id="arrive_time" name="arrive_time"/>
-                                    <div class="col-md-4">
-                                        <div class="form-group form-group-lg form-group-icon-right"><i
-                                                class="fa fa-calendar fa-clock-o input-icon input-icon-highlight"></i>
-                                            <label>Date d'arrivée</label>
-                                            <input class="form-control input-group" name="date" id="datetimepicker1"/>
-                                            {% comment %}
-                                            <input class="form-control" name="date" type="date" id="datetimepicker1"
-                                                   placeholder="2017-12-15"/>
-{% endcomment %}
-                                            {#                                            <input class="date-pick form-control" name="date" type="text"/>#}
-                                        </div>
-                                    </div>
+{#<div class="container body-content">#}
 
-{% comment %}                                   <div class="col-md-3">
-                                        <div class="form-group form-group-lg form-group-icon-right"><i
-                                                class="fa fa-clock-o input-icon input-icon-highlight"></i>
-                                            <label>Heure</label>
-                                            <input class="time-pick form-control" type="text" name="time" id="time"/>
-                                        </div>
-                                    </div>{% endcomment %}
-                                </div>
-
-                                <div class="row">
-
-                                    <div class="col-md-4">
-                                        <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
-                                            <i class="fa fa-car input-icon"></i>
-                                            <label>Modèle</label>
-                                                <input type="text" placeholder="Choisissez une voiture" data-toggle="modal" data-target="#carModal"
-                                                       id="modelCar_option" value="">
-                                                <input type="hidden" name="model_choose" id="modelCar_Id" value="">
-{#                                           <select class="form-control format-option" name="model_choose">#}
-{#                                                {% for car in cars %}#}
-{#                                                    <option value="{{ car.id }}" >{{ car }} </option>#}
-{#                                                {% endfor %}#}
-{#                                            </select>#}
-
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-2">
-                                        <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
-                                            <i class="fa fa-users input-icon input-icon-highlight"></i>
-                                            <label>Passagers</label>
-                                            <select class="form-control format-option" name="passengers">
-                                                <option>1</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                                <option>5</option>
-                                                <option>6</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-2">
-                                        <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
-                                            <i class="fa fa-suitcase input-icon input-icon-highlight"></i>
-                                            <label>Baggages</label>
-                                            <select class="form-control format-option" name="luggage_number">
-                                                <option>1</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                                <option>5</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-8">
-                                        <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
-                                            <i class="fa fa-plane input-icon input-icon-highlight"></i>
-                                            <label>Vol</label>
-                                            <input class="form-control" type="text" name="flight"/>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div class="col-md-8">
-                                <div class="row">
-                                </div>
-                            </div>
-                        </div>
-                        <button class="btn btn-primary btn-lg" type="submit">Réserver une voiture</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="gap gap-small"></div>
-</div>
 <div class="bg-holder">
     <div class="bg-mask"></div>
     {#    <div class="bg-parallax" style="background-image:url({% static "img/backgrounds/taxi.jpg" %});"></div>#}

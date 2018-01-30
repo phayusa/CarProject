@@ -93,7 +93,8 @@
                                 </ul>
                             </div>
 
-                            <form class="form-horizontal p-3" novalidate="novalidate" id="booking_form" action=""
+                            <form class="form-horizontal p-3" novalidate="novalidate" id="booking_form"
+                                  onsubmit="window.location.replace('/commercial/succeed/')" action=""
                                   method="post">
                                 {% csrf_token %}
                                 <div class="tab-content">
@@ -321,6 +322,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
                             </form>
                         </div>
                         <div class="card-footer">

@@ -79,9 +79,8 @@ def index(request):
             date = request.POST.get('date', None)
             time = request.POST.get('time', None)
 
-
-            test = request.POST.get('departureCity', None)
-            print test
+            # test = request.POST.get('departureCity', None)
+            # print test
 
             raw_date = datetime.datetime.strptime(date + ' ' + time, "%Y-%m-%d %H:%M")
             date_time = raw_date.strftime("%Y-%m-%dT%H:%M")
@@ -93,7 +92,7 @@ def index(request):
             tmp.client = Client.objects.filter(id=client)[0]
 
             tmp.save()
-            return redirect('/commercial/')
+            return render(request, 'commercial/success_recap.html', {"client": tmp, "dateToday": datetime.datetime.now().date()} )
     else:
         form = BookingCommercialCreateForm()
 

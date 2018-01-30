@@ -227,9 +227,9 @@ Theme Version: 	2.0.0
         //     });
 
         var form = $('#booking_form');
-	form.action = "/commercial/succeed/";
+	// form.action = '/commercial/succeed/';
 	form.submit();
-	// $("#btnRecap").location.href="/commercial/succeed/";
+	// form.attr('action', '/commercial/succeed/');
         // } else {
         //     new PNotify({
         //         title: 'Echec',
