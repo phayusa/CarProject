@@ -152,6 +152,14 @@ def prices(request):
     models = VehicleModel.objects.all()
     return render(request, 'client/prices.html', {'models': models, "Airports": Airport.objects.all()})
 
+def howItWorks(request):
+    return render(request, 'client/howItWorks.html');
+
+def becomeDriver(request):
+    return render(request, 'client/becomeDriver.html');
+
+def bookingCreate(request):
+    return render(request, 'client/booking.html');
 
 def contact(request):
     if request.method == "POST":

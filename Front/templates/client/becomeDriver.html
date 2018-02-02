@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Aceline Services - Chauffeur</title>
+
+    <style>
+        h1, h2{
+            color: white;
+            text-shadow: 2px 2px grey;
+        }
+
+        .fullP{
+            max-width: 100%;
+            max-height: 100%;
+            bottom: 0;
+            left: 0;
+            margin: auto;
+            overflow: auto;
+            position: fixed;
+            right: 0;
+            top: 0;
+        }
+
+        .centered {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .logo{
+            position: relative;
+        }
+
+    </style>
+</head>
+<body>
+<div class="site-container">
+    <div class="background">
+        <img src="https://static.latribune.fr/405211/vtc.jpg"
+             class="fullP"
+             alt="Web Reservation"/>
+    </div>
+
+
+
+    <div class="centered">
+{% comment %}        <div class="logo">
+            <img src="{% static "img/logo.png" %}" alt="Aceline Services"
+                 title="Image Title"/>
+        </div>{% endcomment %}
+        <h1>Travaillez à votre compte pour votre futur!</h1>
+        <h2>Découvrez l’activité de partenaire SuperShuttle en sélectionnant la ville qui vous intéresse ci-dessous</h2>
+        <div class="driveBorder">
+            <div class="driveLocations">
+                <select id="driveOptionsPages" onchange="return fnContinueMoreInfo();">
+                    <option value="Select City">Choisir une ville</option>
+                    <option value="/drive/paris">Paris</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

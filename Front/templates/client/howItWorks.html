@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    {% include 'client/head.html' %}
+    <meta charset="UTF-8">
+    <title>Aceline Services | Comment ça marche ?</title>
+
+    <style>
+
+{#        body{#}
+{#            padding-top: 50px;#}
+{#            padding-right: 30px;#}
+{#            padding-bottom: 50px;#}
+{#            padding-left: 80px;#}
+{#        }#}
+
+        .animated {
+            background-repeat: no-repeat;
+            background-position: left top;
+            padding-top:95px;
+            margin-bottom:60px;
+            -webkit-animation-duration: 3s;
+            animation-duration: 3s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+        {#             box-shadow: 10px 10px grey;#}
+        }
+
+        @-webkit-keyframes fadeInRight {
+            0% {
+                opacity: 0;
+                -webkit-transform: translateX(20px);
+            }
+            100% {
+                opacity: 1;
+                -webkit-transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            0% {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .fadeInRight {
+            -webkit-animation-name: fadeInRight;
+            animation-name: fadeInRight;
+        }
+
+        #background{
+            background-color: rgba(240, 240, 240, 0.5);
+            opacity: 1;
+            z-index: 1;
+        }
+
+        img {
+            max-width: 625px;
+            max-height: 475px;
+        }
+
+        div.container {
+            display:inline-block;
+        }
+    </style>
+
+</head>
+<body>
+
+{% include 'client/facebook_widget.html' %}
+
+<div class="global-wrap">
+    {% include 'client/header.html' %}
+
+        <div class="w3-content">
+            <h1 id="animated" class="animated fadeInRight" style="color: #0a6aa1">Comment ça marche ?</h1>
+        </div>
+
+    <div id="background">
+        <h2><a href="/about">Le Concept Aceline Services</a></h2>
+        <p>Des voyageurs malins partagent une navette dans la même direction vers ou depuis l’aéroport.
+            C’est la solution pour voyager facile, plus économique qu&rsquo;un taxi, pour éviter le parking aéroport ou les
+            transports en commun. Alors comment fonctionne le service aceline ?</p>
+        <p>Entre les transports collectifs et le taxi, aceline est la solution idéale pour
+            <strong>assurer vos déplacements entre les 3 aéroports parisiens</strong>
+            (<a href="https://www.aceline.fr/a%C3%A9roport-paris-charles-de-gaulle/">Paris Roissy Charles de Gaulle (CDG)
+            </a>, <a href="https://www.aceline.fr/a%C3%A9roport-de-paris-orly/">Paris Orly (ORY)</a>
+            et <a href="https://www.aceline.fr/a%C3%A9roport-paris-beauvais-till%C3%A9/">Paris Beauvais (BVA)</a>),
+            <strong>le parc <a href="https://www.aceline.fr/marne-la-vallee_parc_disneyland_paris_navettes/">Disneyland®
+                Paris</a></strong>, ainsi que vers et depuis <strong>Paris et sa banlieue</strong>.<br />
+            Rendez-vous ici pour <a href="https://www.aceline.fr/zones-desservies/">consulter l&rsquo;ensemble de nos
+                points d&rsquo;arrêts</a>.</p>
+        <h3>Comment Réserver ?</h3>
+        <p>aceline vous propose un <strong>horaire de départ ajusté</strong> à l’heure de votre vol pour
+            vous garantir une arrivée sans stress et dans les temps, y compris aux heures de pointe.</p>
+        <p>Vous recevez une confirmation de réservation par e-mail instantanément. Vous pouvez
+            <a href="https://www.aceline.fr/politiquedannulation/">modifier ou annuler</a>
+            cette réservation jusqu’à 6 heures avant le départ.</p>
+
+        <center>
+            <figure class="half" style="display: flex">
+                <div class="container">
+                    <img
+                            src="https://ssfrance-wpengine.netdna-ssl.com/wp-content/uploads/2016/12/reservation-web-1.jpg"
+                            alt="Web Reservation"/><a href="/"> <br /> aceline.fr</a>
+                    ou <a href="https://www.aceline.fr/app/">via l&rsquo;app!</a><br />
+                    <i class="fa fa-clock-o"></i> 24/24h
+                </div>
+                <div class="container">
+                    <img src="https://ssfrance-wpengine.netdna-ssl.com/wp-content/uploads/2016/12/reservation-telephone-1.jpg"
+                         alt="Phone Reservation" /><a href="tel:+33141471300"><br />+ 33 1 41 47 13 00</a><br />
+                    <i class="fa fa-clock-o"></i> 7h à 20h
+                </div>
+            </figure>
+        </center>
+        <div class="hiw-alert">
+            <p><i class="fa fa-exclamation-circle"></i> Aux aéroports, vous pouvez également réserver un aceline
+                pour une prise en charge 15 minutes plus tard. aceline est en vente à Orly et Roissy Charles de
+                Gaulle aux comptoirs « Information Tourisme » de tous les terminaux. A Beauvais, des billets sont
+                disponibles aux comptoirs aceline du T1 et T2.</p>
+        </div>
+        <div>
+            <h3>Le Trajet en Navette Partagée</h3>
+            <p>aceline vous prend en charge ou vous dépose à l’adresse que vous avez choisie et
+                <strong>vous prévient par SMS</strong>
+                quelques minutes avant son arrivée. A l’aéroport, vous devrez rejoindre
+                <a href="https://www.aceline.fr/lieux-de-rendez-vous/">le point rendez-vous</a>
+                mentionné sur votre confirmation pour trouver le aceline.</p>
+            <p>Le aceline est un mini van de 8 places, dernière génération et climatisé.
+                Il peut effectuer quelques arrêts en chemin pour prendre d’autres voyageurs malins.
+                Vous bénéficiez d’une <strong>connexion Wifi</strong> durant le trajet.</p>
+            <p>Dès la fin de votre voyage, vous recevez un e-mail vous permettant de noter votre trajet aceline
+                et éventuellement de nous signaler un défaut.</p>
+            <p class="textCenter">
+                <a href="https://ssfrance-wpengine.netdna-ssl.com/wp-content/uploads/2016/12/how-it-works-3-6.png"
+                   rel="lightbox" data-rel="lightbox-0" title="">
+                    <center>
+                        <img class="width-80"
+                             src="https://ssfrance-wpengine.netdna-ssl.com/wp-content/uploads/2016/12/how-it-works-3-6.png"
+                             alt="Comment aceline marche" />
+                    </center>
+                </a></p>
+            <h3>Formule + : Notre Service Privatif</h3>
+            <p>Nos navettes de 8 places peuvent être réservées en <strong>usage exclusif</strong>,
+                pour vos déplacements <strong>depuis et vers l’aéroport ou la gare de votre choix</strong>
+                (<a href="https://www.aceline.fr/tarifs/">consultez nos tarifs par ici</a>).</p>
+            <p>Dès que vous avez récupéré vos bagages, vous bénéficiez alors d’un
+                <strong>accueil personnalisé et d’une assistance</strong> en aéroport. Il n’y a pas d’attente,
+                pas de restriction de bagages, le trajet est rapide et direct.</p>
+            <p>Ce service convient particulièrement aux familles nombreuses et aux voyageurs munis de
+                bagages encombrants (vélos, skis, clubs de golf…) et aux personnes ne se rendant pas vers Paris.
+                Si <strong>vous organisez un événement de groupe</strong>, le
+                <a href="https://www.aceline.fr/aceline_paris_transport_evenementiel_groupe/">
+                    service de location de mini vans privés</a> est tout à fait adapté à vos besoins.</p>
+            <p>Pour toute question sur le service ou votre réservation, n&rsquo;hésitez pas à
+                <a href="https://www.aceline.fr/contactez-nous/">contacter nos équipes</a> !</p>
+        </div>
+    </div>
+</div>
+{% include 'client/footer.html' %}
+
+</body>
+</html>

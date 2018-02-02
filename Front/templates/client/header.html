@@ -2,62 +2,139 @@
 {% load static %}
 
 <style type="text/css">
-    #espPro{
-        background: #800000 !important;
-    }
+        .navbar {
+            background-color: transparent;
+            background: transparent;
+
+            position:relative;
+            min-height:40px;
+            margin:0px;
+            border:0px solid transparent;
+        }
+
+        .navbar ul li a:active,
+        .navbar ul li a:hover,
+        .navbar ul li a:visited,
+        .navbar ul li a:link { color: #000 ;}
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: fixed;
+            background-color: #f9f9f9;
+            padding-left: 0;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: transparent;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        ul li{
+            list-style-type: none;
+        }
+
+        #rigthLoginConnexion{
+            padding-right: 90px;
+        }
+
 </style>
 
-
-<header id="main-header">
-    <div class="header-top">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3">
-                    <a class="logo" href="/">
-                        <img src="{% static "img/logo.png" %}" alt="Aceline Services"
-                             title="Image Title"/>
-                    </a>
-                </div>
-                <div class="col-md-3 col-md-offset-2">
-{#                    <form class="main-header-search">#}
-{#                        <div class="form-group form-group-icon-left">#}
-{#                            <i class="fa fa-search input-icon"></i>#}
-{#                            <input type="text" class="form-control">#}
-{#                        </div>#}
-{#                    </form>#}
-                </div>
-                <div class="col-md-4">
-                    <div class="top-user-area clearfix">
-                        <ul class="top-user-area-list list list-horizontal list-border">
-                            {% if user.is_authenticated %}
-                                <li class="top-user-area-avatar">
-                                    <a href="/user">
-                                        <img class="origin round" src="{% static "img/40x40.png" %}"
-                                             alt="Image Alternative text" title="AMaze"/>Bienvenue {{ user.username }}</a>
-                                </li>
-                                <li><a href="/user/logout/">Déconnexion</a></li>
-                            {% else %}
-                                <li class="top-user-area-avatar">
-                                    <a href="/register">S'inscrire</a>
-                                </li>
-                                <li><a href="/login">Connexion</a></li>
-                            {% endif %}
-                        </ul>
-                    </div>
-                </div>
-            </div>
+{#id="main-header"#}
+<header>
+    <div class="navbar transparent navbar-inverse navbar-static-top hr">
+        <div class="navbar-brand logo">
+            <img src="{% static "img/logo.png" %}" alt="Aceline Services"
+                 title="Image Title"/>
         </div>
-    </div>
-    <div class="container">
-        <div class="nav">
-            <ul class="slimmenu" id="slimmenu">
+        <div class="navbar-brand-right">
+        </div>
+        <div class="container-fluid">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+            </div>
+            {#            <ul class="navbar-collapse collapse">#}
+            <ul class="nav navbar-nav">
+                {#                 mineul" style="font-size:17px;margin-top:9px; color:transparent;">#}
                 <li {% if active == 1 %} class="active" {% endif %}><a href="/">Accueil</a></li>
-                <li {% if active == 2 %} class="active" {% endif %}><a href="/about">A propos</a></li>
-                <li {% if active == 3 %} class="active" {% endif %}><a href="/prices">Tarifs</a></li>
+
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-hover="dropdown" href="#">Notre service
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-content">
+                        <li><a href="/about">À propos de nous</a></li>
+                        <li><a href="/comment-ca-marche">Comment ça marche</a></li>
+                        <li><a href="#">Nos tarifs</a></li>
+                        <li><a href="#">Bons plans</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </li>
+
+                <li {% if active == 150 %} class="active" {% endif %}><a href="/contact">Zones desservies</a></li>
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-hover="dropdown" href="#">Mes trajets
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-content">
+                        <li><a href="#" onclick="window.open('/login')">Me connecter</a></li>
+                        <li><a href="#">Modifier</a></li>
+                        <li><a href="#">Localiser</a></li>
+                        <li><a href="#">Envoyer l'itinéraire par e-mail</a></li>
+                        <li><a href="#">Annuler</a></li>
+                    </ul>
+                </li>
+
+                <li {% if active == 14 %} class="active" {% endif %}><a href="/booking">Devenir partenaire</a></li>
+                <li {% if active == 15 %} class="active" {% endif %}><a href="/devenir-chauffeur">Devenir chauffeur</a></li>
                 <li {% if active == 5 %} class="active" {% endif %}><a href="/contact">Contact</a></li>
-                <li {% if active == 6 %} class="active" {% endif %}><a id="espPro" href="/pro">Espace Pro</a></li>
-                <li {% if active == 4 %} class="active" {% endif %}><a href="/events">Évènements</a></li>
+
+
+                {#                <ul class="top-user-area-list list list-horizontal list-border">#}
+{#                <div class="top-user-area clearfix" id="test">#}
+{#                    <ul class="top-user-area-list list list-horizontal list-border">#}
+                <li id="rigthLoginConnexion">
+                    {% if user.is_authenticated %}
+                        <li class="top-user-area-avatar">
+                            <a href="/user">
+                                <img class="origin round" src="{% static "img/40x40.png" %}"
+                                     alt="Image Alternative text" title="AMaze"/>Bienvenue {{ user.username }}</a>
+                        </li>
+                        <li><a href="/user/logout/">Déconnexion</a></li>
+                    {% else %}
+                        <li class="top-user-area-avatar navbar-right">
+                            <a href="/register">S'inscrire</a>
+                        </li>
+                        <li class="top-user-area-avatar navbar-right"><a href="/login">Connexion</a></li>
+                    {% endif %}
+                </li>
+{#                    </ul>#}
+{#                </div>#}
+
             </ul>
+            {#            </ul>#}
         </div>
     </div>
 </header>
