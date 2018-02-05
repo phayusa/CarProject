@@ -1,0 +1,443 @@
+<!DOCTYPE HTML>
+<html lang="fr">
+
+<head>
+    <title>Aceline Services | Acceuil </title>
+
+    {% include 'client/head.html' %}
+    {% load static %}
+
+    <style>
+        #test{
+            background-image: url({% static "img/backgrounds/login.jpg" %});
+            background-size: cover;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+
+</head>
+
+
+
+<body>
+
+{% include 'client/facebook_widget.html' %}
+
+<div class="global-wrap">
+    {% include 'client/header.html' with active=14 %}
+
+    <!-- TOP AREA -->
+{#    <div class="top-area show-onload">#}
+        <div class="container">
+
+            <div class="search-tabs search-tabs-bg search-tabs-nobox search-tabs-lift-top">
+                <div class="tabbable" id="test2">
+                    <ul class="nav nav-tabs" id="myTab">
+                        <li class="active"><a data-toggle="tab" href="#AeroportToDestination">Aéroport-Destination</a></li>
+                        <li><a data-toggle="tab" href="#DestinationToAeroport">Destination-Aéroport</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="AeroportToDestination" class="tab-pane in active">
+                            <h2>Départ - Destination</h2>
+                            <form name="booking-form" onsubmit="return validateForm()" method="post"
+                                  action="/create/">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group form-group-lg form-group-icon-right"><i
+                                                        class="fa fa-map-marker input-icon"></i>
+                                                    <label>Départ</label>
+                                                    <select class="format-option form-control" name="airport">
+                                                        {% for airport in Airports %}
+                                                            <option value="{{ airport.id }}">{{ airport.address }}</option>
+                                                        {% endfor %}
+                                                    </select>
+
+                                                    <br>
+
+                                                    <label>Destination</label>
+                                                    <input id="arrive_adress" class="form-control" name="destination"
+                                                           placeholder="Adresse, Ville, Lieux" type="text"/>
+                                                    <input class="hidden" name="destination_location" type="text"
+                                                           id="destination_location"/>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="row">
+                                            <input class="hidden" id="arrive_time" name="arrive_time"/>
+                                            <div class="col-md-4">
+                                                <div class="form-group form-group-lg form-group-icon-right"><i
+                                                        class="fa fa-calendar fa-clock-o input-icon input-icon-highlight"></i>
+                                                    <label>Date d'arrivée</label>
+                                                    <input class="form-control input-group" name="date" id="datetimepicker1"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+
+                                            <div class="col-md-4">
+                                                <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
+                                                    <i class="fa fa-car input-icon"></i>
+                                                    <label>Modèle</label>
+                                                    <input type="text" placeholder="Choisissez une voiture" data-toggle="modal" data-target="#carModal"
+                                                           id="modelCar_option" value="">
+                                                    <input type="hidden" name="model_choose" id="modelCar_Id" value="">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
+                                                    <i class="fa fa-users input-icon input-icon-highlight"></i>
+                                                    <label>Passagers</label>
+                                                    <select class="form-control format-option" name="passengers">
+                                                        <option>1</option>
+                                                        <option>2</option>
+                                                        <option>3</option>
+                                                        <option>4</option>
+                                                        <option>5</option>
+                                                        <option>6</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
+                                                    <i class="fa fa-suitcase input-icon input-icon-highlight"></i>
+                                                    <label>Baggages</label>
+                                                    <select class="form-control format-option" name="luggage_number">
+                                                        <option>1</option>
+                                                        <option>2</option>
+                                                        <option>3</option>
+                                                        <option>4</option>
+                                                        <option>5</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-8">
+                                                <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
+                                                    <i class="fa fa-plane input-icon input-icon-highlight"></i>
+                                                    <label>Vol</label>
+                                                    <input class="form-control" type="text" name="flight"/>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-8">
+                                        <div class="row">
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary btn-lg" type="submit">Réserver une voiture</button>
+                            </form>
+                        </div>
+                        <div id="DestinationToAeroport" class="tab-pane fade">wesh ma gueule</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{#    </div>#}
+</div>
+
+{% comment %}<div class="tabbable" id="test2">
+                    <ul class="nav nav-tabs" id="myTab">
+                        <li class="active"><a href="#tab-1" data-toggle="tab"><i class="fa fa-car"></i>
+                            <span>Réservation</span></a>
+                        </li>
+                         <li><a href="#tab-2" data-toggle="tab"><i class="fa fa-car"></i>
+                            <span>yo Man</span></a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="test2">
+                        <div class="tab-pane fade in active" id="tab-1" style="background: transparent">
+                            <h2>Départ - Destination</h2>
+                            <form name="booking-form" onsubmit="return validateForm()" method="post"
+                                  action="booking/create/">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group form-group-lg form-group-icon-right"><i
+                                                        class="fa fa-map-marker input-icon"></i>
+                                                    <label>Départ</label>
+                                                    <select class="format-option form-control" name="airport">
+                                                        {% for airport in Airports %}
+                                                            <option value="{{ airport.id }}">{{ airport.address }}</option>
+                                                        {% endfor %}
+                                                    </select>
+
+                                                    <br>
+
+                                                    <label>Destination</label>
+                                                    <input id="arrive_adress" class="form-control" name="destination"
+                                                           placeholder="Adresse, Ville, Lieux" type="text"/>
+                                                    <input class="hidden" name="destination_location" type="text"
+                                                           id="destination_location"/>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="row">
+                                            <input class="hidden" id="arrive_time" name="arrive_time"/>
+                                            <div class="col-md-4">
+                                                <div class="form-group form-group-lg form-group-icon-right"><i
+                                                        class="fa fa-calendar fa-clock-o input-icon input-icon-highlight"></i>
+                                                    <label>Date d'arrivée</label>
+                                                    <input class="form-control input-group" name="date" id="datetimepicker1"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+
+                                            <div class="col-md-4">
+                                                <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
+                                                    <i class="fa fa-car input-icon"></i>
+                                                    <label>Modèle</label>
+                                                    <input type="text" placeholder="Choisissez une voiture" data-toggle="modal" data-target="#carModal"
+                                                           id="modelCar_option" value="">
+                                                    <input type="hidden" name="model_choose" id="modelCar_Id" value="">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
+                                                    <i class="fa fa-users input-icon input-icon-highlight"></i>
+                                                    <label>Passagers</label>
+                                                    <select class="form-control format-option" name="passengers">
+                                                        <option>1</option>
+                                                        <option>2</option>
+                                                        <option>3</option>
+                                                        <option>4</option>
+                                                        <option>5</option>
+                                                        <option>6</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
+                                                    <i class="fa fa-suitcase input-icon input-icon-highlight"></i>
+                                                    <label>Baggages</label>
+                                                    <select class="form-control format-option" name="luggage_number">
+                                                        <option>1</option>
+                                                        <option>2</option>
+                                                        <option>3</option>
+                                                        <option>4</option>
+                                                        <option>5</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-8">
+                                                <div class="form-group form-group-lg form-group-select-plus form-group-icon-right">
+                                                    <i class="fa fa-plane input-icon input-icon-highlight"></i>
+                                                    <label>Vol</label>
+                                                    <input class="form-control" type="text" name="flight"/>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-8">
+                                        <div class="row">
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary btn-lg" type="submit">Réserver une voiture</button>
+                            </form>
+                        </div>
+                    </div>
+
+
+                    <div class="tab-content" id="test2">
+                        <div class="tab-pane fade" id="tab-2" style="background: transparent">
+                            <h2>Départ - Destination</h2>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="gap gap-small"></div>
+        </div>
+    </div>{% endcomment %}
+
+<!-- END TOP AREA  -->
+
+<script>
+    function validateForm() {
+
+
+        var arrive = document.forms["booking-form"]["destination"].value;
+        if (arrive === "") {
+            alert("Une destination doit être choisi.");
+            return false;
+        }
+
+        var date = document.forms["booking-form"]["date"].value;
+        if (date === "") {
+            alert("Une date d'arrivée doit être choisi.");
+            return false;
+        }
+
+        var time = document.forms["booking-form"]["time"].value;
+        if (time === "") {
+            alert("Une heure d'arrivée doit être choisi.");
+            return false;
+        }
+
+        if (Date.parse(time) < new Date().getTime()) {
+            alert("L'heure d'arrivée ne peut pas être inférieure à l'instant présent");
+            return false;
+        }
+
+        var flight = document.forms["booking-form"]["flight"].value
+        if (flight === "") {
+            alert("Un vol doit être indiqué");
+            return false;
+        }
+
+
+    }
+</script>
+
+<div class="gap gap-big"></div>
+
+{#<div class="container body-content">#}
+
+<div class="bg-holder">
+    <div class="bg-mask"></div>
+    {#    <div class="bg-parallax" style="background-image:url({% static "img/backgrounds/taxi.jpg" %});"></div>#}
+    <div class="bg-parallax" style="background-image:url({% static "img/header.jpg" %});"></div>
+    <div class="bg-content">
+        <div class="container">
+            <div class="gap gap-big text-center text-white">
+                <h2 class="text-uc mb20">Aceline Services</h2>
+                <h5 class="last-minute-title">Qualité de service professionelle</h5>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="gap"></div>
+    <div class="row row-wrap" data-gutter="60">
+        <div class="col-md-3">
+            <div class="thumb"><i
+                    class="fa fa-thumbs-o-up box-icon-right round box-icon-gray animate-icon-top-to-bottom"></i>
+                <div class="thumb-caption">
+                    <h5 class="thumb-title">QUALITÉ DE SERVICE</h5>
+                    <p class="thumb-desc">Quelle que soit votre destination, quels que soient vos besoins, nous nous
+                        engageons à rendre votre expérience à bord de nos vehicules , en vous proposant la meilleure
+                        qualitée de nos services.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="thumb"><i
+                    class="fa fa-dollar box-icon-right round box-icon-gray animate-icon-top-to-bottom"></i>
+                <div class="thumb-caption">
+                    <h5 class="thumb-title">Une prestation haute gamme</h5>
+                    <p class="thumb-desc">Nous mettons à votre disposition un ou plusieurs véhicules VIP, pour vous
+                        proposer un service d’excellence. Une large gamme de voitures est disponible (Mercedes Classe S,
+                        Mercedes Viano VIP, Tesla Model S, ...), ainsi que des options (guides touristiques, ...) ou de nombreux
+                        services à bord (Tablettes tactiles, chargeurs smartphones).</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="thumb"><i
+                    class="fa fa-clock-o box-icon-right round box-icon-gray animate-icon-top-to-bottom"></i>
+                <div class="thumb-caption">
+                    <h5 class="thumb-title">Réservez un véhicule à l'avance ou en demande immédiate</h5>
+                    <p class="thumb-desc">Avec Aceline, vous pourrez faire des demandes immédiates ou des réservations à
+                        l'avance pour répondre à tous vos besoins. </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="thumb"><i
+                    class="fa fa-car box-icon-right round box-icon-gray animate-icon-top-to-bottom"></i>
+                <div class="thumb-caption">
+                    <h5 class="thumb-title">Accès à de multiples berlines haut de gamme et aux Vans VIP</h5>
+                    <p class="thumb-desc">Accès aux véhicules Club Affaires à la demande : Class S, Tesla, Serie 7, Audi
+                        A8... Service haute gamme à bord des véhicules. Chauffeurs VIP, représentant de la charte qualité
+                        la plus exigeante de Aceline, sont sélectionnés pour leurs sens du
+                        service distinqué et impeccable.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="gap gap-small"></div>
+</div>
+
+{% include 'client/footer.html' %}
+
+{% include 'client/scriptLoading.html' %}
+
+{% include 'client/carModal.html' %}
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAb1NNSLUT7vzTIezPAqKumMB7wNXa2hMg&libraries=places&callback=initAutocomplete"
+        async defer></script>
+
+<script type="text/javascript">
+    $(function()
+    {
+        $("#datetimepicker1").datetimepicker({
+            defaultDate: new Date(),
+            format: "DD/MM/YYYY HH:mm",
+            minDate: new Date(),
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-arrow-up",
+                down: "fa fa-arrow-down"
+            }
+        });
+    });
+</script>
+
+<script>
+    var placeSearch, autocomplete;
+
+    function initAutocomplete() {
+        // Create the autocomplete object, restricting the search to geographical
+        // location types.
+        autocomplete = new google.maps.places.Autocomplete(
+            /** @type {!HTMLInputElement} */(document.getElementById('arrive_adress')),
+            {
+                types: ['geocode'],
+                componentRestrictions: {country: "fr"}
+            });
+        {#            {types: ['geocode']});#}
+
+
+        // When the user selects an address from the dropdown, populate the address
+        // fields in the form.
+        autocomplete.addListener('place_changed', fillInAddress);
+    }
+
+    function fillInAddress() {
+        // Get the place details from the autocomplete object.
+        var place = autocomplete.getPlace();
+        document.getElementById("destination_location").value = place.geometry.location;
+    }
+</script>
+
+</div>
+</body>
+
+</html>

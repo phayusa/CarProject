@@ -54,6 +54,10 @@ def index(request):
     else:
         return redirect("/404")
 
+def booking_get_airport_and_vehicle(request):
+    if request.method == "GET":
+        return render(request, 'client/bookingInterface.html',
+                      {"Airports": Airport.objects.all(), "cars": VehicleModel.objects.all()})
 
 def about(request):
     return render(request, 'client/about.html')
@@ -158,9 +162,6 @@ def howItWorks(request):
 def becomeDriver(request):
     return render(request, 'client/becomeDriver.html');
 
-def bookingCreate(request):
-    return render(request, 'client/booking.html');
-
 def contact(request):
     if request.method == "POST":
         form = ContactUsForm(request.POST)
@@ -232,14 +233,20 @@ def booking_succeed(request, pk):
 
 
 def booking_create(request, *args, **kwargs):
+    print "blblblbl"
     if not request.user.is_authenticated():
         return redirect('/login/')
+    print "oyoyoyoyo"
     if not request.method == "POST":
+        print "sérieux"
         return redirect('/404')
-
+    else:
+        print "merde"
     try:
         data = request.POST
         date = data.get('date', None)
+        print "eeeee"
+        print date
         #        time = data.get('time', None)
 
         clients = Client.objects.filter(user=request.user)
@@ -258,6 +265,18 @@ def booking_create(request, *args, **kwargs):
         date_w_timezone = pytz.timezone("Europe/Paris").localize(parse_datetime(date_time), is_dst=None)
         datetimeNow = datetime.datetime.now()
         # booking, created = Booking.objects.get_or_create(destination=data["destination"],
+
+        print "avant"
+        print data["destination"]
+        print data["destination_location"]
+        print Airport.objects.filter(id=data["airport"])[0]
+        print date_w_timezone
+        print int(data['luggage_number'])
+        print int(data['passengers'])
+        print VehicleModel.objects.filter(id=data['model_choose'])[0]
+        # print client
+        # print data["flight"]
+
         booking = Booking.objects.create(destination=data["destination"],
                                          destination_location=data["destination_location"].replace('(',
                                                                                                    '').replace(
@@ -270,11 +289,13 @@ def booking_create(request, *args, **kwargs):
                                          passengers=int(data['passengers']),
                                          model_choose=
                                          VehicleModel.objects.filter(id=data['model_choose'])[
-                                             0],
-                                         client=client,
-                                         flight=data["flight"])
+                                             0])#,
+                                         # client=client,
+                                         # flight=data["flight"])
+        print "Apres"
         # if not created:
         #     return redirect("/404/")
+
 
         origin = str(Airport.objects.filter(id=data["airport"])[0]).replace(' ', '+').replace(',', '')
         destination = data["destination"].replace(' ', '+').replace(',', '')
@@ -294,7 +315,7 @@ def booking_create(request, *args, **kwargs):
         # serialize_data = BookingSerializer(booking).data
         request.session['Booking_id'] = booking.id
         request.session.modified = True
-        return redirect('/booking/payment/')
+        return redirect('payment/')
 
     except Exception as e:
         raise Http404("Page non trouvé")
