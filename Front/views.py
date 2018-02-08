@@ -7,6 +7,7 @@ import pytz
 import stripe
 from django.contrib.auth import login as login_func, authenticate
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import *
 from django.shortcuts import render, redirect
@@ -16,7 +17,7 @@ from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
 from Back_Source.models import VehicleModel, Client, Booking, Airport, BuissnessPartner, Commercial, Operator
-from forms import BookingForm, ClientForm, ContactUsForm, ContactProForm
+from forms import BookingForm, BookingCreateFormClient, ClientForm, ClientFormNoUser, ContactUsForm, ContactProForm
 from tokens import account_activation_token
 
 # Library for generate PDF
@@ -30,6 +31,7 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
 import json, urllib
+
 # Create your views here.
 
 
@@ -56,8 +58,48 @@ def index(request):
 
 def booking_get_airport_and_vehicle(request):
     if request.method == "GET":
+        form = BookingCreateFormClient()
+        client_form = ClientFormNoUser()
+
         return render(request, 'client/bookingInterface.html',
-                      {"Airports": Airport.objects.all(), "cars": VehicleModel.objects.all()})
+                      {"Airports": Airport.objects.all(),
+                       "cars": VehicleModel.objects.all(),
+                       "form": form,
+                       "clientForm": client_form})
+    elif request.method == "POST":
+        form = BookingCreateFormClient(request.POST)
+        client_form = ClientFormNoUser(request.POST)
+
+        if client_form.is_valid():
+            print "tu passe dans client ?"
+            client_obj = client_form.save(commit=False)
+            print "client_obj : "
+            print client_obj
+
+        if form.is_valid():
+            print "tu passe dans form ?"
+            tmp = form.save(commit=False)
+
+            date = request.POST.get('date', None)
+            time = request.POST.get('time', None)
+
+            # test = request.POST.get('departureCity', None)
+            # print test
+
+            raw_date = datetime.datetime.strptime(date + ' ' + time, "%Y-%m-%d %H:%M")
+            date_time = raw_date.strftime("%Y-%m-%dT%H:%M")
+
+            date_w_timezone = pytz.timezone("Europe/Helsinki").localize(parse_datetime(date_time), is_dst=None)
+
+            tmp.arrive_time = date_w_timezone
+
+            tmp.client = Client.objects.filter(id=client)[0]
+
+            print tmp.client
+            print date_w_timezone
+
+            tmp.save()
+    return HttpResponseRedirect('/create/')
 
 def about(request):
     return render(request, 'client/about.html')
@@ -234,8 +276,15 @@ def booking_succeed(request, pk):
 
 def booking_create(request, *args, **kwargs):
     print "blblblbl"
-    if not request.user.is_authenticated():
-        return redirect('/login/')
+
+    print request.GET.get('date', None)
+    print request.GET.get('time', None)
+
+    print request.POST.get('date', None)
+    print  request.POST.get('time', None)
+
+    # if not request.user.is_authenticated():
+    #     return redirect('/login/')
     print "oyoyoyoyo"
     if not request.method == "POST":
         print "sérieux"

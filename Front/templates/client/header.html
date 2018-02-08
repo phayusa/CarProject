@@ -2,6 +2,7 @@
 {% load static %}
 
 <style type="text/css">
+
         .navbar {
             background-color: transparent;
             background: transparent;
@@ -15,7 +16,7 @@
         .navbar ul li a:active,
         .navbar ul li a:hover,
         .navbar ul li a:visited,
-        .navbar ul li a:link { color: #000 ;}
+        .navbar ul li a:link { color: grey ;}
 
         .dropdown {
             position: relative;
@@ -117,10 +118,21 @@
 {#                    <ul class="top-user-area-list list list-horizontal list-border">#}
                 <li id="rigthLoginConnexion">
                     {% if user.is_authenticated %}
-                        <li class="top-user-area-avatar">
-                            <a href="/user">
-                                <img class="origin round" src="{% static "img/40x40.png" %}"
-                                     alt="Image Alternative text" title="AMaze"/>Bienvenue {{ user.username }}</a>
+{#                            <a href="/user">#}
+{#                                <img class="origin round" src="{% static "img/40x40.png" %}"#}
+{#                                     alt="Image Alternative text" title="AMaze"/>Bienvenue {{ user.username }}</a>#}
+                        <li class="dropdown top-user-area-avatar">
+                            <a class="dropdown-toggle" data-hover="dropdown" href="#">Bienvenue {{ user.username }}
+                                <span class="caret"></span></a>
+                            <ul class="dropdown-content">
+                                <li><a href="user/">Profil</a></li>
+                                <li><a href="#">Mes réservations</a></li>
+                                <li><a href="#">Adresses favorites</a></li>
+                                <li><a href="#">Portefeuille</a></li>
+                                <li><a href="#">Aide</a></li>
+                                <li><a href="#">Déconnexion</a></li>
+                            </ul>
+                        </li>
                         </li>
                         <li><a href="/user/logout/">Déconnexion</a></li>
                     {% else %}

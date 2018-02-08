@@ -33,8 +33,36 @@ class BookingForm(ModelForm):
 
     class Meta:
         model = Booking
-        fields = ['arrive_time', 'airport', 'destination', 'passengers', 'luggage_number', 'flight', 'model_choose',
+        fields = ['arrive_time', 'city', 'airport', 'destination', 'passengers', 'luggage_number', 'flight', 'model_choose',
                   'client']
+
+
+class Test(ModelForm):
+    passengers = forms.ChoiceField(choices=[(i, i) for i in range(1, 6)], label="Passagers")
+
+    luggage_number = forms.ChoiceField(choices=[(i, i) for i in range(1, 5)], label="Baggages")
+
+    class Meta:
+        model = Booking
+        fields = ["airport", "destination", "client", "passengers", "luggage_number"]
+
+
+class BookingCreateFormClient(Test):
+    date = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder': '2017-12-20', 'type': 'date'}))
+
+    time = forms.CharField(max_length=100, label="Heure",
+                           widget=forms.TextInput(attrs={'placeholder': '10:30', 'type': 'time'}))
+
+    # arrive_time = forms.CharField(widget=forms.HiddenInput, required=False)
+    #
+    # status = forms.CharField(widget=forms.HiddenInput)
+    #
+    # destination_location = forms.CharField(widget=forms.HiddenInput)
+
+    class Meta:
+        model = Booking
+        fields = ["airport", "destination", "passengers", "luggage_number"]
+# "flight", "model_choose", "status", "arrive_time", "accountType"]
 
 
 class PersonForm(ModelForm):
@@ -113,6 +141,20 @@ class ClientForm(PersonForm):
         model = Client
         fields = ['first_name', 'last_name', 'mail', 'phone_number', 'age', 'gender', 'status',
                   'address', 'user', 'status', 'username', 'password', 'password_bis']
+
+class ClientFormNoUser(ModelForm):
+    mail = forms.EmailField()
+
+    age = forms.IntegerField(validators=[
+        MaxValueValidator(120),
+        MinValueValidator(18)
+    ])
+
+    class Meta:
+        model = Client
+        fields = ['first_name', 'last_name', 'mail', 'phone_number', 'age',
+                  'address', 'city']
+
 
 class ContactUsForm(forms.Form):
     name = forms.CharField(max_length=1000, label="Name", required=True)
