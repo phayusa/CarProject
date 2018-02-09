@@ -30,10 +30,10 @@ class BookingForm(ModelForm):
     #     if date < timezone.now():
     #         raise forms.ValidationError("La réservation doit se faire dans le future")
     #     return date
-
+    #      'city',
     class Meta:
         model = Booking
-        fields = ['arrive_time', 'city', 'airport', 'destination', 'passengers', 'luggage_number', 'flight', 'model_choose',
+        fields = ['arrive_time', 'airport', 'destination', 'passengers', 'luggage_number', 'flight', 'model_choose',
                   'client']
 
 

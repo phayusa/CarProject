@@ -919,7 +919,7 @@
             display: inline;
             float: left;
             width: 10%;
-{#            width: 30%;#}
+        {#            width: 30%;#}
         }
 
         .wizard > .steps .number
@@ -963,8 +963,8 @@
         .wizard > .steps .disabled a:hover,
         .wizard > .steps .disabled a:active
         {
-{#            background: #eee;#}
-{#            color: #aaa;#}
+        {#            background: #eee;#}
+        {#            color: #aaa;#}
             background: black;
             color: white;
             cursor: default;
@@ -998,7 +998,7 @@
         .wizard > .content
         {
             background: black;
-{#                    #eee;#}
+        {#                    #eee;#}
             display: block;
             margin: 0.5em;
             min-height: 35em;
@@ -1280,7 +1280,7 @@
 
         #contact {
             background: black;
-{#                    #F9F9F9;#}
+        {#                    #F9F9F9;#}
             padding: 25px;
             box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
         }
@@ -1412,6 +1412,28 @@
             color: white;
         }
 
+
+        .SideBySide {
+            overflow: hidden;/* Makes this div contain its floats */
+        }
+
+        {#        .SideBySide .oneSide,#}
+        {#        .SideBySide .otherSide {#}
+        {#            width: 49%;#}
+        {#        }#}
+
+        .SideBySide .otherSide {
+            float: right;
+        }
+
+        .sectionCars{
+            overflow-y: scroll;
+        }
+
+        .booking-list{
+            overflow-y: scroll;
+        }
+
     </style>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -1426,97 +1448,149 @@
 
 <body  style="background: black">
 
-    {% include 'client/header.html' with active=14 %}
+{% include 'client/header.html' with active=14 %}
 <div class="global-wrap">
 
-{#    <div class="container">#}
-        <form id="contact" action="" method="post">
-            {% csrf_token %}
-            <div>
-                <h3>Réservation</h3>
-                <section>
-{#                    <label for="city">Ville de départ</label>#}
-{#                        {% render_field form.city class+="form-control" id="city" %}#}
-                    <label for="date" id="date" name="date">Date d'arrivée</label>
-                        {% render_field form.date class+="form-control" id="date" %}
-                    <label for="time" id="time" name="time">Heure d'arrivée</label>
-                        {% render_field form.time class+="form-control" id="time" %}
-                    <label for="airport">Aéroport</label>
-                        {% render_field form.airport class+="form-control" id="airport"%}
-                    <label>Destination</label>
-                        <input id="arrive_adress" class="form-control" name="destination"
-                           placeholder="Adresse, Ville, Lieux" type="text"/>
-                        <input class="hidden" name="destination_location" type="text"
-                           id="destination_location"/>
-{#                        {% render_field form.destination class+="form-control"%}#}
-{#                     <label for="numFlight">Numéro de Vol</label>#}
-{#                        {% render_field form.flight class+="form-control" id="numFlight" %}#}
-                    <label for="passengers">Passagers</label>
-                    <div class="input-group">
-                                    <span class="input-group-btn">
-                                        <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="minus" data-field="">
-                                          <span class="fa fa-minus-square"></span>
-                                        </button>
-                                    </span>
-                        <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="100">
-                        <span class="input-group-btn">
-                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus" data-field="">
-                                            <span class="fa fa-plus-square"></span>
-                                        </button>
-                                    </span>
-                    </div>
-{#                        {% render_field form.passengers class+="form-control" id="passengers"%}#}
-                    <label for="luggage">Baggages*</label>
-                        {% render_field form.luggage_number class+="form-control" id="luggage"%}
-                    {% render_field form.destination_location %}
+    <div class="SideBySide">
+        <div class="oneSide">
 
+            <form id="contact" action="" method="post">
+                {% csrf_token %}
+                <div>
+                    <h3>Réservation</h3>
+                    <section>
+                        <div class="tabbable" id="test2">
+                            <ul class="nav nav-tabs" id="myTab">
+                                <li class="active"><a data-toggle="tab" href="#AeroportToDestination">Aéroport-Destination</a></li>
+                                <li><a data-toggle="tab" href="#DestinationToAeroport">Destination-Aéroport</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div id="AeroportToDestination" class="tab-pane in active">
 
-{#                    <label for="userName">User name *</label>#}
-{#                    <input id="userName" name="userName" type="text" class="required">#}
-{#                    <label for="password">Password *</label>#}
-{#                    <input id="password" name="password" type="text" class="required">#}
-{#                    <label for="confirm">Confirm Password *</label>#}
-{#                    <input id="confirm" name="confirm" type="text" class="required">#}
-                    <p style="color: red">(*) Les bagages ne doivent _____</p>
-                </section>
-                <h3>Informations personnelles</h3>
-                <section>
-                    {% for field in clientForm.visible_fields %}
-                        <div class="form-group row fieldWrapper">
-                            <label class="col-lg-3 control-label text-lg-right pt-2"
-                                   for="inputDefault">{{ field.label }}</label>
-                            <div class="col-lg-6">
-                                {{ field.errors }}
-                                {% render_field field class+="form-control" %}
+                                    <label for="date" id="date" name="date">Date</label>
+                                    {% render_field form.date class+="form-control" %}
+                                    <label for="time" id="time" name="time">Heure d'arrivée</label>
+                                    {% render_field form.time class+="form-control" %}
+                                    <label for="airport" id="airport" name="airport">Aéroport</label>
+                                    {% render_field form.airport class+="form-control" %}
+                                    <label for="destination" id="destination" name="destination">Destination</label>
+                                    <input id="arrive_adress" class="form-control" name="destination"
+                                           placeholder="Adresse, Ville, Lieux" type="text"/>
+                                    <input class="hidden" name="destination_location" type="text"
+                                           id="destination_location"/>
+                                    {#                            {% render_field form.destination class+="form-control" %}#}
+                                    <label for="passengers" id="passengers" name="passengers">Passagers</label>
+                                    {% render_field form.passengers class+="form-control" %}
+                                    <label for="luggage_number" id="luggage_number" name="luggage_number">Baggages</label>
+                                    {% render_field form.luggage_number class+="form-control" %}
+                                    <p style="color: red">(*) Les bagages ne doivent _____</p>
+
+                                    {% render_field form.destination_location %}
+
+                                </div>
+                                <div id="DestinationToAeroport" class="tab-pane fade">wesh ma gueule</div>
                             </div>
                         </div>
-                    {% endfor %}
-{#                    <label for="name">Prénom *</label>#}
-{#                    <input id="name" name="name" type="text" class="required">#}
-{#                    <label for="surname">Nom de famille *</label>#}
-{#                    <input id="surname" name="surname" type="text" class="required">#}
-{#                    <label for="email">Email *</label>#}
-{#                    <input id="email" name="email" type="text" class="required email">#}
-{#                    <label for="address">Adresse</label>#}
-{#                    <input id="address" name="address" type="text">#}
-                    <p>(*) Obligatoire</p>
-                </section>
-                <h3>Voitures proposées</h3>
-                <section>
-                    <ul>
-                        <h4>toto</h4>
-                        <li>Foo</li>
-                        <li>Bar</li>
-                        <li>Foobar</li>
+                        {#                        </div>#}
+                    </section>
+                    {% if not user.is_authenticated %}
+                        <h3>Informations personnelles</h3>
+                        <section>
+                            {% for field in clientForm.visible_fields %}
+                                <div class="form-group row fieldWrapper">
+                                    <label class="col-lg-3 control-label text-lg-right pt-2"
+                                           for="inputDefault">{{ field.label }}*</label>
+                                    <div class="col-lg-6">
+                                        {{ field.errors }}
+                                        {% render_field field class+="form-control" %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <p>(*) Obligatoire</p>
+                        </section>
+                    {% endif %}
+                    <h3>Voitures proposées</h3>
+                    <section id="sectionCars" name="sectionCars" class="sectionCars">
+                        <ul class="booking-list">
+                            {% for car in cars|dictsort:"price" %}
+                                <li>
+                                    <a class="booking-item" href="#">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="booking-item-car-img">
+                                                    <img src="{{ car.image_default }}"
+                                                         alt="Pas d'image disponible"
+                                                         title="Image Title"/>
+                                                    <p class="booking-item-car-title">{{ car.brand }} {{ car.model }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <span class="booking-item-price">{{ car.price }}€/km</span>
+                                                <div class="form-group">
+                                                    <p class="booking-item-flight-class">{{ car.category }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </section>
+                    <h3>Finish</h3>
+                    <section>
+                        <input id="acceptTerms" name="acceptTerms" type="checkbox" class="required"> <label for="acceptTerms">I agree with the Terms and Conditions.</label>
+                    </section>
+                </div>
+            </form>
+
+            <form class="otherSide">
+                <div class="booking-item-payment">
+                    <header class="clearfix">
+                        <a class="booking-item-payment-img" href="#">
+                            <img src="{{ booking.model_choose.image_default }}" alt="Image Alternative text"
+                                 title="Image Title"/>
+                        </a>
+                        <h5 class="booking-item-payment-title"><a href="#">{{ booking.model_choose }}</a></h5>
+                    </header>
+                    <ul class="booking-item-payment-details">
+                        <li>
+                            <p class="booking-item-payment-date-day">{{ booking.arrive_time }}<!-- booking.arrive_time.day }}/{{ booking.arrive_time.month }}/{{ booking.arrive_time.year }} {{ booking.arrive_time.hour }}H{{ booking.arrive_time.minute }} --></p>
+
+                            <div class="gap"></div>
+                            <h5>
+                                <p>{{ booking.airport.address }}</p>
+                                <p><i class="fa fa-arrow-right booking-item-payment-date-separator"></i></p>
+                                <p>{{ booking.destination }}</p>
+                            </h5>
+                        </li>
+                        <li>
+                            <h5>Voiture ({{ booking.passengers }} passagers)</h5>
+                            <ul class="booking-item-payment-price">
+                                <li>
+                                    <p class="booking-item-payment-price-title">Prix au Km</p>
+                                    <p class="booking-item-payment-price-amount">{{ booking.model_choose.price }}€</p>
+                                </li>
+                                <li>
+                                    <p class="booking-item-payment-price-title">Réservation</p>
+                                    <p class="booking-item-payment-price-amount">5€</p>
+                                </li>
+                                {% if booking.child_seat %}
+                                    <li>
+                                        <p class="booking-item-payment-price-title">Siège Enfant</p>
+                                        <p class="booking-item-payment-price-amount">5€</p>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </li>
                     </ul>
-                </section>
-                <h3>Finish</h3>
-                <section>
-                    <input id="acceptTerms" name="acceptTerms" type="checkbox" class="required"> <label for="acceptTerms">I agree with the Terms and Conditions.</label>
-                </section>
-            </div>
-        </form>
-{#    </div>#}
+                    <p class="booking-item-payment-total">Total de la réservation : <span>5€</span>
+                    </p>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
 
 </div>
 
@@ -1625,7 +1699,7 @@
         onFinished: function (event, currentIndex)
         {
             form.submit();
-{#            form.onsubmit = window.location.replace('/create/');#}
+            {#            form.onsubmit = window.location.replace('/create/');#}
         }
     });
 </script>

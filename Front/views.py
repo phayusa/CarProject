@@ -37,6 +37,7 @@ import json, urllib
 
 def index(request):
     # Redirect on the correct page
+
     if not request.user.is_authenticated():
         return render(request, 'client/index-2.html',
                       {"Airports": Airport.objects.all(), "cars": VehicleModel.objects.all()})
@@ -56,7 +57,8 @@ def index(request):
     else:
         return redirect("/404")
 
-def booking_get_airport_and_vehicle(request):
+
+def bookingForm(request):
     if request.method == "GET":
         form = BookingCreateFormClient()
         client_form = ClientFormNoUser()
@@ -70,21 +72,11 @@ def booking_get_airport_and_vehicle(request):
         form = BookingCreateFormClient(request.POST)
         client_form = ClientFormNoUser(request.POST)
 
-        if client_form.is_valid():
-            print "tu passe dans client ?"
-            client_obj = client_form.save(commit=False)
-            print "client_obj : "
-            print client_obj
-
         if form.is_valid():
-            print "tu passe dans form ?"
             tmp = form.save(commit=False)
 
             date = request.POST.get('date', None)
             time = request.POST.get('time', None)
-
-            # test = request.POST.get('departureCity', None)
-            # print test
 
             raw_date = datetime.datetime.strptime(date + ' ' + time, "%Y-%m-%d %H:%M")
             date_time = raw_date.strftime("%Y-%m-%dT%H:%M")
@@ -93,13 +85,18 @@ def booking_get_airport_and_vehicle(request):
 
             tmp.arrive_time = date_w_timezone
 
-            tmp.client = Client.objects.filter(id=client)[0]
-
-            print tmp.client
-            print date_w_timezone
+#            tmp.client = Client.objects.filter(id=client)[0]
 
             tmp.save()
+
+            # if request.user.is_authenticated():
+
+            if client_form.is_valid():
+                client_obj = client_form.save(commit=False)
+                tmp.client = client_obj
+
     return HttpResponseRedirect('/create/')
+
 
 def about(request):
     return render(request, 'client/about.html')
@@ -198,11 +195,14 @@ def prices(request):
     models = VehicleModel.objects.all()
     return render(request, 'client/prices.html', {'models': models, "Airports": Airport.objects.all()})
 
+
 def howItWorks(request):
     return render(request, 'client/howItWorks.html');
 
+
 def becomeDriver(request):
     return render(request, 'client/becomeDriver.html');
+
 
 def contact(request):
     if request.method == "POST":
@@ -288,7 +288,7 @@ def booking_create(request, *args, **kwargs):
     print "oyoyoyoyo"
     if not request.method == "POST":
         print "sérieux"
-        return redirect('/404')
+        # return redirect('/404')
     else:
         print "merde"
     try:

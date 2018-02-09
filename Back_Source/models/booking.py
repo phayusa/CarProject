@@ -20,7 +20,7 @@ class Booking(models.Model):
 
     date = models.DateField(auto_now=True, verbose_name="Date Réservation")
     # travel = models.ForeignKey(Travel, on_delete=models.CASCADE, null=True)
-    city = models.CharField(max_length=200, verbose_name="Ville de départ")
+    # city = models.CharField(max_length=200, verbose_name="Ville de départ")
 
     # Information about persons
     client = models.ForeignKey(Client, on_delete=models.CASCADE, null=True)
