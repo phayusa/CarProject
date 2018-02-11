@@ -79,6 +79,8 @@ class Commercial(Person):
 # Client information
 class Client(Person):
     payment = models.CharField(max_length=5, blank=True, verbose_name="Type de Payement")
+    # id used used to retrieve the stripe customer (payment information)
+    id_stripe = models.CharField(max_length=1000, blank=True, null=True)
 
     # (null if comming from the base company)
     partner = models.ForeignKey(BuissnessPartner, on_delete=models.CASCADE, default=None, blank=True, null=True)

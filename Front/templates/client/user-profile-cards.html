@@ -61,10 +61,11 @@
                         <div class="clearfix">
                             <div class="form-group form-group-cc-name">
                                 <label>Nom</label>
-                                <input class="form-control" value="{{ client.first_name }} {{ client.last_name }}" type="text"/>
+                                <input class="form-control" value="{{ client.first_name }} {{ client.last_name }}"
+                                       type="text"/>
                             </div>
                             <div class="form-group form-group-cc-date">
-                                <label>Valide jusqu'au</label>
+                                <label>Expiration</label>
                                 <input class="form-control" placeholder="mm/yy" type="text"/>
                             </div>
                         </div>
@@ -95,10 +96,11 @@
                         <div class="clearfix">
                             <div class="form-group form-group-cc-name">
                                 <label>Nom</label>
-                                <input class="form-control" value="{{ client.first_name }} {{ client.last_name }}" type="text"/>
+                                <input class="form-control" value="{{ client.first_name }} {{ client.last_name }}"
+                                       type="text"/>
                             </div>
                             <div class="form-group form-group-cc-date">
-                                <label>Valide jusqu'au</label>
+                                <label>Expiration</label>
                                 <input class="form-control" placeholder="mm/yy" type="text"/>
                             </div>
                         </div>
@@ -110,111 +112,35 @@
                     </form>
                 </div>
                 <div class="row row-wrap">
-                    <div class="col-md-4">
-                        <div class="card-thumb">
-                            <ul class="card-thumb-actions">
-                                <li>
-                                    <a class="fa fa-pencil popup-text" href="#edit-card-dialog" rel="tooltip"
-                                       data-placement="top" title="edit" data-effect="mfp-zoom-out"></a>
-                                </li>
-                                <li>
-                                    <a class="fa fa-times" href="#" rel="tooltip" data-placement="top"
-                                       title="remove"></a>
-                                </li>
-                            </ul>
-                            <p class="card-thumb-number">XXXX XXX XXXX 6058</p>
-                            <p class="card-thumb-valid">Valide jusqu'au <span>3 / 16</span>
-                            </p>
-                            <img class="card-thumb-type" src="{% static "img/payment/american-express-curved-32px.png"%}"
-                                 alt="Image Alternative text" title="Image Title"/>
-                            <small>Nom</small>
-                            <h5 class="uc">{{ client.first_name }} {{ client.last_name }}</h5>
+                    {% for card in cards %}
+                        <div class="col-md-4">
+
+                            <div class="card-thumb {% if card == default %}card-primary{% endif %}">
+                                {% if card.id == default %}
+                                    <span class="card-thumb-primary-label">Carte par défaut</span>
+                                {% endif %}
+                                <ul class="card-thumb-actions">
+                                    <li>
+                                        <a class="fa fa-pencil popup-text" href="#edit-card-dialog" rel="tooltip"
+                                           data-placement="top" title="edit" data-effect="mfp-zoom-out"></a>
+                                    </li>
+                                    <li>
+                                        <a class="fa fa-times" href="#" rel="tooltip" data-placement="top"
+                                           title="remove"></a>
+                                    </li>
+                                </ul>
+                                <p class="card-thumb-number">XXXX XXX XXXX {{ card.last4 }}</p>
+                                <p class="card-thumb-valid">Valide jusqu'au
+                                    <span>{{ card.exp_month }} / {{ card.exp_year }}</span>
+                                </p>
+                                <img class="card-thumb-type"
+                                     src="{% static "img/payment/american-express-curved-32px.png" %}"
+                                     alt="Image Alternative text" title="Image Title"/>
+                                <small>Nom</small>
+                                <h5 class="uc">{{ client.first_name }} {{ client.last_name }}</h5>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card-thumb card-thumb-primary"><span class="card-thumb-primary-label">Carte par défaut</span>
-                            <ul class="card-thumb-actions">
-                                <li>
-                                    <a class="fa fa-pencil popup-text" href="#edit-card-dialog" rel="tooltip"
-                                       data-placement="top" title="edit" data-effect="mfp-zoom-out"></a>
-                                </li>
-                                <li>
-                                    <a class="fa fa-times" href="#" rel="tooltip" data-placement="top"
-                                       title="remove"></a>
-                                </li>
-                            </ul>
-                            <p class="card-thumb-number">XXXX XXX XXXX 3961</p>
-                            <p class="card-thumb-valid">Valide jusqu'au <span>9 / 18</span>
-                            </p>
-                            <img class="card-thumb-type" src="{% static "img/payment/american-express-curved-32px.png"%}"
-                                 alt="Image Alternative text" title="Image Title"/>
-                            <small>Nom</small>
-                            <h5 class="uc">{{ client.first_name }} {{ client.last_name }}</h5>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card-thumb">
-                            <ul class="card-thumb-actions">
-                                <li>
-                                    <a class="fa fa-pencil popup-text" href="#edit-card-dialog" rel="tooltip"
-                                       data-placement="top" title="edit" data-effect="mfp-zoom-out"></a>
-                                </li>
-                                <li>
-                                    <a class="fa fa-times" href="#" rel="tooltip" data-placement="top"
-                                       title="remove"></a>
-                                </li>
-                            </ul>
-                            <p class="card-thumb-number">XXXX XXX XXXX 2065</p>
-                            <p class="card-thumb-valid">Valide jusqu'au <span>3 / 15</span>
-                            </p>
-                            <img class="card-thumb-type" src="{% static "img/payment/american-express-curved-32px.png"%}"
-                                 alt="Image Alternative text" title="Image Title"/>
-                            <small>Nom</small>
-                            <h5 class="uc">{{ client.first_name }} {{ client.last_name }}</h5>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card-thumb">
-                            <ul class="card-thumb-actions">
-                                <li>
-                                    <a class="fa fa-pencil popup-text" href="#edit-card-dialog" rel="tooltip"
-                                       data-placement="top" title="edit" data-effect="mfp-zoom-out"></a>
-                                </li>
-                                <li>
-                                    <a class="fa fa-times" href="#" rel="tooltip" data-placement="top"
-                                       title="remove"></a>
-                                </li>
-                            </ul>
-                            <p class="card-thumb-number">XXXX XXX XXXX 9080</p>
-                            <p class="card-thumb-valid">Valide jusqu'au <span>1 / 15</span>
-                            </p>
-                            <img class="card-thumb-type" src="{% static "img/payment/mastercard-curved-32px.png"%}"
-                                 alt="Image Alternative text" title="Image Title"/>
-                            <small>Nom</small>
-                            <h5 class="uc">{{ client.first_name }} {{ client.last_name }}</h5>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card-thumb">
-                            <ul class="card-thumb-actions">
-                                <li>
-                                    <a class="fa fa-pencil popup-text" href="#edit-card-dialog" rel="tooltip"
-                                       data-placement="top" title="edit" data-effect="mfp-zoom-out"></a>
-                                </li>
-                                <li>
-                                    <a class="fa fa-times" href="#" rel="tooltip" data-placement="top"
-                                       title="remove"></a>
-                                </li>
-                            </ul>
-                            <p class="card-thumb-number">XXXX XXX XXXX 3122</p>
-                            <p class="card-thumb-valid">Valide jusqu'au <span>3 / 16</span>
-                            </p>
-                            <img class="card-thumb-type" src="{% static "img/payment/mastercard-curved-32px.png"%}"
-                                 alt="Image Alternative text" title="Image Title"/>
-                            <small>Nom</small>
-                            <h5 class="uc">{{ client.first_name }} {{ client.last_name }}</h5>
-                        </div>
-                    </div>
+                    {% endfor %}
                     <div class="col-md-4"><a class="card-thumb popup-text" href="#new-card-dialog"
                                              data-effect="mfp-zoom-out"><i class="fa fa-plus card-thumb-new"></i>
                         <p>Ajouter une nouvelle carte</p></a>

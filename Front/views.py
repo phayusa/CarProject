@@ -1,32 +1,29 @@
 # -*- coding: utf-8 -*-
 
-
 import datetime
+import json
+import urllib
+from io import BytesIO
 
 import pytz
 import stripe
 from django.contrib.auth import login as login_func, authenticate
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMessage
 from django.http import *
 from django.shortcuts import render, redirect
+from django.template.loader import get_template
 from django.template.loader import render_to_string
 from django.utils.dateparse import parse_datetime
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.conf import settings
+from xhtml2pdf import pisa
 
 from Back_Source.models import VehicleModel, Client, Booking, Airport, BuissnessPartner, Commercial, Operator
 from forms import BookingForm, ClientForm, ContactUsForm, ContactProForm
 from tokens import account_activation_token
-
-# Library for generate PDF
-from django.template.loader import get_template
-from io import BytesIO
-from xhtml2pdf import pisa
-
-from django.core.mail import EmailMessage
-
-import json, urllib
 
 
 # Create your views here.
@@ -167,7 +164,7 @@ def contact_pro(request):
         form = ContactProForm(request.POST)
         if form.is_valid():  # Pour le moment jusqu'à j'ajoute l'envoi d'email
             return render(request, 'client/contact_pro.html', {'form': form})
-        #            return redirect('/')
+            #            return redirect('/')
     else:
         form = ContactProForm()
     return render(request, 'client/contact_pro.html', {'form': form})
@@ -190,9 +187,21 @@ def user_bookings(request):
 
 
 def user_cards(request):
+    # Set your secret key: remember to change this to your live secret key in production
+    # See your keys here: https://dashboard.stripe.com/account/apikeys
+    stripe.api_key = "sk_test_Tpj31pCyqiySY9503dvp2VEq"
+
     client = Client.objects.filter(user=request.user)[0]
-    bookings = Booking.objects.filter(client=client)
-    return render(request, 'client/user-profile-cards.html', {"client": client, "bookings": bookings})
+    customer = get_stripe_customer(client)
+
+    if request.method == "GET":
+        # Getting stripe information
+        cards = customer.sources.data
+        default = customer.default_source
+
+        return render(request, 'client/user-profile-cards.html', {"client": client, "cards": cards, "default": default})
+    # TODO : add of card
+    # elif request.method == "POST":
 
 
 def user_bookings_delete(request, pk):
@@ -216,7 +225,7 @@ def booking_succeed(request, pk):
                            ['yahiaoui.fakhri@gmail.com'],
                            headers={'Reply-To': 'another@example.com'})
     #    attachment = open(generatePdf(), 'rb')
-    message.attach("test", generatePdf(), 'application/pdf')
+    message.attach("test", generate_pdf(), 'application/pdf')
     message.send()
     return render(request, 'client/success-payment.html', {"client": client, "booking": booking})
 
@@ -241,13 +250,10 @@ def booking_create(request, *args, **kwargs):
         # if not time or not date:
         if not date:
             return redirect('/')
-        raw_date = datetime.datetime.strptime(date, "%d/%m/%Y %H:%M")  # (date + ' ' + time, "%Y-%m-%d %I:%M %p")
-        #        print raw_date
+        raw_date = datetime.datetime.strptime(date, "%d/%m/%Y %H:%M")
         date_time = raw_date.strftime("%Y-%m-%dT%H:%M")
 
         date_w_timezone = pytz.timezone("Europe/Paris").localize(parse_datetime(date_time), is_dst=None)
-        datetimeNow = datetime.datetime.now()
-        # booking, created = Booking.objects.get_or_create(destination=data["destination"],
         booking = Booking.objects.create(destination=data["destination"],
                                          destination_location=data["destination_location"].replace('(',
                                                                                                    '').replace(
@@ -268,41 +274,35 @@ def booking_create(request, *args, **kwargs):
 
         origin = str(Airport.objects.filter(id=data["airport"])[0]).replace(' ', '+').replace(',', '')
         destination = data["destination"].replace(' ', '+').replace(',', '')
-        distance = computeDistance(origin, destination)
-        print "la distance est de %s" % distance
-        # must be reseingned during the initialisation
-        # upload_distance(booking)
-        # booking.save()
+        booking.distance = float(compute_distance(origin, destination).replace(" km", ""))
+        booking.save()
 
-        # after = timezone.now() + datetime.timedelta(hours=1)
-        # before = timezone.now() - datetime.timedelta(hours=1)
-        #  If the booking is for the current moment update
-        # if before < booking.arrive_time < after:
-        #     set_booking_car(booking)
-
-        # return render(request, 'client/payment.html', {"booking": booking})
-        # serialize_data = BookingSerializer(booking).data
         request.session['Booking_id'] = booking.id
         request.session.modified = True
         return redirect('/booking/payment/')
 
     except Exception as e:
         raise Http404("Page non trouvé")
-        # else:
-        #     return redirect('/booking', {'form': form})
-        # parsed_uri = urlparse(request.build_absolute_uri())
-        # baseurl = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
-        # post_data = {}
-        # post_data['destination'] = Geoposition(data['destination_0'], data['destination_1'])
-        # post_data['departure'] = Geoposition(data['departure_0'], data['departure_1'])
-        # for key in data.keys():
-        #     post_data[key] = data[key]
-        #
-        # print baseurl+'db/booking/create/'
-        # result = urllib2.urlopen(baseurl+'db/booking/create/', urllib.urlencode(post_data))
-        # content = result.read()
-        # # print content
-        # return render(request,content)
+
+
+# Retrieve or create the customer in striped
+def get_stripe_customer(client, card=None):
+    if client.id_stripe:
+        return stripe.Customer.retrieve(client.id_stripe)
+    # create the customer with the given credit card
+    if card:
+        customer = stripe.Customer.create(email=client.mail,
+                                          description="Customer for " + str(client.id) + " client",
+                                          source=card)
+    else:
+        customer = stripe.Customer.create(email=client.mail,
+                                          description="Customer for " + str(client.id) + " client")
+    # Save it in the client data
+    client.id_stripe = customer.id
+    client.save()
+
+    # Return the getting customer
+    return customer
 
 
 def booking_payment(request):
@@ -310,33 +310,69 @@ def booking_payment(request):
     booking_pending_id = request.session.get('Booking_id', False)
     if not booking_pending_id:
         raise Http404("Page non trouvé")
+
+    # Set your secret key: remember to change this to your live secret key in production
+    # See your keys here: https://dashboard.stripe.com/account/apikeys
+    stripe.api_key = "sk_test_Tpj31pCyqiySY9503dvp2VEq"
+
+    client = Client.objects.filter(user=request.user).first()
+    customer = None
+
+    if request.user.is_authenticated:
+        customer = get_stripe_customer(client)
+
     if request.method == "GET":
         booking_pending = Booking.objects.filter(id=booking_pending_id).first()
+
+        if customer:
+            # Getting stripe information
+            cards = customer.sources.data
+            default = customer.default_source
+
+            return render(request, 'client/payment.html',
+                          {"booking": booking_pending, "cards": cards, "default": default})
+
         return render(request, 'client/payment.html', {"booking": booking_pending})
     elif request.method == "POST":
-        booking_pending = Booking.objects.filter(id=booking_pending_id).first()
-
-        # Set your secret key: remember to change this to your live secret key in production
-        # See your keys here: https://dashboard.stripe.com/account/apikeys
-        stripe.api_key = "sk_test_Tpj31pCyqiySY9503dvp2VEq"
 
         # Token is created using Checkout or Elements!
         # Get the payment token ID submitted by the form:
         token = request.POST['stripeToken']  # Using Flask
 
-        # Charge the user's card:
-        charge = stripe.Charge.create(
-            amount=500,
-            currency="eur",
-            description="Reservation Aceline Services",
-            # metadata={"booking_id", booking_pending_id},
-            source=token
-        )
+        if customer:
+
+            # Add the new card to the stripe customer
+            customer.sources.create(source=token)
+            customer.save()
+
+            # Charge the user's card:
+            charge = stripe.Charge.create(
+                amount=500,
+                currency="eur",
+                description="Reservation Aceline Services",
+                # Charge the card
+                source=customer.default_source,
+                # Charge the customer
+                customer=customer.id
+            )
+        else:
+            # Charge the user's card:
+            charge = stripe.Charge.create(
+                amount=500,
+                currency="eur",
+                description="Reservation Aceline Services",
+                # Charge the card
+                source=token
+            )
 
         request.session['Booking_id'] = None
         return redirect('/booking/succeed/' + str(booking_pending_id))
     else:
         raise Http404("Page non trouvé")
+
+
+def retrieve_customer_charge(customer):
+    return stripe.Charge.list(customer=customer.id)
 
 
 def booking(request, *args, **kwargs):
@@ -375,7 +411,7 @@ def booking(request, *args, **kwargs):
     return render(request, 'client/booking.html', {'form': form})
 
 
-def renderToPdf(template_src, context_dict={}):
+def render_to_pdf(template_src, context_dict={}):
     template = get_template(template_src)
     html = template.render(context_dict)
     result = BytesIO()
@@ -385,7 +421,7 @@ def renderToPdf(template_src, context_dict={}):
     return None
 
 
-def generatePdf():
+def generate_pdf():
     template = get_template('pdf/invoice.html')
     context = {
         "Date d'achat": "Today",
@@ -399,20 +435,21 @@ def generatePdf():
     }
 
     html = template.render(context)
-    pdf = renderToPdf('pdf/invoice.html', context)
+    pdf = render_to_pdf('pdf/invoice.html', context)
     if pdf:
         response = HttpResponse(pdf, content_type='application/pdf')
         filename = "Invoice_%s.pdf" % "12341231"
         content = "inline; filename='%s'" % filename
         content = "attachment; filename='%s'" % filename
         response['Content-Disposition'] = content
-    #        return response
+    # return response
     return pdf  # HttpResponse("Not Found")
 
 
-def computeDistance(origin, destination):
-    urlApi = "https://maps.googleapis.com/maps/api/directions/json?origin=" + origin + "&destination=" + destination + "&units=metric&key=AIzaSyCCPv4PqIoLNcenh0WzmLD8NnCpgzkl1lw"
-    urlApi = urlApi.encode('utf8')
-    result = json.load(urllib.urlopen(urlApi))
-    distance = result['routes'][0]['legs'][0]['distance']['text']
-    return distance
+def compute_distance(origin, destination):
+    raw_url_api = 'https://maps.googleapis.com/maps/api/directions/json?origin=' + str(origin) + '&destination=' + str(
+        destination) + '&units=metric&key=' + str(settings.GEOPOSITION_GOOGLE_MAPS_API_KEY)
+
+    print raw_url_api
+    result = json.load(urllib.urlopen(raw_url_api))
+    return result['routes'][0]['legs'][0]['distance']['text']
