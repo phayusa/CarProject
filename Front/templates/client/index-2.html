@@ -22,6 +22,12 @@
         .bg {
             height: 1024px;
             background: url('https://images.unsplash.com/photo-1470434151738-dc5f4474c239?dpr=1&auto=format&crop=entropy&fit=crop&w=1500&h=1000&q=80&cs=tinysrgb') top center;
+            text-align: center;
+        }
+
+        #buttonBooking{
+            position: absolute;
+            top: 50%;
         }
     </style>
 </head>
@@ -31,9 +37,17 @@
 <body>
 <div class="bg">
     {% include 'client/header.html' with active=1 %}
+    <button class="btn btn-primary btn-lg" id="buttonBooking">Réserver un trajet</button>
 </div>
 {% include 'client/footer.html' %}
 </body>
+
+<script>
+    document.getElementById("buttonBooking").onclick = function(){
+        location.href = "/booking/"
+    };
+</script>
+
 </html>
 {#                <li {% if active == 2 %} class="active" {% endif %}><a href="/about">A propos</a></li>#}
 {#                <li {% if active == 3 %} class="active" {% endif %}><a href="/prices">Tarifs</a></li>#}

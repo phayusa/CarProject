@@ -142,6 +142,7 @@ class ClientForm(PersonForm):
         fields = ['first_name', 'last_name', 'mail', 'phone_number', 'age', 'gender', 'status',
                   'address', 'user', 'status', 'username', 'password', 'password_bis']
 
+
 class ClientFormNoUser(ModelForm):
     mail = forms.EmailField()
 
@@ -153,7 +154,7 @@ class ClientFormNoUser(ModelForm):
     class Meta:
         model = Client
         fields = ['first_name', 'last_name', 'mail', 'phone_number', 'age',
-                  'address', 'city']
+                  'address']
 
 
 class ContactUsForm(forms.Form):
