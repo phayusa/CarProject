@@ -144,6 +144,9 @@ class ClientForm(PersonForm):
 
 
 class ClientFormNoUser(ModelForm):
+    first_name = forms.CharField(max_length=200, label="Nom", required=True)
+    last_name = forms.CharField(max_length=200, label="Prénom", required=True)
+
     mail = forms.EmailField()
 
     age = forms.IntegerField(validators=[
@@ -161,6 +164,7 @@ class ContactUsForm(forms.Form):
     name = forms.CharField(max_length=1000, label="Name", required=True)
     email = forms.EmailField(required=True)
     message = forms.CharField(max_length=1000, label="Message", required=True)
+
 
 class ContactProForm(forms.Form):
     nameCompany = forms.CharField(max_length=1000, label="company", required=True)

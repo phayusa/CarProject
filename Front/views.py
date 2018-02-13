@@ -37,17 +37,21 @@ def index(request):
     # Redirect on the correct page
 
     if not request.user.is_authenticated():
-        return render(request, 'client/index-2.html',
-                      {"Airports": Airport.objects.all(), "cars": VehicleModel.objects.all()})
+        return render(request, 'client/index-2.html')
 
     if request.user.is_superuser:
         return redirect("/admin/")
 
-    if BuissnessPartner.objects.filter(user=request.user).exists:
-        return redirect("/partener/")
+    # if BuissnessPartner.objects.filter(user=request.user).exists:
+    #     return redirect("/partener/")
 
     if Commercial.objects.filter(user=request.user).exists():
         return redirect("/commercial/")
+
+    if request.method == 'GET':
+        return render(request, 'client/index-2.html')
+    else:
+        return redirect("/404")
 
 
 def login(request):
@@ -72,7 +76,7 @@ def login(request):
                 return HttpResponseRedirect('/')
         else:
             errors['username'] = 'Nom d\'utilisateur ou Mot de passe incorrecte'
-    return render(request, 'client/login-register.html', {"type": 1, "erros": errors})
+    return render(request, 'client/login-register.html', {"type": 1, "errors": errors})
 
 
 def register(request):
@@ -95,6 +99,16 @@ def register(request):
         form = ClientForm()
 
     return render(request, 'client/login-register.html', {"form": form})
+
+
+def user(request):
+    client = Client.objects.filter(user=request.user)[0]
+    return render(request, 'client/user-profile.html', {"client": client})
+
+
+def user_settings(request):
+    client = Client.objects.filter(user=request.user)[0]
+    return render(request, 'client/user-profile-settings.html', {"client": client})
 
 
 def not_found(request):
@@ -128,39 +142,74 @@ def booking(request, *args, **kwargs):
         time = data.get('time', None)
         print "the date is %s", date
 
-        if client_form.is_valid():
-            print "Client_form is valid"
-            print client_form
-            # client_obj = client_form.save(commit=False)
-            # client_obj.save()
+        if request.user.is_authenticated:
+            clients = Client.objects.filter(user=request.user)
+            print "user : ", request.user
+            print "Client connected : ", clients
+
+            if not clients:
+                client = Client.objects.all()[0]
+            else:
+                client = clients[0]
+
+        else:
+            if client_form.is_valid():
+                # print "Client_form is valid"
+                # print client_form
+
+                client_obj = client_form.save(commit=False)
+
+                first_name = (client_form.cleaned_data['first_name']).replace(' ', '').replace('-', '')
+                last_name = (client_form.cleaned_data['last_name']).replace(' ', '').replace('-', '')
+                mail = client_form.cleaned_data['mail']
+
+                # The login of the user is the first letter of the last_name and his first_name
+                client_identification = last_name[0] + first_name
+
+                if User.objects.filter(username=client_identification):
+                    suffix = 1
+                    username_base = client_identification
+                    # We loop until we found a available username
+                    while 1:
+                        username = username_base + str(suffix)
+                        if User.objects.filter(username=username):
+                            suffix += 1
+                        else:
+                            client_identification = username
+                            break
+
+                password = User.objects.make_random_password()
+                print "the identifiant is : ", client_identification
+                print "the password is : ", password
+                login_user = User.objects.create_user(client_identification, mail, password)
+                login_user.save()
+
+                client_obj.user = login_user
+                client_obj.save()
+                client_id = client_obj.id
+                client = Client.objects.filter(id=client_id)[0]
 
         if form.is_valid():
-            print "BookingCreateFormClient is valid"
-            print form
+            # print "BookingCreateFormClient is valid"
+            # print form
 
-        raw_date = datetime.datetime.strptime(date + ' ' + time, "%Y-%m-%d %H:%M")#(date, "%Y-%m-%d")  #
-        #        print raw_date
-        date_time = raw_date.strftime("%Y-%m-%dT%H:%M")
+            raw_date = datetime.datetime.strptime(date + ' ' + time, "%Y-%m-%d %H:%M")#(date, "%Y-%m-%d")  #
 
-        date_w_timezone = pytz.timezone("Europe/Paris").localize(parse_datetime(date_time), is_dst=None)
+            date_time = raw_date.strftime("%Y-%m-%dT%H:%M")
 
-        print "DESTINATION : ", data["destination"]
+            date_w_timezone = pytz.timezone("Europe/Paris").localize(parse_datetime(date_time), is_dst=None)
 
-        booking_no_user = Booking.objects.create(destination=data["destination"],
-                                               destination_location=data["destination_location"].replace('(',
-                                                                                                         '').replace(
-                                                   ')',
-                                                   ''),
-                                               airport=Airport.objects.filter(id=data["airport"])[0],
-                                               # time_booking= datetimeNow.strftime("%d/%m/%Y %H:%M"),
-                                               arrive_time=date_w_timezone,
-                                               luggage_number=int(data['luggage_number']),
-                                               passengers=int(data['passengers']))
+            booking_no_user = Booking.objects.create(destination=data["destination"],
+                                                     destination_location=data["destination_location"].replace('(', '')
+                                                                                                      .replace(')', ''),
+                                                     airport=Airport.objects.filter(id=data["airport"])[0],
+                                                     # time_booking= datetimeNow.strftime("%d/%m/%Y %H:%M"),
+                                                     arrive_time=date_w_timezone,
+                                                     luggage_number=int(data['luggage_number']),
+                                                     client=client,
+                                                     passengers=int(data['passengers']))
 
-        print "BOOKING"
-        print booking_no_user
         request.session['Booking_id'] = booking_no_user.id
-        print booking_no_user.id
         request.session.modified = True
         return redirect('/booking/payment')
 
