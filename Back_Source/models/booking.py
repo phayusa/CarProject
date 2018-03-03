@@ -36,8 +36,10 @@ class Booking(models.Model):
 
     # Processing value
     vehicle_choose = models.ForeignKey(Vehicle, blank=True, null=True, verbose_name="Voiture")
+
     # To know the nth booking selected for the travel
     distance = models.IntegerField(blank=True, null=True, verbose_name="Distance Départ-Destination")
+    time_estimated = models.IntegerField(verbose_name="Temps estimé en secondes")
 
     status = models.CharField(max_length=100, default="Ajout dans panier")
 
@@ -80,6 +82,7 @@ class BookingOperator(models.Model):
     vehicle_choose = models.ForeignKey(Vehicle, blank=True, null=True, verbose_name="Voiture")
     # To know the nth booking selected for the travel
     distance = models.IntegerField(blank=True, null=True, verbose_name="Distance Départ-Destination")
+    time_estimated = models.IntegerField(verbose_name="Temps estimé en secondes")
 
     status = models.CharField(max_length=100, default="En cours de validation")
 

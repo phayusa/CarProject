@@ -13,7 +13,8 @@ class VehicleModel(models.Model):
     # Classical attributes
     name = models.CharField(max_length=100, verbose_name="Nom")
     doors = models.IntegerField(default=5, verbose_name="Portes")
-    luggage_number = models.IntegerField(help_text="Nombre de bagage authorisé", verbose_name="Nombre de baggage maximun")
+    luggage_number = models.IntegerField(help_text="Nombre de bagage authorisé",
+                                         verbose_name="Nombre de baggage maximun")
 
     # Seats fields
     child_seat = models.BooleanField(verbose_name="Siège enfant")
@@ -23,7 +24,7 @@ class VehicleModel(models.Model):
     image_default = models.URLField(null=True, blank=True, verbose_name="Image")
 
     # Price of this selection car
-    price = models.IntegerField(default=0)
+    price = models.FloatField(default=0, verbose_name="Prix au km")
 
     def __str__(self):
         return self.name

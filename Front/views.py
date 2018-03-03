@@ -7,6 +7,7 @@ from io import BytesIO
 
 import pytz
 import stripe
+from django.conf import settings
 from django.contrib.auth import login as login_func, authenticate
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
@@ -18,10 +19,11 @@ from django.template.loader import render_to_string
 from django.utils.dateparse import parse_datetime
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.conf import settings
 from xhtml2pdf import pisa
 
-from Back_Source.models import VehicleModel, Client, Booking, Airport, BuissnessPartner, Commercial, Operator
+from Back_Source.models import VehicleModel, Client, Booking, Airport, BuissnessPartner, Commercial, Operator, Travel, \
+    Vehicle
+from Localisation.views import get_area
 from forms import BookingForm, ClientForm, ContactUsForm, ContactProForm
 from tokens import account_activation_token
 
@@ -200,8 +202,8 @@ def user_cards(request):
         default = customer.default_source
 
         return render(request, 'client/user-profile-cards.html', {"client": client, "cards": cards, "default": default})
-    # TODO : add of card
-    # elif request.method == "POST":
+        # TODO : add of card
+        # elif request.method == "POST":
 
 
 def user_bookings_delete(request, pk):
@@ -236,24 +238,29 @@ def booking_create(request, *args, **kwargs):
     if not request.method == "POST":
         return redirect('/404')
 
+    data = request.POST
+    date = data.get('date', None)
+    #        time = data.get('time', None)
+
+    clients = Client.objects.filter(user=request.user)
+    if not clients:
+        client = Client.objects.all()[0]
+    else:
+        client = clients[0]
+
+    # if not time or not date:
+    if not date:
+        return redirect('/')
+    raw_date = datetime.datetime.strptime(date, "%d/%m/%Y %H:%M")
+    date_time = raw_date.strftime("%Y-%m-%dT%H:%M")
+
+    date_w_timezone = pytz.timezone("Europe/Paris").localize(parse_datetime(date_time), is_dst=None)
+
+    origin = str(Airport.objects.filter(id=data["airport"])[0]).replace(' ', '+').replace(',', '')
+    destination = data["destination"].replace(' ', '+').replace(',', '')
+    estimation_travel = compute_travel(origin, destination, date_w_timezone)
+
     try:
-        data = request.POST
-        date = data.get('date', None)
-        #        time = data.get('time', None)
-
-        clients = Client.objects.filter(user=request.user)
-        if not clients:
-            client = Client.objects.all()[0]
-        else:
-            client = clients[0]
-
-        # if not time or not date:
-        if not date:
-            return redirect('/')
-        raw_date = datetime.datetime.strptime(date, "%d/%m/%Y %H:%M")
-        date_time = raw_date.strftime("%Y-%m-%dT%H:%M")
-
-        date_w_timezone = pytz.timezone("Europe/Paris").localize(parse_datetime(date_time), is_dst=None)
         booking = Booking.objects.create(destination=data["destination"],
                                          destination_location=data["destination_location"].replace('(',
                                                                                                    '').replace(
@@ -268,19 +275,15 @@ def booking_create(request, *args, **kwargs):
                                          VehicleModel.objects.filter(id=data['model_choose'])[
                                              0],
                                          client=client,
-                                         flight=data["flight"])
-        # if not created:
-        #     return redirect("/404/")
+                                         flight=data["flight"],
+                                         distance=float(estimation_travel['distance']['text'].replace(" km", "")),
+                                         time_estimated=int(estimation_travel['duration']['value']))
 
-        origin = str(Airport.objects.filter(id=data["airport"])[0]).replace(' ', '+').replace(',', '')
-        destination = data["destination"].replace(' ', '+').replace(',', '')
-        booking.distance = float(compute_distance(origin, destination).replace(" km", ""))
         booking.save()
 
         request.session['Booking_id'] = booking.id
         request.session.modified = True
         return redirect('/booking/payment/')
-
     except Exception as e:
         raise Http404("Page non trouvé")
 
@@ -320,9 +323,9 @@ def booking_payment(request):
 
     if request.user.is_authenticated:
         customer = get_stripe_customer(client)
+    booking_pending = Booking.objects.filter(id=booking_pending_id).first()
 
     if request.method == "GET":
-        booking_pending = Booking.objects.filter(id=booking_pending_id).first()
 
         if customer:
             # Getting stripe information
@@ -341,9 +344,11 @@ def booking_payment(request):
 
         if customer:
 
-            # Add the new card to the stripe customer
-            customer.sources.create(source=token)
-            customer.save()
+            card = customer.sources.retrieve(token)
+            if not card:
+                # Add the new card to the stripe customer
+                customer.sources.create(source=token)
+                customer.save()
 
             # Charge the user's card:
             charge = stripe.Charge.create(
@@ -351,7 +356,8 @@ def booking_payment(request):
                 currency="eur",
                 description="Reservation Aceline Services",
                 # Charge the card
-                source=customer.default_source,
+                # source=customer.default_source,
+                source=card,
                 # Charge the customer
                 customer=customer.id
             )
@@ -365,10 +371,74 @@ def booking_payment(request):
                 source=token
             )
 
+        booking_pending.status = "Validé"
+        booking_pending.save()
+
+        create_travel(booking_pending)
+
         request.session['Booking_id'] = None
         return redirect('/booking/succeed/' + str(booking_pending_id))
     else:
         raise Http404("Page non trouvé")
+
+
+def create_travel(booking_to_test):
+    area = get_area(booking_to_test)
+    place_wanted = booking_to_test.passengers
+    estimated_arrive = booking_to_test.arrive_time + datetime.timedelta(seconds=booking_to_test.time_estimated) * 2
+
+    if place_wanted == 0:
+        travels = None
+    else:
+        travels = Travel.objects.filter(start=booking_to_test.arrive_time,
+                                        free_place__gte=place_wanted,
+                                        area=area, airport=booking_to_test.airport)
+
+    # The case with no travel found
+    if not travels:
+        travel = Travel.objects.create(start=booking_to_test.arrive_time,
+                                       free_place=booking_to_test.model_choose.number_place - place_wanted,
+                                       area=area, airport=booking_to_test.airport,
+                                       car=free_car(area, booking_to_test.arrive_time, estimated_arrive),
+                                       end=estimated_arrive)
+    else:
+        travel = travels[0]
+
+        travel.free_place -= place_wanted
+
+    travel.bookings.add(booking_to_test)
+
+    if travel.bookings.count() > 1:
+        # Optimise travel with multiples destination
+        compute_travel_multiples(booking_to_test.airport, booking_to_test.arrive_time, travel)
+
+    # update the travel
+    travel.save()
+
+
+def free_car(area, date_start, date_end):
+    car_test = None
+
+    cars = Vehicle.objects.all()
+    for car_test in cars:
+        # We find if we found that the car is busy during this period of time
+        travels = Travel.objects.filter(start__lte=date_start, end__gte=date_start, car=car_test)
+        if travels:
+            continue
+
+        # Testing if we have something between the travel
+        travels = Travel.objects.filter(start__gte=date_start, end__lte=date_end, car=car_test)
+        if travels:
+            continue
+
+        # Testing if this car have not others area assigned this day
+        travels = Travel.objects.filter(start__day=date_start.day, car=car_test).exclude(area=area).exclude(area=None)
+        if travels:
+            continue
+
+        # If we pass all the test we got the good car
+        return car_test
+    return car_test
 
 
 def retrieve_customer_charge(customer):
@@ -446,10 +516,46 @@ def generate_pdf():
     return pdf  # HttpResponse("Not Found")
 
 
-def compute_distance(origin, destination):
+def compute_travel(origin, destination, departure_time):
     raw_url_api = 'https://maps.googleapis.com/maps/api/directions/json?origin=' + str(origin) + '&destination=' + str(
-        destination) + '&units=metric&key=' + str(settings.GEOPOSITION_GOOGLE_MAPS_API_KEY)
+        destination) + '&units=metric&key=' + str(
+        settings.GEOPOSITION_GOOGLE_MAPS_API_KEY) + '&departure_time=' + str(int(
+        (departure_time - datetime.datetime(1970, 1, 1, tzinfo=pytz.utc)).total_seconds()))
 
     print raw_url_api
     result = json.load(urllib.urlopen(raw_url_api))
-    return result['routes'][0]['legs'][0]['distance']['text']
+
+    return result['routes'][0]['legs'][0]
+
+
+def compute_travel_multiples(origin, departure_time, travel):
+    raw_url_api = 'https://maps.googleapis.com/maps/api/directions/json?origin=' + str(origin) + '&destination=' + str(
+        origin) + '&units=metric&key=' + str(
+        settings.GEOPOSITION_GOOGLE_MAPS_API_KEY) + '&departure_time=' + str(int(
+        (departure_time - datetime.datetime(1970, 1, 1,
+                                            tzinfo=pytz.utc)).total_seconds())) + '&waypoints=optimize:true|'
+    stock = []
+    second_estimated = 0
+    places = 0
+    model = 0
+    for booking_test in travel.bookings.all():
+        raw_url_api += str(booking_test.destination) + '|'
+        stock.append(booking_test)
+        places += booking_test.passengers
+        if model == 0:
+            model = booking_test.model_choose.number_place
+
+    print raw_url_api
+    result = json.load(urllib.urlopen(raw_url_api))['routes'][0]
+    travel.bookings.clear()
+
+    # sort travel with optimun way
+    for order in result['waypoint_order']:
+        travel.bookings.add(stock[order])
+        second_estimated += result['legs'][order]['duration']['value']
+
+    # update the estimated time
+    travel.end = travel.start + datetime.timedelta(seconds=second_estimated)
+
+    # update the number of place
+    travel.free_place = model - places

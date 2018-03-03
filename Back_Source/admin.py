@@ -36,7 +36,9 @@ class VehicleModelAdmin(admin.ModelAdmin):
 
 
 class TravelAdmin(admin.ModelAdmin):
-    list_display = ('car', 'driver', 'start', 'end')
+    ordering = ('start', 'done')
+    list_filter = ('start', 'airport', 'area', 'done')
+    list_display = ('start', 'end', 'airport', 'area', 'done')
 
 
 class AreaAdmin(admin.ModelAdmin):
