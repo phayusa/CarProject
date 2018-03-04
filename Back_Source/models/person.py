@@ -8,8 +8,8 @@ from location_field.models.plain import PlainLocationField
 
 # Information for a person as driver or client
 class Person(models.Model):
-    first_name = models.CharField(max_length=200, verbose_name="Nom")
-    last_name = models.CharField(max_length=200, verbose_name="Prénom")
+    first_name = models.CharField(max_length=200, verbose_name="Prénom")
+    last_name = models.CharField(max_length=200, verbose_name="Nom")
     age = models.IntegerField(verbose_name="Age")
     gender = models.CharField(max_length=10, verbose_name="Sexe")
     mail = models.EmailField(blank=True)

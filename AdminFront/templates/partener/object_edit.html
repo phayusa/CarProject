@@ -333,7 +333,6 @@
                         {% if custom %}
                             <div class="col-md-8">
                                 {% include 'partener/form_content.html' %}
-                                {#                                                                {% include 'partener/card_booking.html' %}#}
                             </div>
                         {% else %}
                             {% for field in form.visible_fields %}
@@ -428,42 +427,63 @@
 {#<script src="{% static "static_admin/js/examples/examples.modal=s.js" %}"></script>#}
 
 
-<script src="{% static "static_admin/js/examples/examples.wizard.js" %}"></script>
-
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAb1NNSLUT7vzTIezPAqKumMB7wNXa2hMg&libraries=places&callback=initAutocomplete"
         async defer></script>
 
 <script>
     var autocomplete;
+    var autoAddress;
+
 
     function initAutocomplete() {
-        // Create the autocomplete object, restricting the search to geographical
-        // location types.
-        autocomplete = new google.maps.places.Autocomplete(
-            /** @type {!HTMLInputElement} */(document.getElementById('id_destination')),
-            {
-                types: ['geocode'],
-                componentRestrictions: {country: "fr"}
+
+        var geocoder = new google.maps.Geocoder;
+
+
+        if (document.getElementById('id_destination') !== null) {
+            // Create the autocomplete object, restricting the search to geographical
+            // location types.
+            autocomplete = new google.maps.places.Autocomplete(
+                /** @type {!HTMLInputElement} */(document.getElementById('id_destination')),
+                {
+                    types: ['geocode'],
+                    componentRestrictions: {country: "fr"}
+                });
+
+            // When the user selects an address from the dropdown, populate the address
+            // fields in the form.
+            autocomplete.addListener('place_changed', function () {
+                // Get the place details from the autocomplete object.
+                var place = autocomplete.getPlace();
+                if (place)
+                    document.getElementById("id_destination_location").value = place.geometry.location;
             });
+        }
 
-        // When the user selects an address from the dropdown, populate the address
-        // fields in the form.
-        autocomplete.addListener('place_changed', fillInAddress);
+        if (document.getElementById('id_address') !== null) {
+            autoAddress = new google.maps.places.Autocomplete(
+                /** @type {!HTMLInputElement} */(document.getElementById('id_address')),
+                {
+                    types: ['geocode'],
+                    componentRestrictions: {country: "fr"},
+                    placeIdOnly: true
+                });
 
-        autocomplete = new google.maps.places.Autocomplete(
-            /** @type {!HTMLInputElement} */(document.getElementById('id_address')),
-            {
-                types: ['geocode'],
-                componentRestrictions: {country: "fr"}
+            autoAddress.addListener('place_changed', function () {
+                var placeB = autoAddress.getPlace();
+                geocoder.geocode({'placeId': placeB.place_id}, function (results, status) {
+
+                    if (status !== 'OK') {
+                        return;
+                    }
+
+                    document.getElementById("id_location").value = results[0].geometry.location
+                    document.getElementById("id_location").value = document.getElementById("id_location").value.replace("(", "").replace(")", "")
+                });
             });
-        {#            {types: ['geocode']});#}
+            {#            autoAddress.addListener('place_changed', fillInAddressB());#}
+        }
 
-    }
-
-    function fillInAddress() {
-        // Get the place details from the autocomplete object.
-        var place = autocomplete.getPlace();
-        document.getElementById("id_destination_location").value = place.geometry.location;
     }
 </script>
 

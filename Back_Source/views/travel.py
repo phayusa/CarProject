@@ -3,11 +3,11 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
-from Back_Source.models import Travel, Driver
+from Back_Source.models import Travel, Driver, Vehicle
 from Back_Source.permissions.person import DriverPermission, ClientPermission
 from Back_Source.serializers import TravelSerializer
+from django.utils import timezone
 from django.http import *
-
 
 
 class TravelBase(generics.GenericAPIView):
@@ -37,8 +37,12 @@ class TravelList(TravelBase, generics.ListCreateAPIView):
     def get_queryset(self):
         # if not is_mobile_app_access(self.request):
         #     return HttpResponse("[]")
-        if self.request.user.groups.filter(name='Drivers').exists():
-            return Travel.objects.filter(driver=Driver.objects.filter(user=self.request.user))
+
+        driver = Driver.objects.filter(user=self.request.user)[0]
+        if driver.exists():
+            car = Vehicle.objects.filter(driver=driver)
+            return Travel.objects.filter(car=car,
+                                         start__day=timezone.now().day)
         return Travel.objects.all()
 
 

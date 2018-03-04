@@ -1,5 +1,3 @@
-<!doctype html>
-<html class="fixed">
 <head>
 
     <!-- Basic -->
@@ -50,24 +48,24 @@
                     <div class="card-body col-md-12">
                         <div>
                             {% if title == "Aéroports" %}
-                                <div class="form-group row fieldWrapper {% if field.address.errors %}has-danger{% endif %}">
+                                <div class="form-group row fieldWrapper {% if form.address.errors %}has-danger{% endif %}">
                                     <label class="col-lg-3 control-label text-lg-right pt-2"
                                            for="inputDefault">Adresse</label>
                                     <div class="col-lg-6">
-                                        {{ field.address.errors }}
+                                        {{ form.address.errors }}
                                         <input type="text" name="address" id="id_address" required class="form-control"
-                                               maxlength="255"/>
+                                               maxlength="255" value="{{ form.address.value }}"/>
                                     </div>
                                 </div>
 
-                                <div class="form-group row fieldWrapper {% if field.location.errors %}has-danger{% endif %}">
+                                <div class="form-group row fieldWrapper {% if form.location.errors %}has-danger{% endif %}">
                                     <label class="col-lg-3 control-label text-lg-right pt-2"
                                            for="inputDefault">Position</label>
                                     <div class="col-lg-6">
-                                        {{ field.location.errors }}
+                                        {{ form.location.errors }}
                                         <input type="text" name="location" id="id_location" required
                                                class="form-control"
-                                               maxlength="255"/>
+                                               maxlength="255" value="{{ form.location.value }}"/>
                                     </div>
                                 </div>
                             {% else %}
@@ -120,9 +118,12 @@
 
 <script>
     var autocomplete;
-    var autocomplete_address;
+    var autoAddress;
 
     function initAutocomplete() {
+
+        var geocoder = new google.maps.Geocoder;
+
 
         if (document.getElementById('id_destination') !== null) {
             // Create the autocomplete object, restricting the search to geographical
@@ -140,14 +141,27 @@
         }
 
         if (document.getElementById('id_address') !== null) {
-            autocomplete_address = new google.maps.places.Autocomplete(
+            autoAddress = new google.maps.places.Autocomplete(
                 /** @type {!HTMLInputElement} */(document.getElementById('id_address')),
                 {
                     types: ['geocode'],
-                    componentRestrictions: {country: "fr"}
+                    componentRestrictions: {country: "fr"},
+                    placeIdOnly: true
                 });
-            if (autocomplete_address)
-                autocomplete_address.addListener('place_changed', fillInAddressB());
+
+            autoAddress.addListener('place_changed', function () {
+                var placeB = autoAddress.getPlace();
+                geocoder.geocode({'placeId': placeB.place_id}, function (results, status) {
+
+                    if (status !== 'OK') {
+                        return;
+                    }
+
+                    document.getElementById("id_location").value = results[0].geometry.location
+                    document.getElementById("id_location").value = document.getElementById("id_location").value.replace("(", "").replace(")", "")
+                });
+            });
+            {#            autoAddress.addListener('place_changed', fillInAddressB());#}
         }
 
     }
@@ -155,14 +169,8 @@
     function fillInAddress() {
         // Get the place details from the autocomplete object.
         var place = autocomplete.getPlace();
-        document.getElementById("id_destination_location").value = place.geometry.location;
-    }
-
-    function fillInAddressB() {
-        // Get the place details from the autocomplete object.
-        var place = autocomplete_address.getPlace();
-        if (place && document.getElementById("id_location") !== null)
-            document.getElementById("id_location").value = place.geometry.location;
+        if (place)
+            document.getElementById("id_destination_location").value = place.geometry.location;
     }
 </script>
 

@@ -21,9 +21,16 @@ class VehicleBase(generics.GenericAPIView):
 
     # Return only the booking of the connected client
     def get_queryset(self):
-        if self.request.user.groups.filter(name='Drivers').exists():
-            return Vehicle.objects.filter(driver=Driver.objects.filter(user=self.request.user))
-        return Vehicle.objects.all()
+        driver = Driver.objects.filter(user=self.request.user)[0]
+        if driver:
+            car = Vehicle.objects.filter(driver=driver)
+            if not car:
+                return Vehicle.objects.filter(travelling=False)
+            return car
+
+        if self.request.user.is_superuser:
+            return Vehicle.objects.all()
+        return None
 
 
 class VehicleModelBase(generics.GenericAPIView):
@@ -90,7 +97,7 @@ class VehicleDriverSetter(APIView):
     authentication_classes = [JSONWebTokenAuthentication, ]
     raise_exception = True
 
-    def get(self,   request, pk, **kwargs):
+    def get(self, request, pk, **kwargs):
         try:
             if not is_mobile_app_access(request):
                 return HttpResponse("Bad Request")

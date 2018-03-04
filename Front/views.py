@@ -288,10 +288,9 @@ def booking_create(request, *args, **kwargs):
         request.session.modified = True
         return redirect('/booking/payment/')
     except Exception as e:
-        raise Http404("Page non trouvé")
+        raise Http404("Page non trouvé")  # Retrieve or create the customer in striped
 
 
-# Retrieve or create the customer in striped
 def get_stripe_customer(client, card=None):
     if client.id_stripe:
         return stripe.Customer.retrieve(client.id_stripe)
@@ -527,8 +526,8 @@ def generate_pdf():
 
 
 def compute_travel(origin, destination, departure_time):
-    raw_url_api = 'https://maps.googleapis.com/maps/api/directions/json?origin=' + str(origin) + '&destination=' + str(
-        destination) + '&units=metric&key=' + str(
+    raw_url_api = 'https://maps.googleapis.com/maps/api/directions/json?origin=' + origin.encode(
+        'utf-8') + '&destination=' + destination.encode('utf-8') + '&units=metric&key=' + str(
         settings.GEOPOSITION_GOOGLE_MAPS_API_KEY) + '&departure_time=' + str(int(
         (departure_time - datetime.datetime(1970, 1, 1, tzinfo=pytz.utc)).total_seconds()))
 
@@ -539,8 +538,8 @@ def compute_travel(origin, destination, departure_time):
 
 
 def compute_travel_multiples(origin, departure_time, travel):
-    raw_url_api = 'https://maps.googleapis.com/maps/api/directions/json?origin=' + str(origin) + '&destination=' + str(
-        origin) + '&units=metric&key=' + str(
+    raw_url_api = 'https://maps.googleapis.com/maps/api/directions/json?origin=' + origin.encode(
+        'utf-8') + '&destination=' + origin.encode('utf-8') + '&units=metric&key=' + str(
         settings.GEOPOSITION_GOOGLE_MAPS_API_KEY) + '&departure_time=' + str(int(
         (departure_time - datetime.datetime(1970, 1, 1,
                                             tzinfo=pytz.utc)).total_seconds())) + '&waypoints=optimize:true|'
@@ -548,7 +547,7 @@ def compute_travel_multiples(origin, departure_time, travel):
     second_estimated = 0
 
     for booking_test in travel.bookings.all():
-        raw_url_api += str(booking_test.destination) + '|'
+        raw_url_api += booking_test.destination.encode('utf-8') + '|'
         stock.append(booking_test)
 
     print raw_url_api

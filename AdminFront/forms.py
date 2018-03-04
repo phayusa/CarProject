@@ -179,7 +179,7 @@ class BookingForm(ModelForm):
     )
 
     account = forms.IntegerField(validators=[
-        MinValueValidator(5)
+        MinValueValidator(0)
     ])
 
     class Meta:
@@ -190,17 +190,21 @@ class BookingForm(ModelForm):
 
 
 class BookingPartenerForm(BookingForm):
-    date = forms.CharField(max_length=100)
+    date = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder': '2017-12-20', 'type': 'date'}))
 
-    time = forms.CharField(max_length=100, label="Heure")
+    time = forms.CharField(max_length=100, label="Heure",
+                           widget=forms.TextInput(attrs={'placeholder': '10:30', 'type': 'time'}))
 
     arrive_time = forms.CharField(widget=forms.HiddenInput, required=False)
 
+    status = forms.CharField(widget=forms.HiddenInput)
+
+    destination_location = forms.CharField(widget=forms.HiddenInput)
+
     class Meta:
         model = BookingPartner
-        fields = ["airport", "destination", "client", "passengers", "luggage_number",
-                  "flight", "model_choose", "vehicle_choose", "status", "arrive_time",
-                  "accountType"]
+        fields = ["airport", "destination", "destination_location", "passengers", "luggage_number",
+                  "flight", "model_choose", "status", "arrive_time", "accountType"]
 
 
 class BookingOperatorForm(ModelForm):

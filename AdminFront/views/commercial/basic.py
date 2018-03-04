@@ -7,18 +7,18 @@ import pytz
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
+from django.http import Http404
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.utils.dateparse import parse_datetime
 from django.utils.encoding import force_bytes
-from django.http import Http404
-
 from django.utils.http import urlsafe_base64_encode
 
 from AdminFront.forms import BookingCommercialEditForm, BookingCommercialCreateForm, ClientFormNoUser, ClientForm
 from Back_Source.models import VehicleModel, Client, Airport, Commercial
 from Back_Source.models.booking import BookingCommecial
 from Front.tokens import account_activation_token
+from Front.views import compute_travel
 
 
 # from django.utils.timezone import datetime  # important if using timezones
@@ -77,8 +77,7 @@ def index(request):
                         else:
                             break
                 password = User.objects.make_random_password()
-                print username
-                print password
+
                 user = User.objects.create_user(username=username, password=password, email=client_obj.mail)
                 # Set the new user as inactive
                 user.is_active = False
@@ -128,6 +127,16 @@ def index(request):
 
             tmp.client = Client.objects.filter(id=client)[0]
 
+            origin = tmp.airport.address.replace(' ', '+').replace(',', '')
+            destination = tmp.destination.replace(' ', '+').replace(',', '')
+
+            estimation_travel = compute_travel(origin, destination, date_w_timezone)
+            price = float(estimation_travel['distance']['text'].replace(" km", "")) * \
+                    tmp.model_choose.price
+
+            tmp.price = price
+            tmp.time_estimated = int(estimation_travel['duration']['value'])
+
             tmp.save()
             return redirect('/commercial/')
     else:
@@ -153,9 +162,9 @@ def index(request):
 
 def edit_booking(request, pk):
     if not request.user.is_authenticated():
-        raise Http404
+        raise Http404("Page non trouvé")
     if not Commercial.objects.filter(user=request.user).exists():
-        raise Http404
+        raise Http404("Page non trouvé")
 
     commercial = Commercial.objects.filter(user=request.user)[0]
     booking = BookingCommecial.objects.filter(id=pk)[0]
@@ -211,9 +220,9 @@ def edit_booking(request, pk):
 
 def clients_list(request):
     if not request.user.is_authenticated():
-        raise Http404
+        raise Http404("Page non trouvé")
     if not Commercial.objects.filter(user=request.user).exists():
-        raise Http404
+        raise Http404("Page non trouvé")
 
     commercial = Commercial.objects.filter(user=request.user)[0]
 
