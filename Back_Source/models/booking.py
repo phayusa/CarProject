@@ -49,6 +49,9 @@ class Booking(models.Model):
     # Fill by the driver after the travel
     payement_type = models.CharField(max_length=5, default="Aucun")
 
+    # Price of the booking
+    price = models.IntegerField(verbose_name="Prix")
+
     def __str__(self):
         return str(self.client) + ' ' + self.date.strftime('%m/%d/%Y') + ' for ' + self.arrive_time.strftime(
             '%m/%d/%Y %Hh%M')

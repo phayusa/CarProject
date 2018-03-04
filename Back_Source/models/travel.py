@@ -12,7 +12,7 @@ from vehicle import Vehicle
 # One travel did by multiples clients link to one car
 class Travel(models.Model):
     # Filled once the travel have all people
-    car = models.OneToOneField(Vehicle, on_delete=models.CASCADE, null=True, blank=True, verbose_name="Voiture")
+    car = models.ForeignKey(Vehicle, on_delete=models.CASCADE, null=True, blank=True, verbose_name="Voiture")
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE, null=True, blank=True, verbose_name="Chauffeur")
 
     # Fill during the attribution of driver
@@ -25,6 +25,7 @@ class Travel(models.Model):
 
     # Number of passengers can be in the travel (in case of 8 car places)
     free_place = models.IntegerField(default=0, verbose_name="Nombre de places disponible")
+    free_luggage = models.IntegerField(default=0, verbose_name="Nombre de baggages disponibles")
 
     # Area for the travel destination
     area = models.ForeignKey(Area, on_delete=models.CASCADE, verbose_name="Zone")

@@ -259,33 +259,36 @@ def booking_create(request, *args, **kwargs):
     origin = str(Airport.objects.filter(id=data["airport"])[0]).replace(' ', '+').replace(',', '')
     destination = data["destination"].replace(' ', '+').replace(',', '')
     estimation_travel = compute_travel(origin, destination, date_w_timezone)
+    price = float(estimation_travel['distance']['text'].replace(" km", "")) * \
+            VehicleModel.objects.filter(id=data['model_choose'])[0].price
 
-    try:
-        booking = Booking.objects.create(destination=data["destination"],
-                                         destination_location=data["destination_location"].replace('(',
-                                                                                                   '').replace(
-                                             ')',
-                                             ''),
-                                         airport=Airport.objects.filter(id=data["airport"])[0],
-                                         # time_booking= datetimeNow.strftime("%d/%m/%Y %H:%M"),
-                                         arrive_time=date_w_timezone,
-                                         luggage_number=int(data['luggage_number']),
-                                         passengers=int(data['passengers']),
-                                         model_choose=
-                                         VehicleModel.objects.filter(id=data['model_choose'])[
-                                             0],
-                                         client=client,
-                                         flight=data["flight"],
-                                         distance=float(estimation_travel['distance']['text'].replace(" km", "")),
-                                         time_estimated=int(estimation_travel['duration']['value']))
+    # try:
+    booking = Booking.objects.create(destination=data["destination"],
+                                     destination_location=data["destination_location"].replace('(',
+                                                                                               '').replace(
+                                         ')',
+                                         ''),
+                                     airport=Airport.objects.filter(id=data["airport"])[0],
+                                     # time_booking= datetimeNow.strftime("%d/%m/%Y %H:%M"),
+                                     arrive_time=date_w_timezone,
+                                     luggage_number=int(data['luggage_number']),
+                                     passengers=int(data['passengers']),
+                                     model_choose=
+                                     VehicleModel.objects.filter(id=data['model_choose'])[
+                                         0],
+                                     client=client,
+                                     flight=data["flight"],
+                                     distance=float(estimation_travel['distance']['text'].replace(" km", "")),
+                                     time_estimated=int(estimation_travel['duration']['value']),
+                                     price=price)
 
-        booking.save()
+    booking.save()
 
-        request.session['Booking_id'] = booking.id
-        request.session.modified = True
-        return redirect('/booking/payment/')
-    except Exception as e:
-        raise Http404("Page non trouvé")
+    request.session['Booking_id'] = booking.id
+    request.session.modified = True
+    return redirect('/booking/payment/')
+    # except Exception as e:
+    #     raise Http404("Page non trouvé")
 
 
 # Retrieve or create the customer in striped
@@ -333,7 +336,8 @@ def booking_payment(request):
             default = customer.default_source
 
             return render(request, 'client/payment.html',
-                          {"booking": booking_pending, "cards": cards, "default": default})
+                          {"booking": booking_pending, "cards": cards, "default": default,
+                           "price": booking_pending.price})
 
         return render(request, 'client/payment.html', {"booking": booking_pending})
     elif request.method == "POST":
@@ -352,7 +356,7 @@ def booking_payment(request):
 
             # Charge the user's card:
             charge = stripe.Charge.create(
-                amount=500,
+                amount=int(booking_pending.price * 100),
                 currency="eur",
                 description="Reservation Aceline Services",
                 # Charge the card
@@ -364,7 +368,7 @@ def booking_payment(request):
         else:
             # Charge the user's card:
             charge = stripe.Charge.create(
-                amount=500,
+                amount=int(booking_pending.price * 100),
                 currency="eur",
                 description="Reservation Aceline Services",
                 # Charge the card
@@ -386,25 +390,31 @@ def create_travel(booking_to_test):
     area = get_area(booking_to_test)
     place_wanted = booking_to_test.passengers
     estimated_arrive = booking_to_test.arrive_time + datetime.timedelta(seconds=booking_to_test.time_estimated) * 2
+    model_car = booking_to_test.model_choose
 
     if place_wanted == 0:
         travels = None
     else:
         travels = Travel.objects.filter(start=booking_to_test.arrive_time,
                                         free_place__gte=place_wanted,
-                                        area=area, airport=booking_to_test.airport)
+                                        area=area, airport=booking_to_test.airport,
+                                        free_luggage__gte=booking_to_test.luggage_number)
 
     # The case with no travel found
     if not travels:
+        car = free_car(area, booking_to_test.arrive_time, estimated_arrive)
         travel = Travel.objects.create(start=booking_to_test.arrive_time,
-                                       free_place=booking_to_test.model_choose.number_place - place_wanted,
+                                       free_place=model_car.number_place - place_wanted,
+                                       free_luggage=model_car.luggage_number - booking_to_test.luggage_number,
                                        area=area, airport=booking_to_test.airport,
-                                       car=free_car(area, booking_to_test.arrive_time, estimated_arrive),
+                                       car=car,
                                        end=estimated_arrive)
     else:
         travel = travels[0]
 
+        # Update the leave places
         travel.free_place -= place_wanted
+        travel.free_luggage -= booking_to_test.luggage_number
 
     travel.bookings.add(booking_to_test)
 
@@ -536,14 +546,10 @@ def compute_travel_multiples(origin, departure_time, travel):
                                             tzinfo=pytz.utc)).total_seconds())) + '&waypoints=optimize:true|'
     stock = []
     second_estimated = 0
-    places = 0
-    model = 0
+
     for booking_test in travel.bookings.all():
         raw_url_api += str(booking_test.destination) + '|'
         stock.append(booking_test)
-        places += booking_test.passengers
-        if model == 0:
-            model = booking_test.model_choose.number_place
 
     print raw_url_api
     result = json.load(urllib.urlopen(raw_url_api))['routes'][0]
@@ -556,6 +562,3 @@ def compute_travel_multiples(origin, departure_time, travel):
 
     # update the estimated time
     travel.end = travel.start + datetime.timedelta(seconds=second_estimated)
-
-    # update the number of place
-    travel.free_place = model - places

@@ -146,10 +146,10 @@
                                     <p class="booking-item-payment-price-title">Prix au Km</p>
                                     <p class="booking-item-payment-price-amount">{{ booking.model_choose.price }}€</p>
                                 </li>
-                                <li>
-                                    <p class="booking-item-payment-price-title">Réservation</p>
-                                    <p class="booking-item-payment-price-amount">5€</p>
-                                </li>
+{#                                <li>#}
+{#                                    <p class="booking-item-payment-price-title">Réservation</p>#}
+{#                                    <p class="booking-item-payment-price-amount">5€</p>#}
+{#                                </li>#}
                                 {% if booking.child_seat %}
                                     <li>
                                         <p class="booking-item-payment-price-title">Siège Enfant</p>
@@ -163,7 +163,7 @@
                             </ul>
                         </li>
                     </ul>
-                    <p class="booking-item-payment-total">Total de la réservation : <span>5€</span>
+                    <p class="booking-item-payment-total">Total de la réservation : <span>{{ price }}€</span>
                     </p>
                 </div>
             </div>
