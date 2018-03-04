@@ -23,7 +23,7 @@
 <body>
 <section class="body">
 
-    {% include "admin_bis/header.html" with redirect='/partener/'%}
+    {% include "admin_bis/header.html" with redirect='/partener/' %}
 
     <div class="inner-wrapper">
 
@@ -31,7 +31,7 @@
 
         <section role="main" class="content-body">
 
-            {% include 'admin_bis/../common/head_line.html' with Name="Acceuil" redirect='/operator/'%}
+            {% include 'admin_bis/../common/head_line.html' with Name="Acceuil" redirect='/operator/' %}
 
             <!-- start: page -->
 
@@ -51,7 +51,7 @@
                                         <div class="summary">
                                             <h4 class="title">Nombre de courses</h4>
                                             <div class="info">
-                                                <strong class="amount">500</strong>
+                                                <strong class="amount">{{ bookings_start }}</strong>
                                                 <span class="text-primary">depuis la création</span>
                                             </div>
                                         </div>
@@ -76,7 +76,7 @@
                                         <div class="summary">
                                             <h4 class="title">Profit sur l'année</h4>
                                             <div class="info">
-                                                <strong class="amount">14 890.30€ </strong>
+                                                <strong class="amount">{{ profit }}€ </strong>
                                             </div>
                                         </div>
                                         {#                                        <div class="summary-footer">#}
@@ -159,18 +159,18 @@
                             <script type="text/javascript">
 
                                 var flotBarsData = [
-                                    ["Jan", 28],
-                                    ["Fev", 42],
-                                    ["Mars", 25],
-                                    ["Avr", 23],
-                                    ["Mai", 37],
-                                    ["Juin", 33],
-                                    ["Juil", 18],
-                                    ["Août", 14],
-                                    ["Sep", 18],
-                                    ["Oct", 15],
-                                    ["Nov", {{ all }}],
-                                    ["Déc", 0]
+                                    ["Jan", {{ booking_by_months.1 }}],
+                                    ["Fev", {{ booking_by_months.2 }}],
+                                    ["Mars", {{ booking_by_months.3 }}],
+                                    ["Avr", {{ booking_by_months.4 }}],
+                                    ["Mai", {{ booking_by_months.5 }}],
+                                    ["Juin", {{ booking_by_months.6 }}],
+                                    ["Juil", {{ booking_by_months.7 }}],
+                                    ["Août", {{ booking_by_months.8 }}],
+                                    ["Sep", {{ booking_by_months.9 }}],
+                                    ["Oct", {{ booking_by_months.10 }}],
+                                    ["Nov", {{ booking_by_months.11 }}],
+                                    ["Déc", {{ booking_by_months.12  }}]
                                 ];
 
                                 // See: js/examples/examples.charts.js for more settings.
@@ -348,7 +348,7 @@
                             </div>
 
                             <h2 class="card-title">Réservation Sexe</h2>
-                            <p class="card-subtitle">Etude effectué sur les réservation de l'année actuelle</p>
+                            <p class="card-subtitle">La série A représentant les hommes et la série B les femmes</p>
                         </header>
                         <div class="card-body">
 
@@ -358,52 +358,52 @@
 
                                 var morrisBarData = [{
                                     y: 'Jan',
-                                    a: 18,
-                                    b: 10
+                                    a: {{ booking_gender.1.Homme }},
+                                    b: {{ booking_gender.1.Femme }}
                                 }, {
                                     y: 'Fev',
-                                    a: 32,
-                                    b: 10
+                                    a: {{ booking_gender.2.Homme }},
+                                    b: {{ booking_gender.2.Femme}}
                                 }, {
                                     y: 'Mars',
-                                    a: 10,
-                                    b: 15
+                                    a: {{ booking_gender.3.Homme }},
+                                    b: {{ booking_gender.3.Femme}}
                                 }, {
                                     y: 'Avril',
-                                    a: 11,
-                                    b: 12
+                                    a: {{ booking_gender.4.Homme }},
+                                    b: {{ booking_gender.4.Femme}}
                                 }, {
                                     y: 'Mai',
-                                    a: 11,
-                                    b: 26
+                                    a: {{ booking_gender.5.Homme }},
+                                    b: {{ booking_gender.5.Femme}}
                                 }, {
                                     y: 'Juin',
-                                    a: 22,
-                                    b: 11
+                                    a: {{ booking_gender.6.Homme }},
+                                    b: {{ booking_gender.6.Femme}}
                                 }, {
                                     y: 'Juil',
-                                    a: 14,
-                                    b: 14
+                                    a: {{ booking_gender.7.Homme }},
+                                    b: {{ booking_gender.7.Femme}}
                                 }, {
                                     y: 'Août',
-                                    a: 7,
-                                    b: 7
+                                    a: {{ booking_gender.8.Homme }},
+                                    b: {{ booking_gender.8.Femme}}
                                 }, {
                                     y: 'Sep',
-                                    a: 8,
-                                    b: 10
+                                    a: {{ booking_gender.9.Homme }},
+                                    b: {{ booking_gender.9.Femme}}
                                 }, {
                                     y: 'Oct',
-                                    a: 10,
-                                    b: 5
+                                    a: {{ booking_gender.10.Homme }},
+                                    b: {{ booking_gender.10.Femme}}
                                 }, {
                                     y: 'Nov',
-                                    a: 5,
-                                    b: 0
+                                    a: {{ booking_gender.11.Homme }},
+                                    b: {{ booking_gender.11.Femme}}
                                 }, {
                                     y: 'Dec',
-                                    a: 0,
-                                    b: 0
+                                    a: {{ booking_gender.12.Homme }},
+                                    b: {{ booking_gender.12.Femme}}
                                 }];
 
                                 // See: js/examples/examples.charts.js for more settings.
@@ -414,208 +414,208 @@
                     </section>
                 </div>
             </div>
-{##}
-{##}
-{#            <h4 class="mb-0 mt-5 pt-4">Chartist - Simple Responsive Charts</h4>#}
-{#            <p class="mb-3">You may think that this is just yet an other charting library. But Chartist.js is the#}
-{#                product of a community that was disappointed about the abilities provided by other charting libraries.#}
-{#                Of course there are hundreds of other great charting libraries but after using them there were always#}
-{#                tweaks you would have wished for that were not included.</p>#}
-{##}
-{#            <div class="row">#}
-{#                <div class="col-lg-6">#}
-{#                    <section class="card">#}
-{#                        <header class="card-header">#}
-{#                            <div class="card-actions">#}
-{#                                <a href="#" class="card-action card-action-toggle" data-card-toggle></a>#}
-{#                                <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
-{#                            </div>#}
-{##}
-{#                            <h2 class="card-title">Line Chart: With Tooltips</h2>#}
-{#                        </header>#}
-{#                        <div class="card-body">#}
-{#                            <div id="ChartistLineChartWithTooltips"#}
-{#                                 class="ct-chart ct-perfect-fourth ct-golden-section"></div>#}
-{##}
-{#                            <!-- See: js/examples/examples.charts.js for the example code. -->#}
-{#                        </div>#}
-{#                    </section>#}
-{#                </div>#}
-{#                <div class="col-lg-6">#}
-{#                    <section class="card">#}
-{#                        <header class="card-header">#}
-{#                            <div class="card-actions">#}
-{#                                <a href="#" class="card-action card-action-toggle" data-card-toggle></a>#}
-{#                                <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
-{#                            </div>#}
-{##}
-{#                            <h2 class="card-title">Line Chart: With Area</h2>#}
-{#                        </header>#}
-{#                        <div class="card-body">#}
-{#                            <div id="ChartistLineChartWithArea"#}
-{#                                 class="ct-chart ct-perfect-fourth ct-golden-section"></div>#}
-{##}
-{#                            <!-- See: js/examples/examples.charts.js for the example code. -->#}
-{#                        </div>#}
-{#                    </section>#}
-{#                </div>#}
-{#            </div>#}
-{##}
-{##}
-{#            <div class="row">#}
-{#                <div class="col-lg-6">#}
-{#                    <section class="card">#}
-{#                        <header class="card-header">#}
-{#                            <div class="card-actions">#}
-{#                                <a href="#" class="card-action card-action-toggle" data-card-toggle></a>#}
-{#                                <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
-{#                            </div>#}
-{##}
-{#                            <h2 class="card-title">Line Chart: Interpolation / Smoothing</h2>#}
-{#                        </header>#}
-{#                        <div class="card-body">#}
-{#                            <div id="ChartistLineInterpolationSmoothing"#}
-{#                                 class="ct-chart ct-perfect-fourth ct-golden-section"></div>#}
-{##}
-{#                            <!-- See: js/examples/examples.charts.js for the example code. -->#}
-{#                        </div>#}
-{#                    </section>#}
-{#                </div>#}
-{#                <div class="col-lg-6">#}
-{#                    <section class="card">#}
-{#                        <header class="card-header">#}
-{#                            <div class="card-actions">#}
-{#                                <a href="#" class="card-action card-action-toggle" data-card-toggle></a>#}
-{#                                <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
-{#                            </div>#}
-{##}
-{#                            <h2 class="card-title">Bar Chart: Bi-Polar Chart</h2>#}
-{#                        </header>#}
-{#                        <div class="card-body">#}
-{#                            <div id="ChartistBiPolarBarChart"#}
-{#                                 class="ct-chart ct-perfect-fourth ct-golden-section"></div>#}
-{##}
-{#                            <!-- See: js/examples/examples.charts.js for the example code. -->#}
-{#                        </div>#}
-{#                    </section>#}
-{#                </div>#}
-{#            </div>#}
-{##}
-{#            <div class="row">#}
-{#                <div class="col-lg-6">#}
-{#                    <section class="card">#}
-{#                        <header class="card-header">#}
-{#                            <div class="card-actions">#}
-{#                                <a href="#" class="card-action card-action-toggle" data-card-toggle></a>#}
-{#                                <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
-{#                            </div>#}
-{##}
-{#                            <h2 class="card-title">Bar Chart: Overlapping On Mobile</h2>#}
-{#                        </header>#}
-{#                        <div class="card-body">#}
-{#                            <div id="ChartistOverlappingBarsOnMobile"#}
-{#                                 class="ct-chart ct-perfect-fourth ct-golden-section"></div>#}
-{##}
-{#                            <!-- See: js/examples/examples.charts.js for the example code. -->#}
-{#                        </div>#}
-{#                    </section>#}
-{#                </div>#}
-{#                <div class="col-lg-6">#}
-{#                    <section class="card">#}
-{#                        <header class="card-header">#}
-{#                            <div class="card-actions">#}
-{#                                <a href="#" class="card-action card-action-toggle" data-card-toggle></a>#}
-{#                                <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
-{#                            </div>#}
-{##}
-{#                            <h2 class="card-title">Bar Chart: Add Peak Circles Using Draw Events</h2>#}
-{#                        </header>#}
-{#                        <div class="card-body">#}
-{#                            <div id="ChartistAddPeakCirclesUsingDrawEvents"#}
-{#                                 class="ct-chart ct-perfect-fourth ct-golden-section"></div>#}
-{##}
-{#                            <!-- See: js/examples/examples.charts.js for the example code. -->#}
-{#                        </div>#}
-{#                    </section>#}
-{#                </div>#}
-{#            </div>#}
-{##}
-{#            <div class="row">#}
-{#                <div class="col-lg-6">#}
-{#                    <section class="card">#}
-{#                        <header class="card-header">#}
-{#                            <div class="card-actions">#}
-{#                                <a href="#" class="card-action card-action-toggle" data-card-toggle></a>#}
-{#                                <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
-{#                            </div>#}
-{##}
-{#                            <h2 class="card-title">Bar Chart: Multi-Line Labels</h2>#}
-{#                        </header>#}
-{#                        <div class="card-body">#}
-{#                            <div id="ChartistMultiLineLabels"#}
-{#                                 class="ct-chart ct-perfect-fourth ct-golden-section"></div>#}
-{##}
-{#                            <!-- See: js/examples/examples.charts.js for the example code. -->#}
-{#                        </div>#}
-{#                    </section>#}
-{#                </div>#}
-{#                <div class="col-lg-6">#}
-{#                    <section class="card">#}
-{#                        <header class="card-header">#}
-{#                            <div class="card-actions">#}
-{#                                <a href="#" class="card-action card-action-toggle" data-card-toggle></a>#}
-{#                                <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
-{#                            </div>#}
-{##}
-{#                            <h2 class="card-title">Bar Chart: Stacked Chart</h2>#}
-{#                        </header>#}
-{#                        <div class="card-body">#}
-{#                            <div id="ChartistStackedChart" class="ct-chart ct-perfect-fourth ct-golden-section"></div>#}
-{##}
-{#                            <!-- See: js/examples/examples.charts.js for the example code. -->#}
-{#                        </div>#}
-{#                    </section>#}
-{#                </div>#}
-{#            </div>#}
-{##}
-{#            <div class="row">#}
-{#                <div class="col-lg-6">#}
-{#                    <section class="card">#}
-{#                        <header class="card-header">#}
-{#                            <div class="card-actions">#}
-{#                                <a href="#" class="card-action card-action-toggle" data-card-toggle></a>#}
-{#                                <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
-{#                            </div>#}
-{##}
-{#                            <h2 class="card-title">Bar Chart: Horizontal Chart</h2>#}
-{#                        </header>#}
-{#                        <div class="card-body">#}
-{#                            <div id="ChartistHorizontalChart"#}
-{#                                 class="ct-chart ct-perfect-fourth ct-golden-section"></div>#}
-{##}
-{#                            <!-- See: js/examples/examples.charts.js for the example code. -->#}
-{#                        </div>#}
-{#                    </section>#}
-{#                </div>#}
-{#                <div class="col-lg-6">#}
-{#                    <section class="card">#}
-{#                        <header class="card-header">#}
-{#                            <div class="card-actions">#}
-{#                                <a href="#" class="card-action card-action-toggle" data-card-toggle></a>#}
-{#                                <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
-{#                            </div>#}
-{##}
-{#                            <h2 class="card-title">Bar Chart: Extreme Responsive Configuration</h2>#}
-{#                        </header>#}
-{#                        <div class="card-body">#}
-{#                            <div id="ChartistExtremeResponsiveConfiguration"#}
-{#                                 class="ct-chart ct-perfect-fourth ct-golden-section"></div>#}
-{##}
-{#                            <!-- See: js/examples/examples.charts.js for the example code. -->#}
-{#                        </div>#}
-{#                    </section>#}
-{#                </div>#}
-{#            </div>#}
+            {##}
+            {##}
+            {#            <h4 class="mb-0 mt-5 pt-4">Chartist - Simple Responsive Charts</h4>#}
+            {#            <p class="mb-3">You may think that this is just yet an other charting library. But Chartist.js is the#}
+            {#                product of a community that was disappointed about the abilities provided by other charting libraries.#}
+            {#                Of course there are hundreds of other great charting libraries but after using them there were always#}
+            {#                tweaks you would have wished for that were not included.</p>#}
+            {##}
+            {#            <div class="row">#}
+            {#                <div class="col-lg-6">#}
+            {#                    <section class="card">#}
+            {#                        <header class="card-header">#}
+            {#                            <div class="card-actions">#}
+            {#                                <a href="#" class="card-action card-action-toggle" data-card-toggle></a>#}
+            {#                                <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
+            {#                            </div>#}
+            {##}
+            {#                            <h2 class="card-title">Line Chart: With Tooltips</h2>#}
+            {#                        </header>#}
+            {#                        <div class="card-body">#}
+            {#                            <div id="ChartistLineChartWithTooltips"#}
+            {#                                 class="ct-chart ct-perfect-fourth ct-golden-section"></div>#}
+            {##}
+            {#                            <!-- See: js/examples/examples.charts.js for the example code. -->#}
+            {#                        </div>#}
+            {#                    </section>#}
+            {#                </div>#}
+            {#                <div class="col-lg-6">#}
+            {#                    <section class="card">#}
+            {#                        <header class="card-header">#}
+            {#                            <div class="card-actions">#}
+            {#                                <a href="#" class="card-action card-action-toggle" data-card-toggle></a>#}
+            {#                                <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
+            {#                            </div>#}
+            {##}
+            {#                            <h2 class="card-title">Line Chart: With Area</h2>#}
+            {#                        </header>#}
+            {#                        <div class="card-body">#}
+            {#                            <div id="ChartistLineChartWithArea"#}
+            {#                                 class="ct-chart ct-perfect-fourth ct-golden-section"></div>#}
+            {##}
+            {#                            <!-- See: js/examples/examples.charts.js for the example code. -->#}
+            {#                        </div>#}
+            {#                    </section>#}
+            {#                </div>#}
+            {#            </div>#}
+            {##}
+            {##}
+            {#            <div class="row">#}
+            {#                <div class="col-lg-6">#}
+            {#                    <section class="card">#}
+            {#                        <header class="card-header">#}
+            {#                            <div class="card-actions">#}
+            {#                                <a href="#" class="card-action card-action-toggle" data-card-toggle></a>#}
+            {#                                <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
+            {#                            </div>#}
+            {##}
+            {#                            <h2 class="card-title">Line Chart: Interpolation / Smoothing</h2>#}
+            {#                        </header>#}
+            {#                        <div class="card-body">#}
+            {#                            <div id="ChartistLineInterpolationSmoothing"#}
+            {#                                 class="ct-chart ct-perfect-fourth ct-golden-section"></div>#}
+            {##}
+            {#                            <!-- See: js/examples/examples.charts.js for the example code. -->#}
+            {#                        </div>#}
+            {#                    </section>#}
+            {#                </div>#}
+            {#                <div class="col-lg-6">#}
+            {#                    <section class="card">#}
+            {#                        <header class="card-header">#}
+            {#                            <div class="card-actions">#}
+            {#                                <a href="#" class="card-action card-action-toggle" data-card-toggle></a>#}
+            {#                                <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
+            {#                            </div>#}
+            {##}
+            {#                            <h2 class="card-title">Bar Chart: Bi-Polar Chart</h2>#}
+            {#                        </header>#}
+            {#                        <div class="card-body">#}
+            {#                            <div id="ChartistBiPolarBarChart"#}
+            {#                                 class="ct-chart ct-perfect-fourth ct-golden-section"></div>#}
+            {##}
+            {#                            <!-- See: js/examples/examples.charts.js for the example code. -->#}
+            {#                        </div>#}
+            {#                    </section>#}
+            {#                </div>#}
+            {#            </div>#}
+            {##}
+            {#            <div class="row">#}
+            {#                <div class="col-lg-6">#}
+            {#                    <section class="card">#}
+            {#                        <header class="card-header">#}
+            {#                            <div class="card-actions">#}
+            {#                                <a href="#" class="card-action card-action-toggle" data-card-toggle></a>#}
+            {#                                <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
+            {#                            </div>#}
+            {##}
+            {#                            <h2 class="card-title">Bar Chart: Overlapping On Mobile</h2>#}
+            {#                        </header>#}
+            {#                        <div class="card-body">#}
+            {#                            <div id="ChartistOverlappingBarsOnMobile"#}
+            {#                                 class="ct-chart ct-perfect-fourth ct-golden-section"></div>#}
+            {##}
+            {#                            <!-- See: js/examples/examples.charts.js for the example code. -->#}
+            {#                        </div>#}
+            {#                    </section>#}
+            {#                </div>#}
+            {#                <div class="col-lg-6">#}
+            {#                    <section class="card">#}
+            {#                        <header class="card-header">#}
+            {#                            <div class="card-actions">#}
+            {#                                <a href="#" class="card-action card-action-toggle" data-card-toggle></a>#}
+            {#                                <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
+            {#                            </div>#}
+            {##}
+            {#                            <h2 class="card-title">Bar Chart: Add Peak Circles Using Draw Events</h2>#}
+            {#                        </header>#}
+            {#                        <div class="card-body">#}
+            {#                            <div id="ChartistAddPeakCirclesUsingDrawEvents"#}
+            {#                                 class="ct-chart ct-perfect-fourth ct-golden-section"></div>#}
+            {##}
+            {#                            <!-- See: js/examples/examples.charts.js for the example code. -->#}
+            {#                        </div>#}
+            {#                    </section>#}
+            {#                </div>#}
+            {#            </div>#}
+            {##}
+            {#            <div class="row">#}
+            {#                <div class="col-lg-6">#}
+            {#                    <section class="card">#}
+            {#                        <header class="card-header">#}
+            {#                            <div class="card-actions">#}
+            {#                                <a href="#" class="card-action card-action-toggle" data-card-toggle></a>#}
+            {#                                <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
+            {#                            </div>#}
+            {##}
+            {#                            <h2 class="card-title">Bar Chart: Multi-Line Labels</h2>#}
+            {#                        </header>#}
+            {#                        <div class="card-body">#}
+            {#                            <div id="ChartistMultiLineLabels"#}
+            {#                                 class="ct-chart ct-perfect-fourth ct-golden-section"></div>#}
+            {##}
+            {#                            <!-- See: js/examples/examples.charts.js for the example code. -->#}
+            {#                        </div>#}
+            {#                    </section>#}
+            {#                </div>#}
+            {#                <div class="col-lg-6">#}
+            {#                    <section class="card">#}
+            {#                        <header class="card-header">#}
+            {#                            <div class="card-actions">#}
+            {#                                <a href="#" class="card-action card-action-toggle" data-card-toggle></a>#}
+            {#                                <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
+            {#                            </div>#}
+            {##}
+            {#                            <h2 class="card-title">Bar Chart: Stacked Chart</h2>#}
+            {#                        </header>#}
+            {#                        <div class="card-body">#}
+            {#                            <div id="ChartistStackedChart" class="ct-chart ct-perfect-fourth ct-golden-section"></div>#}
+            {##}
+            {#                            <!-- See: js/examples/examples.charts.js for the example code. -->#}
+            {#                        </div>#}
+            {#                    </section>#}
+            {#                </div>#}
+            {#            </div>#}
+            {##}
+            {#            <div class="row">#}
+            {#                <div class="col-lg-6">#}
+            {#                    <section class="card">#}
+            {#                        <header class="card-header">#}
+            {#                            <div class="card-actions">#}
+            {#                                <a href="#" class="card-action card-action-toggle" data-card-toggle></a>#}
+            {#                                <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
+            {#                            </div>#}
+            {##}
+            {#                            <h2 class="card-title">Bar Chart: Horizontal Chart</h2>#}
+            {#                        </header>#}
+            {#                        <div class="card-body">#}
+            {#                            <div id="ChartistHorizontalChart"#}
+            {#                                 class="ct-chart ct-perfect-fourth ct-golden-section"></div>#}
+            {##}
+            {#                            <!-- See: js/examples/examples.charts.js for the example code. -->#}
+            {#                        </div>#}
+            {#                    </section>#}
+            {#                </div>#}
+            {#                <div class="col-lg-6">#}
+            {#                    <section class="card">#}
+            {#                        <header class="card-header">#}
+            {#                            <div class="card-actions">#}
+            {#                                <a href="#" class="card-action card-action-toggle" data-card-toggle></a>#}
+            {#                                <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
+            {#                            </div>#}
+            {##}
+            {#                            <h2 class="card-title">Bar Chart: Extreme Responsive Configuration</h2>#}
+            {#                        </header>#}
+            {#                        <div class="card-body">#}
+            {#                            <div id="ChartistExtremeResponsiveConfiguration"#}
+            {#                                 class="ct-chart ct-perfect-fourth ct-golden-section"></div>#}
+            {##}
+            {#                            <!-- See: js/examples/examples.charts.js for the example code. -->#}
+            {#                        </div>#}
+            {#                    </section>#}
+            {#                </div>#}
+            {#            </div>#}
 
             <!-- end: page -->
         </section>

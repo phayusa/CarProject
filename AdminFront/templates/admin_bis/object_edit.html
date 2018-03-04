@@ -48,36 +48,41 @@
                 <form method="post" {% if file %}enctype="multipart/form-data"{% endif %}>
                     {% csrf_token %}
                     <div class="card-body col-md-12">
-                        {#                        {{ form.address }}#}
-                        {#                        <table align="center">#}
-                        {#                            {{ form.as_table }}#}
-                        {##}
-                        {#                        </table>#}
                         <div>
-{#                                                        {{ form.as_p }}#}
-                            {% for field in form.visible_fields %}
-                                <div class="form-group row fieldWrapper {% if field.errors %}has-danger{% endif %}">
+                            {% if title == "Aéroports" %}
+                                <div class="form-group row fieldWrapper {% if field.address.errors %}has-danger{% endif %}">
                                     <label class="col-lg-3 control-label text-lg-right pt-2"
-                                           for="inputDefault">{{ field.label }}</label>
+                                           for="inputDefault">Adresse</label>
                                     <div class="col-lg-6">
-                                        {{ field.errors }}
-                                        {% render_field field class+="form-control" %}
+                                        {{ field.address.errors }}
+                                        <input type="text" name="address" id="id_address" required class="form-control"
+                                               maxlength="255"/>
                                     </div>
                                 </div>
-                            {% endfor %}
-                            {{ form.media }}
+
+                                <div class="form-group row fieldWrapper {% if field.location.errors %}has-danger{% endif %}">
+                                    <label class="col-lg-3 control-label text-lg-right pt-2"
+                                           for="inputDefault">Position</label>
+                                    <div class="col-lg-6">
+                                        {{ field.location.errors }}
+                                        <input type="text" name="location" id="id_location" required
+                                               class="form-control"
+                                               maxlength="255"/>
+                                    </div>
+                                </div>
+                            {% else %}
+                                {% for field in form.visible_fields %}
+                                    <div class="form-group row fieldWrapper {% if field.errors %}has-danger{% endif %}">
+                                        <label class="col-lg-3 control-label text-lg-right pt-2"
+                                               for="inputDefault">{{ field.label }}</label>
+                                        <div class="col-lg-6">
+                                            {{ field.errors }}
+                                            {% render_field field class+="form-control" %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
                         </div>
-                        {#                        <div class="card-body">#}
-                        {#                            <form class="form-horizontal form-bordered" method="get">#}
-                        {#                                <div class="form-group row">#}
-                        {#                                    <div class="col-lg-6">#}
-                        {#                                        <label class="col-lg-3 control-label text-lg-right pt-2">Nom</label>#}
-                        {#                                        <input class="form-control mb-3" type="text"#}
-                        {#                                               placeholder="Nom">#}
-                        {#                                    </div>#}
-                        {#                                </div>#}
-                        {#                            </form>#}
-                        {#                        </div>#}
 
                     </div>
                     <div class="card-footer">
@@ -110,10 +115,56 @@
 <script src="{% static "static_admin/vendor/datatables/media/js/dataTables.bootstrap4.min.js" %}"></script>
 <script src="{% static "static_admin/vendor/pnotify/pnotify.custom.js" %}"></script>
 
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAb1NNSLUT7vzTIezPAqKumMB7wNXa2hMg&libraries=places&callback=initAutocomplete"
+        async defer></script>
 
-<!-- Examples -->
-{#<script src="{% static "static_admin/js/datatable/client_manager_datatable.js" %}"></script>#}
-{#<script src="{% static "static_admin/js/examples/examples.modal=s.js" %}"></script>#}
+<script>
+    var autocomplete;
+    var autocomplete_address;
+
+    function initAutocomplete() {
+
+        if (document.getElementById('id_destination') !== null) {
+            // Create the autocomplete object, restricting the search to geographical
+            // location types.
+            autocomplete = new google.maps.places.Autocomplete(
+                /** @type {!HTMLInputElement} */(document.getElementById('id_destination')),
+                {
+                    types: ['geocode'],
+                    componentRestrictions: {country: "fr"}
+                });
+
+            // When the user selects an address from the dropdown, populate the address
+            // fields in the form.
+            autocomplete.addListener('place_changed', fillInAddress());
+        }
+
+        if (document.getElementById('id_address') !== null) {
+            autocomplete_address = new google.maps.places.Autocomplete(
+                /** @type {!HTMLInputElement} */(document.getElementById('id_address')),
+                {
+                    types: ['geocode'],
+                    componentRestrictions: {country: "fr"}
+                });
+            if (autocomplete_address)
+                autocomplete_address.addListener('place_changed', fillInAddressB());
+        }
+
+    }
+
+    function fillInAddress() {
+        // Get the place details from the autocomplete object.
+        var place = autocomplete.getPlace();
+        document.getElementById("id_destination_location").value = place.geometry.location;
+    }
+
+    function fillInAddressB() {
+        // Get the place details from the autocomplete object.
+        var place = autocomplete_address.getPlace();
+        if (place && document.getElementById("id_location") !== null)
+            document.getElementById("id_location").value = place.geometry.location;
+    }
+</script>
 
 
 </body>

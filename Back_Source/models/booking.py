@@ -94,6 +94,9 @@ class BookingOperator(models.Model):
 
     operator = models.ForeignKey(Operator, on_delete=models.CASCADE)
 
+    # Price of the booking
+    price = models.IntegerField(verbose_name="Prix")
+
     def __str__(self):
         return str(self.client) + ' ' + self.date.strftime('%m/%d/%Y') + ' for ' + self.arrive_time.strftime(
             '%m/%d/%Y %Hh%M')

@@ -11,12 +11,14 @@ from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.utils.dateparse import parse_datetime
 from django.utils.encoding import force_bytes
+from django.http import Http404
+
 from django.utils.http import urlsafe_base64_encode
-from Front.tokens import account_activation_token
 
 from AdminFront.forms import BookingCommercialEditForm, BookingCommercialCreateForm, ClientFormNoUser, ClientForm
 from Back_Source.models import VehicleModel, Client, Airport, Commercial
 from Back_Source.models.booking import BookingCommecial
+from Front.tokens import account_activation_token
 
 
 # from django.utils.timezone import datetime  # important if using timezones
@@ -151,9 +153,9 @@ def index(request):
 
 def edit_booking(request, pk):
     if not request.user.is_authenticated():
-        return redirect('/login/')
+        raise Http404
     if not Commercial.objects.filter(user=request.user).exists():
-        return redirect('/')
+        raise Http404
 
     commercial = Commercial.objects.filter(user=request.user)[0]
     booking = BookingCommecial.objects.filter(id=pk)[0]
@@ -209,9 +211,9 @@ def edit_booking(request, pk):
 
 def clients_list(request):
     if not request.user.is_authenticated():
-        return redirect('/login/')
+        raise Http404
     if not Commercial.objects.filter(user=request.user).exists():
-        return redirect('/')
+        raise Http404
 
     commercial = Commercial.objects.filter(user=request.user)[0]
 

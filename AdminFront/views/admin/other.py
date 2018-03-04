@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db.models import Count
+from django.db.models import Count, Sum
 from django.db.models.functions import ExtractMonth
 from django.http import Http404
 from django.shortcuts import redirect
@@ -15,7 +15,7 @@ from common import test_admin_login
 
 def index(request):
     if not test_admin_login(request.user):
-        raise Http404
+        raise Http404("Page non trouvé")
 
     # Getting the number of booking today
     today_booking = Booking.objects.filter(
@@ -37,27 +37,48 @@ def index(request):
     # Count the number of drivers
     nb_driver = Driver.objects.all().count()
 
-    booking_current_year = Booking.objects.filter(date__year=datetime.today().year).annotate(month=ExtractMonth('date'))
-    booking_partener_current_year = BookingPartner.objects.filter(date__year=datetime.today().year).annotate(
-        month=ExtractMonth('date'))
-    booking_commercial_current_year = BookingCommecial.objects.filter(date__year=datetime.today().year).annotate(
-        month=ExtractMonth('date'))
+    booking_current_year = Booking.objects.filter(date__year=datetime.today().year)
+    booking_partener_current_year = BookingPartner.objects.filter(date__year=datetime.today().year)
+    booking_commercial_current_year = BookingCommecial.objects.filter(date__year=datetime.today().year)
+
+    booking_current_year_by_month = booking_current_year.annotate(month=ExtractMonth('date'))
+    booking_partener_current_year_by_month = booking_partener_current_year.annotate(month=ExtractMonth('date'))
+    booking_commercial_current_year_by_month = booking_commercial_current_year.annotate(month=ExtractMonth('date'))
 
     # Getting all the bookings by months
-    booking_by_months = booking_current_year.values('month').annotate(count=Count('id')).values('month', 'count')
-    booking_partener_months = booking_partener_current_year.values('month').annotate(count=Count('id')).values('month',
-                                                                                                               'count')
-    booking_commercial_months = booking_commercial_current_year.values('month').annotate(count=Count('id')).values(
+    booking_by_months = booking_current_year_by_month.values('month').annotate(count=Count('id')).values('month',
+                                                                                                         'count')
+    booking_partener_months = booking_partener_current_year_by_month.values('month').annotate(count=Count('id')).values(
+        'month',
+        'count')
+    booking_commercial_months = booking_commercial_current_year_by_month.values('month').annotate(
+        count=Count('id')).values(
         'month', 'count')
 
-    gender_by_months = booking_current_year.values('month', 'client__gender').annotate(count=Count('id')).values(
-        'month', 'count', 'client__gender')
-    gender_partener_months = booking_partener_current_year.values('month', 'client__gender').annotate(
-        count=Count('id')).values('month',
-                                  'count', 'client__gender')
-    gender_commercial_months = booking_commercial_current_year.values('month', 'client__gender').annotate(
+    gender_by_months = booking_current_year_by_month.values('month', 'client__gender').annotate(
         count=Count('id')).values(
         'month', 'count', 'client__gender')
+    gender_partener_months = booking_partener_current_year_by_month.values('month', 'client__gender').annotate(
+        count=Count('id')).values('month',
+                                  'count', 'client__gender')
+    gender_commercial_months = booking_commercial_current_year_by_month.values('month', 'client__gender').annotate(
+        count=Count('id')).values(
+        'month', 'count', 'client__gender')
+
+    sum = booking_current_year.aggregate(Sum('price'))[u'price__sum']
+    sum_commercial = booking_commercial_current_year.aggregate(
+        Sum('price'))[u'price__sum']
+    sum_partener = booking_commercial_current_year.aggregate(Sum(
+        'price'))[u'price__sum']
+
+    if not sum:
+        sum = 0
+    if not sum_commercial:
+        sum_commercial = 0
+    if not sum_partener:
+        sum_partener = 0
+
+    profit_on_year = sum_commercial + sum_partener + sum
 
     # Add it in a new map
     all_bookings_by_months = {}
@@ -106,14 +127,15 @@ def index(request):
                   {"today_order": today_booking, "commercial_booking": booking_commercial_size,
                    "client_booking": booking_size, "partener_booking": booking_partener_size,
                    "clients": clients, "all": all_booking_month, "drivers": nb_driver,
-                   "booking_by_months": all_bookings_by_months, "booking_gender": all_bookings_gender})
+                   "booking_by_months": all_bookings_by_months, "booking_gender": all_bookings_gender,
+                   "profit": profit_on_year})
     # else:
     #     return redirect('/')
 
 
 def base_manager(request):
     if not test_admin_login(request.user):
-        raise Http404
+        raise Http404("Page non trouvé")
 
     if request.user.is_superuser:
         return render(request, 'admin_bis/person_manager.html', {"sections": ["Gestion Comptes"]})
@@ -121,7 +143,7 @@ def base_manager(request):
 
 def booking_manager(request):
     if not test_admin_login(request.user):
-        raise Http404
+        raise Http404("Page non trouvé")
 
     if request.user.is_superuser:
         return render(request, 'admin_bis/booking_manager.html', {"sections": ["Gestion Réservation"]})
@@ -129,13 +151,14 @@ def booking_manager(request):
 
 def car_manager(request):
     if not test_admin_login(request.user):
-        raise Http404
+        raise Http404("Page non trouvé")
+
     return render(request, 'admin_bis/car_manager.html', {"sections": ["Gestion Voitures"]})
 
 
 def areas(request):
     if not test_admin_login(request.user):
-        raise Http404
+        raise Http404("Page non trouvé")
 
     if request.method == "GET":
         return render(request, 'admin_bis/areas.html',
@@ -159,7 +182,8 @@ def areas(request):
 
 def map_view(request):
     if not test_admin_login(request.user):
-        raise Http404
+        raise Http404("Page non trouvé")
+
     return render(request, 'admin_bis/map.html', {"sections": ["Carte", "Temps Réels"], "sub_active": 1})
 
 # def login_view(request):

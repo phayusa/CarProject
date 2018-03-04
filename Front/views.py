@@ -262,33 +262,33 @@ def booking_create(request, *args, **kwargs):
     price = float(estimation_travel['distance']['text'].replace(" km", "")) * \
             VehicleModel.objects.filter(id=data['model_choose'])[0].price
 
-    # try:
-    booking = Booking.objects.create(destination=data["destination"],
-                                     destination_location=data["destination_location"].replace('(',
-                                                                                               '').replace(
-                                         ')',
-                                         ''),
-                                     airport=Airport.objects.filter(id=data["airport"])[0],
-                                     # time_booking= datetimeNow.strftime("%d/%m/%Y %H:%M"),
-                                     arrive_time=date_w_timezone,
-                                     luggage_number=int(data['luggage_number']),
-                                     passengers=int(data['passengers']),
-                                     model_choose=
-                                     VehicleModel.objects.filter(id=data['model_choose'])[
-                                         0],
-                                     client=client,
-                                     flight=data["flight"],
-                                     distance=float(estimation_travel['distance']['text'].replace(" km", "")),
-                                     time_estimated=int(estimation_travel['duration']['value']),
-                                     price=price)
+    try:
+        booking = Booking.objects.create(destination=data["destination"],
+                                         destination_location=data["destination_location"].replace('(',
+                                                                                                   '').replace(
+                                             ')',
+                                             ''),
+                                         airport=Airport.objects.filter(id=data["airport"])[0],
+                                         # time_booking= datetimeNow.strftime("%d/%m/%Y %H:%M"),
+                                         arrive_time=date_w_timezone,
+                                         luggage_number=int(data['luggage_number']),
+                                         passengers=int(data['passengers']),
+                                         model_choose=
+                                         VehicleModel.objects.filter(id=data['model_choose'])[
+                                             0],
+                                         client=client,
+                                         flight=data["flight"],
+                                         distance=float(estimation_travel['distance']['text'].replace(" km", "")),
+                                         time_estimated=int(estimation_travel['duration']['value']),
+                                         price=price)
 
-    booking.save()
+        booking.save()
 
-    request.session['Booking_id'] = booking.id
-    request.session.modified = True
-    return redirect('/booking/payment/')
-    # except Exception as e:
-    #     raise Http404("Page non trouvé")
+        request.session['Booking_id'] = booking.id
+        request.session.modified = True
+        return redirect('/booking/payment/')
+    except Exception as e:
+        raise Http404("Page non trouvé")
 
 
 # Retrieve or create the customer in striped

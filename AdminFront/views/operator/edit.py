@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 import datetime
 
 import pytz
+from django.http import Http404
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.utils.dateparse import parse_datetime
@@ -15,7 +16,7 @@ from Back_Source.models import VehicleModel, Client, Airport, Operator
 
 def client_edit(request, pk):
     if not request.user.is_authenticated():
-        return redirect('/operator/login')
+        raise Http404("Page non trouvé")
 
     if request.method == "POST":
         form = ClientForm(request.POST, instance=Client.objects.get(id=pk))
@@ -37,7 +38,7 @@ def client_edit(request, pk):
 
 def commercial_edit(request, pk):
     if not request.user.is_authenticated():
-        return redirect('/operator/login')
+        raise Http404("Page non trouvé")
 
     if request.method == "POST":
         form = CommercialForm(request.POST, instance=Commercial.objects.get(id=pk))
@@ -59,7 +60,7 @@ def commercial_edit(request, pk):
 
 def booking_edit(request, pk):
     if not request.user.is_authenticated():
-        return redirect('/operator/login')
+        raise Http404("Page non trouvé")
 
     if request.method == "POST":
         form = BookingPartenerForm(request.POST, instance=BookingPartner.objects.get(id=pk))
