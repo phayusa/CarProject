@@ -15,14 +15,15 @@ from Back_Source.serializers import VehicleSerializer, VehicleModelSerializer
 class VehicleBase(generics.GenericAPIView):
     serializer_class = VehicleSerializer
     redirect_unauthenticated_users = False
-    permission_classes = [DriverPermission, ]
-    authentication_classes = [JSONWebTokenAuthentication, ]
+    # authentication_classes = [JSONWebTokenAuthentication, ]
     raise_exception = True
 
     # Return only the booking of the connected client
     def get_queryset(self):
-        driver = Driver.objects.filter(user=self.request.user)[0]
-        if driver:
+        drivers = Driver.objects.filter(user=self.request.user)
+        if drivers:
+            driver = drivers[0]
+
             car = Vehicle.objects.filter(driver=driver)
             if not car:
                 return Vehicle.objects.filter(travelling=False)
@@ -99,8 +100,8 @@ class VehicleDriverSetter(APIView):
 
     def get(self, request, pk, **kwargs):
         try:
-            if not is_mobile_app_access(request):
-                return HttpResponse("Bad Request")
+            # if not is_mobile_app_access(request):
+            #     return HttpResponse("Bad Request")
             driver = Driver.objects.filter(user=request.user)[0]
             if not driver:
                 return HttpResponse("Bad Request")

@@ -75,7 +75,7 @@ class LoginView(APIView):
                 response.update({'token': token})
                 response.update({'fullname': driver.last_name + ' ' + driver.first_name})
 
-                car = Vehicle.objects.filter(driver=driver)
+                car = Vehicle.objects.filter(driver=driver)[0]
                 if car:
                     response.update({'car': car.id})
                 else:

@@ -52,9 +52,9 @@ urlpatterns = [
     url(r'^bookings-operators/$', login_required(BookingOperatorList.as_view())),
 
     # vehicle URL
-    url(r'^vehicles/$', login_required(VehicleList.as_view())),
+    url(r'^vehicles/$', VehicleList.as_view()),
     # url(r'^vehicle/create/$', login_required(VehicleCreate.as_view())),
-    url(r'^vehicle/(?P<pk>[0-9]+)/driver/$', login_required(VehicleDriverSetter.as_view())),
+    url(r'^vehicle/(?P<pk>[0-9]+)/driver/$', VehicleDriverSetter.as_view()),
     url(r'^vehicle/(?P<pk>[0-9]+)/$', VehicleDetail.as_view()),
 
     # vehicles model URL
