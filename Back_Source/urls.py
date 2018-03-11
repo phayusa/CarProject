@@ -79,12 +79,12 @@ urlpatterns = [
     url(r'^drivers/$', login_required(DriverList.as_view())),
     # url(r'^driver/create/$', login_required(DriverCreate.as_view())),
     url(r'^driver/(?P<pk>[0-9]+)/$', login_required(DriverDetail.as_view())),
-    url(r'^driver/travel/$', login_required(DriverBookings.as_view())),
+    url(r'^driver/travel/$', DriverBookings.as_view()),
 
     # travel URL
-    url(r'^travels/$', login_required(TravelList.as_view())),
-    url(r'^travel/create/$', login_required(TravelCreate.as_view())),
-    url(r'^travel/(?P<pk>[0-9]+)/$', login_required(TravelDetail.as_view())),
+    url(r'^travels/$', TravelList.as_view()),
+    url(r'^travel/create/$', TravelCreate.as_view()),
+    url(r'^travel/(?P<pk>[0-9]+)/$', TravelDetail.as_view()),
 
     # Airport URL
     url(r'^airports/$', login_required(AirportList.as_view())),

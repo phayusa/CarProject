@@ -75,9 +75,9 @@ class LoginView(APIView):
                 response.update({'token': token})
                 response.update({'fullname': driver.last_name + ' ' + driver.first_name})
 
-                car = Vehicle.objects.filter(driver=driver)[0]
-                if car:
-                    response.update({'car': car.id})
+                cars = Vehicle.objects.filter(driver=driver)
+                if cars:
+                    response.update({'car': cars[0].id})
                 else:
                     response.update({'car': -1})
                 return Response(response, status=status.HTTP_202_ACCEPTED)

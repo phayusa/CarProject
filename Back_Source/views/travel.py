@@ -14,7 +14,6 @@ class TravelBase(generics.GenericAPIView):
     serializer_class = TravelSerializer
 
     redirect_unauthenticated_users = False
-    permission_classes = [DriverPermission, ClientPermission]
     authentication_classes = [JSONWebTokenAuthentication, ]
     raise_exception = True
 
@@ -37,13 +36,18 @@ class TravelList(TravelBase, generics.ListCreateAPIView):
     def get_queryset(self):
         # if not is_mobile_app_access(self.request):
         #     return HttpResponse("[]")
+        # if not self.request.user.is_authentificated:
+        #     return '[]'
 
-        driver = Driver.objects.filter(user=self.request.user)[0]
-        if driver.exists():
-            car = Vehicle.objects.filter(driver=driver)
-            return Travel.objects.filter(car=car,
-                                         start__day=timezone.now().day)
-        return Travel.objects.all()
+        drivers = Driver.objects.filter(user=self.request.user)
+        if drivers:
+            car = Vehicle.objects.filter(driver=drivers[0])
+            # return Travel.objects.filter(car=car,
+            #                              start__day=timezone.now().day)
+            return Travel.objects.filter(car=car)
+        if self.request.user.is_superuser:
+            return Travel.objects.all()
+        return None
 
 
 class TravelCreate(TravelBase, generics.CreateAPIView):

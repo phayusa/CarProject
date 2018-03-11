@@ -26,23 +26,22 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     u"192.168.0.105", u'127.0.0.1', u'176.31.99.139', u'192.168.0.102', u'localhost', u"aceline.fr", u'192.168.0.109',
+    u'5.39.89.38',
 ]
 
 # Application definition
-
 INSTALLED_APPS = [
     'Back_Source.apps.ConfigBack',
     'Connections.apps.ConnectionsConfig',
     'Localisation.apps.LocalisationConfig',
     'Front.apps.FrontConfig',
     'AdminFront.apps.AdminfrontConfig',
+    'location_field.apps.DefaultConfig',
     'phonenumber_field',
     'rest_framework',
     'braces',
     'geoposition',
-    'location_field.apps.DefaultConfig',
     'widget_tweaks',
-    # 'djangosecure',
     'sslserver',
     'django_filters',
     'django.contrib.admin',
@@ -184,10 +183,8 @@ LOCATION_FIELD = {
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static', 'media')
 STATIC_ROOT = os.path.join(MEDIA_ROOT, 'collect')
 
-
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'MyProjectTest0114@gmail.com'
 EMAIL_HOST_PASSWORD = 'Le_Canard_Part_@_La_Chasse'
 EMAIL_PORT = 587
-

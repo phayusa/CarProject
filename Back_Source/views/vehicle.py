@@ -1,3 +1,5 @@
+import datetime
+
 from django.conf import settings
 from django.http import *
 from django.utils.decorators import method_decorator
@@ -10,6 +12,7 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from Back_Source.models import Vehicle, Driver, VehicleModel
 from Back_Source.permissions.person import DriverPermission, GeneralPermission
 from Back_Source.serializers import VehicleSerializer, VehicleModelSerializer
+from ..models import Travel
 
 
 class VehicleBase(generics.GenericAPIView):
@@ -94,7 +97,6 @@ def is_mobile_app_access(request):
 
 @method_decorator(csrf_exempt, name="dispatch")
 class VehicleDriverSetter(APIView):
-    permission_classes = [DriverPermission, ]
     authentication_classes = [JSONWebTokenAuthentication, ]
     raise_exception = True
 
@@ -110,6 +112,34 @@ class VehicleDriverSetter(APIView):
                 return HttpResponse("Bad Request")
             vehicle.driver = driver
             vehicle.save()
+
+            travels = Travel.objects.filter(car=vehicle, done=False, end__gt=datetime.datetime.now(),
+                                            start__gt=datetime.datetime.now())
+            for travel in travels:
+                travel.driver = driver
+                travel.save()
+            return HttpResponse("Ok")
+        except IndexError:
+            return HttpResponse("Bad Request")
+
+    def post(self, request, pk, **kwargs):
+        try:
+            # if not is_mobile_app_access(request):
+            #     return HttpResponse("Bad Request")
+            driver = Driver.objects.filter(user=request.user)[0]
+            if not driver:
+                return HttpResponse("Bad Request")
+            vehicle = Vehicle.objects.filter(id=pk)[0]
+            if not vehicle:
+                return HttpResponse("Bad Request")
+            vehicle.driver = None
+            vehicle.save()
+
+            travels = Travel.objects.filter(car=vehicle, done=False, end__gt=datetime.datetime.now(),
+                                            start__gt=datetime.datetime.now())
+            for travel in travels:
+                travel.driver = None
+                travel.save()
             return HttpResponse("Ok")
         except IndexError:
             return HttpResponse("Bad Request")

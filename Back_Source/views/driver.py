@@ -18,7 +18,6 @@ class DriverBase(generics.GenericAPIView):
     serializer_class = DriverSerializer
 
     redirect_unauthenticated_users = False
-    permission_classes = [DriverPermission, ]
     authentication_classes = [JSONWebTokenAuthentication, ]
     raise_exception = True
 
@@ -73,8 +72,7 @@ class DriverBookings(APIView):
             if not travel.driver:
                 travel.driver = driver
                 travel.save()
-            print travel.bookings.order_by('distance')
-            serialize = BookingSerializer(travel.bookings.order_by('distance'), many=True)
+            serialize = BookingSerializer(travel.bookings.all(), many=True)
             return HttpResponse(JSONRenderer().render(serialize.data))
             # return HttpResponse(json.dumps(travel.bookings.order_by('distance')))
         except IndexError:
