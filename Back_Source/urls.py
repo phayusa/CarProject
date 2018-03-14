@@ -89,7 +89,7 @@ urlpatterns = [
     # Airport URL
     url(r'^airports/$', login_required(AirportList.as_view())),
     url(r'^airport/create/$', login_required(AirportCreate.as_view())),
-    url(r'^airport/(?P<pk>[0-9]+)/$', login_required(AirportDetail.as_view())),
+    url(r'^airport/(?P<pk>[0-9]+)/$', AirportDetail.as_view()),
 
 ]
 

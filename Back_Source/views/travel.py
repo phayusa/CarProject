@@ -44,7 +44,7 @@ class TravelList(TravelBase, generics.ListCreateAPIView):
             car = Vehicle.objects.filter(driver=drivers[0])
             # return Travel.objects.filter(car=car,
             #                              start__day=timezone.now().day)
-            return Travel.objects.filter(car=car)
+            return Travel.objects.filter(car=car, start__day__gte=timezone.now().day)
         if self.request.user.is_superuser:
             return Travel.objects.all()
         return None
