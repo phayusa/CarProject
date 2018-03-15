@@ -20,7 +20,7 @@ class BookingAdmin(admin.ModelAdmin):
 
 
 class PersonAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'mail', 'phone_number')
+    list_display = ('id', 'first_name', 'last_name', 'mail', 'phone_number')
     search_fields = ('first_name', 'last_name', 'mail')
     list_filter = ('gender',)
     ordering = ('first_name', 'last_name')

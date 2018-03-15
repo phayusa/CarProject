@@ -5,6 +5,7 @@ from Back_Source.models import Booking, Client, BookingPartner, BookingCommecial
 from Back_Source.models import BookingOperator
 from Back_Source.serializers import BookingOperatorSerializer
 from Back_Source.serializers import BookingSerializer, BookingCommercialSerializer, BookingPartenerSerializer
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 
 # class BookingBase(RecentLoginRequiredMixin, generics.GenericAPIView):
@@ -34,7 +35,10 @@ class BookingCreate(BookingBase, generics.CreateAPIView):
 
 
 class BookingDetail(BookingBase, generics.RetrieveUpdateDestroyAPIView):
-    pass
+    serializer_class = BookingSerializer
+    redirect_unauthenticated_users = False
+    authentication_classes = (JSONWebTokenAuthentication,)
+    raise_exception = True
     # redirect_field_name = '.'
 
 

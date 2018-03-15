@@ -41,7 +41,7 @@ urlpatterns = [
     # bookings URL
     url(r'^bookings/$', login_required(BookingList.as_view())),
     url(r'^booking/create/$', login_required(BookingCreate.as_view())),
-    url(r'^booking/(?P<pk>[0-9]+)/$', login_required(BookingDetail.as_view())),
+    url(r'^booking/(?P<pk>[0-9]+)/$', BookingDetail.as_view()),
 
     # bookings commecial URL
     url(r'^bookings-commercials/$', login_required(BookingCommercialList.as_view())),
@@ -63,7 +63,7 @@ urlpatterns = [
 
     # clients URL
     url(r'^clients/$', login_required(ClientList.as_view())),
-    url(r'^client/(?P<pk>[0-9]+)/$', login_required(ClientDetail.as_view())),
+    url(r'^client/(?P<pk>[0-9]+)/$', ClientDetail.as_view()),
 
     # commercial URL
     url(r'^commercials/$', CommercialList.as_view()),
