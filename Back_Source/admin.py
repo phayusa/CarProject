@@ -7,7 +7,7 @@ class VehicleAdmin(admin.ModelAdmin):
     model = Vehicle
     radio_fields = {"area": admin.VERTICAL}
     list_display = ('registration', 'travelling', 'empty_places', 'empty_luggages', 'revenues')
-    list_filter = ('model__category', 'model__number_place', 'model__child_seat')
+    list_filter = ('model__name', 'model__number_place', 'model__child_seat')
     # readonly_fields = ('travelling',)
 
 
@@ -20,7 +20,7 @@ class BookingAdmin(admin.ModelAdmin):
 
 
 class PersonAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'mail', 'phone_number')
+    list_display = ('id', 'first_name', 'last_name', 'mail', 'phone_number')
     search_fields = ('first_name', 'last_name', 'mail')
     list_filter = ('gender',)
     ordering = ('first_name', 'last_name')
@@ -31,12 +31,14 @@ class DriverAdmin(PersonAdmin):
 
 
 class VehicleModelAdmin(admin.ModelAdmin):
-    list_display = ('id', 'brand', 'model', 'year', 'child_seat', 'number_place', 'luggage_number', 'price')
-    list_filter = ('number_place', 'category', 'child_seat', 'brand')
+    list_display = ('id', 'name', 'child_seat', 'number_place', 'luggage_number', 'price')
+    list_filter = ('number_place', 'name', 'child_seat')
 
 
 class TravelAdmin(admin.ModelAdmin):
-    list_display = ('car', 'driver', 'start', 'end')
+    ordering = ('start', 'done')
+    list_filter = ('start', 'airport', 'area', 'done')
+    list_display = ('start', 'end', 'airport', 'area', 'done')
 
 
 class AreaAdmin(admin.ModelAdmin):

@@ -146,21 +146,21 @@
                                             {% endfor %}
 
                                             <br>
-                                            <H2>Information de connexion</H2>
-                                            <br>
-
-
-                                            {% for field in userForm %}
-                                                <div class="form-group row fieldWrapper">
-                                                    <label class="col-lg-3 control-label text-lg-right pt-2"
-                                                           for="inputDefault">{{ field.label }}</label>
-                                                    <div class="col-lg-6">
-                                                        {{ field.errors }}
-                                                        {% render_field field class+="form-control" %}
-
-                                                    </div>
-                                                </div>
-                                            {% endfor %}
+{#                                            <H2>Information de connexion</H2>#}
+{#                                            <br>#}
+{##}
+{##}
+{#                                            {% for field in userForm %}#}
+{#                                                <div class="form-group row fieldWrapper">#}
+{#                                                    <label class="col-lg-3 control-label text-lg-right pt-2"#}
+{#                                                           for="inputDefault">{{ field.label }}</label>#}
+{#                                                    <div class="col-lg-6">#}
+{#                                                        {{ field.errors }}#}
+{#                                                        {% render_field field class+="form-control" %}#}
+{##}
+{#                                                    </div>#}
+{#                                                </div>#}
+{#                                            {% endfor %}#}
 
                                         </div>
 
@@ -258,10 +258,10 @@
                                     <div id="w4-billing" class="tab-pane">
                                         <div class="pricing-table row no-gutters mt-3 mb-3">
                                             {% for car in models %}
-                                                <div class="col-lg-3 col-sm-6">
+                                                <div class="col-lg-4">
                                                     <div class="plan">
                                                         <a>
-                                                            <h3>{{ car.brand }} {{ car.model }}<span>{{ car.price }}€</span>
+                                                            <h3>{{ car.name }}<span>{{ car.price }}€</span>
                                                             </h3>
                                                             <p>
                                                                 <img class="img-responsive center-block"
@@ -274,9 +274,9 @@
                                                             </p>
                                                             <ul>
 
-                                                                <li>
-                                                                    <strong>{{ car.category }}</strong>
-                                                                </li>
+{#                                                                <li>#}
+{#                                                                    <strong>{{ car.name }}</strong>#}
+{#                                                                </li>#}
                                                                 <li>
                                                                     <strong>{{ car.number_place }}</strong>
                                                                     Places

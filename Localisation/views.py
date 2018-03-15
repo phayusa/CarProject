@@ -29,19 +29,6 @@ def autocomplete(request):
 
 
 def get_area(booking):
-    # if not len(booking.destination.split()) == 2:
-    #     url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=' + \
-    #           booking.destination.replace(" ",
-    #                                       "+") + '&key=' + getattr(settings, "GEOPOSITION_GOOGLE_MAPS_API_KEY", None)
-    #     serialized_data = urllib2.urlopen(url).read()
-    #
-    #     data = json.loads(serialized_data)["results"][0]["geometry"]["location"]
-    #     booking.destination = str(data['lat']) + " " + str(data['lng'])
-    # else:
-    #     data = {}
-    #     data["lat"] = float(booking.destination.split()[0])
-    #     data["lng"] = float(booking.destination.split()[1])
-    # print data
     data = LocationObj(booking.destination_location)
     for area in Area.objects.all():
         if (area.south < data.latitude < area.north) and (area.west < data.longitude < area.east):

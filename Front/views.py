@@ -1,32 +1,33 @@
 # -*- coding: utf-8 -*-
 
-
 import datetime
+import json
+import urllib
+from io import BytesIO
 
 import pytz
 import stripe
+from django.conf import settings
 from django.contrib.auth import login as login_func, authenticate
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMessage
 from django.http import *
 from django.shortcuts import render, redirect
+from django.template.loader import get_template
 from django.template.loader import render_to_string
 from django.utils.dateparse import parse_datetime
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from xhtml2pdf import pisa
 
-from Back_Source.models import VehicleModel, Client, Booking, Airport, BuissnessPartner, Commercial, Operator
+from Back_Source.models import VehicleModel, Client, Booking, Airport, BuissnessPartner, Commercial, Operator, Travel, \
+    Vehicle
+from Localisation.views import get_area
 from forms import BookingForm, ClientForm, ContactUsForm, ContactProForm
 from tokens import account_activation_token
 
-# Library for generate PDF
-from django.template.loader import get_template
-from io import BytesIO
-from xhtml2pdf import pisa
 
-from django.core.mail import EmailMessage
-
-import json, urllib
 # Create your views here.
 
 
@@ -153,7 +154,7 @@ def prices(request):
 def contact(request):
     if request.method == "POST":
         form = ContactUsForm(request.POST)
-        if form.is_valid(): # Pour le moment jusqu'à j'ajoute l'envoi d'email
+        if form.is_valid():  # Pour le moment jusqu'à j'ajoute l'envoi d'email
             return render(request, 'client/contact-us.html', {'form': form})
     else:
         form = ContactUsForm()
@@ -163,9 +164,9 @@ def contact(request):
 def contact_pro(request):
     if request.method == "POST":
         form = ContactProForm(request.POST)
-        if form.is_valid(): # Pour le moment jusqu'à j'ajoute l'envoi d'email
+        if form.is_valid():  # Pour le moment jusqu'à j'ajoute l'envoi d'email
             return render(request, 'client/contact_pro.html', {'form': form})
-#            return redirect('/')
+            #            return redirect('/')
     else:
         form = ContactProForm()
     return render(request, 'client/contact_pro.html', {'form': form})
@@ -188,9 +189,21 @@ def user_bookings(request):
 
 
 def user_cards(request):
+    # Set your secret key: remember to change this to your live secret key in production
+    # See your keys here: https://dashboard.stripe.com/account/apikeys
+    stripe.api_key = "sk_test_Tpj31pCyqiySY9503dvp2VEq"
+
     client = Client.objects.filter(user=request.user)[0]
-    bookings = Booking.objects.filter(client=client)
-    return render(request, 'client/user-profile-cards.html', {"client": client, "bookings": bookings})
+    customer = get_stripe_customer(client)
+
+    if request.method == "GET":
+        # Getting stripe information
+        cards = customer.sources.data
+        default = customer.default_source
+
+        return render(request, 'client/user-profile-cards.html', {"client": client, "cards": cards, "default": default})
+        # TODO : add of card
+        # elif request.method == "POST":
 
 
 def user_bookings_delete(request, pk):
@@ -214,7 +227,7 @@ def booking_succeed(request, pk):
                            ['yahiaoui.fakhri@gmail.com'],
                            headers={'Reply-To': 'another@example.com'})
     #    attachment = open(generatePdf(), 'rb')
-    message.attach("test", generatePdf(), 'application/pdf')
+    message.attach("test", generate_pdf(), 'application/pdf')
     message.send()
     return render(request, 'client/success-payment.html', {"client": client, "booking": booking})
 
@@ -225,27 +238,31 @@ def booking_create(request, *args, **kwargs):
     if not request.method == "POST":
         return redirect('/404')
 
+    data = request.POST
+    date = data.get('date', None)
+    #        time = data.get('time', None)
+
+    clients = Client.objects.filter(user=request.user)
+    if not clients:
+        client = Client.objects.all()[0]
+    else:
+        client = clients[0]
+
+    # if not time or not date:
+    if not date:
+        return redirect('/')
+    raw_date = datetime.datetime.strptime(date, "%d/%m/%Y %H:%M")
+    date_time = raw_date.strftime("%Y-%m-%dT%H:%M")
+
+    date_w_timezone = pytz.timezone("Europe/Paris").localize(parse_datetime(date_time), is_dst=None)
+
+    origin = str(Airport.objects.filter(id=data["airport"])[0]).replace(' ', '+').replace(',', '')
+    destination = data["destination"].replace(' ', '+').replace(',', '')
+    estimation_travel = compute_travel(origin, destination, date_w_timezone)
+    price = float(estimation_travel['distance']['text'].replace(" km", "")) * \
+            VehicleModel.objects.filter(id=data['model_choose'])[0].price
+
     try:
-        data = request.POST
-        date = data.get('date', None)
-        #        time = data.get('time', None)
-
-        clients = Client.objects.filter(user=request.user)
-        if not clients:
-            client = Client.objects.all()[0]
-        else:
-            client = clients[0]
-
-        # if not time or not date:
-        if not date:
-            return redirect('/')
-        raw_date = datetime.datetime.strptime(date, "%d/%m/%Y %H:%M")  # (date + ' ' + time, "%Y-%m-%d %I:%M %p")
-        #        print raw_date
-        date_time = raw_date.strftime("%Y-%m-%dT%H:%M")
-
-        date_w_timezone = pytz.timezone("Europe/Paris").localize(parse_datetime(date_time), is_dst=None)
-        datetimeNow = datetime.datetime.now()
-        # booking, created = Booking.objects.get_or_create(destination=data["destination"],
         booking = Booking.objects.create(destination=data["destination"],
                                          destination_location=data["destination_location"].replace('(',
                                                                                                    '').replace(
@@ -260,47 +277,37 @@ def booking_create(request, *args, **kwargs):
                                          VehicleModel.objects.filter(id=data['model_choose'])[
                                              0],
                                          client=client,
-                                         flight=data["flight"])
-        # if not created:
-        #     return redirect("/404/")
+                                         flight=data["flight"],
+                                         distance=float(estimation_travel['distance']['text'].replace(" km", "")),
+                                         time_estimated=int(estimation_travel['duration']['value']),
+                                         price=price)
 
-        origin = str(Airport.objects.filter(id=data["airport"])[0]).replace(' ', '+').replace(',', '')
-        destination = data["destination"].replace(' ', '+').replace(',', '')
-        distance = computeDistance(origin, destination)
-        print "la distance est de %s" %distance
-        # must be reseingned during the initialisation
-        # upload_distance(booking)
-        # booking.save()
+        booking.save()
 
-        # after = timezone.now() + datetime.timedelta(hours=1)
-        # before = timezone.now() - datetime.timedelta(hours=1)
-        #  If the booking is for the current moment update
-        # if before < booking.arrive_time < after:
-        #     set_booking_car(booking)
-
-        # return render(request, 'client/payment.html', {"booking": booking})
-        # serialize_data = BookingSerializer(booking).data
         request.session['Booking_id'] = booking.id
         request.session.modified = True
         return redirect('/booking/payment/')
-
     except Exception as e:
-        raise Http404("Page non trouvé")
-        # else:
-        #     return redirect('/booking', {'form': form})
-        # parsed_uri = urlparse(request.build_absolute_uri())
-        # baseurl = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
-        # post_data = {}
-        # post_data['destination'] = Geoposition(data['destination_0'], data['destination_1'])
-        # post_data['departure'] = Geoposition(data['departure_0'], data['departure_1'])
-        # for key in data.keys():
-        #     post_data[key] = data[key]
-        #
-        # print baseurl+'db/booking/create/'
-        # result = urllib2.urlopen(baseurl+'db/booking/create/', urllib.urlencode(post_data))
-        # content = result.read()
-        # # print content
-        # return render(request,content)
+        raise Http404("Page non trouvé")  # Retrieve or create the customer in striped
+
+
+def get_stripe_customer(client, card=None):
+    if client.id_stripe:
+        return stripe.Customer.retrieve(client.id_stripe)
+    # create the customer with the given credit card
+    if card:
+        customer = stripe.Customer.create(email=client.mail,
+                                          description="Customer for " + str(client.id) + " client",
+                                          source=card)
+    else:
+        customer = stripe.Customer.create(email=client.mail,
+                                          description="Customer for " + str(client.id) + " client")
+    # Save it in the client data
+    client.id_stripe = customer.id
+    client.save()
+
+    # Return the getting customer
+    return customer
 
 
 def booking_payment(request):
@@ -308,33 +315,143 @@ def booking_payment(request):
     booking_pending_id = request.session.get('Booking_id', False)
     if not booking_pending_id:
         raise Http404("Page non trouvé")
+
+    # Set your secret key: remember to change this to your live secret key in production
+    # See your keys here: https://dashboard.stripe.com/account/apikeys
+    stripe.api_key = "sk_test_Tpj31pCyqiySY9503dvp2VEq"
+
+    client = Client.objects.filter(user=request.user).first()
+    customer = None
+
+    if request.user.is_authenticated:
+        customer = get_stripe_customer(client)
+    booking_pending = Booking.objects.filter(id=booking_pending_id).first()
+
     if request.method == "GET":
-        booking_pending = Booking.objects.filter(id=booking_pending_id).first()
+
+        if customer:
+            # Getting stripe information
+            cards = customer.sources.data
+            default = customer.default_source
+
+            return render(request, 'client/payment.html',
+                          {"booking": booking_pending, "cards": cards, "default": default,
+                           "price": booking_pending.price})
+
         return render(request, 'client/payment.html', {"booking": booking_pending})
     elif request.method == "POST":
-        booking_pending = Booking.objects.filter(id=booking_pending_id).first()
-
-        # Set your secret key: remember to change this to your live secret key in production
-        # See your keys here: https://dashboard.stripe.com/account/apikeys
-        stripe.api_key = "sk_test_Tpj31pCyqiySY9503dvp2VEq"
 
         # Token is created using Checkout or Elements!
         # Get the payment token ID submitted by the form:
         token = request.POST['stripeToken']  # Using Flask
 
-        # Charge the user's card:
-        charge = stripe.Charge.create(
-            amount=500,
-            currency="eur",
-            description="Reservation Aceline Services",
-            # metadata={"booking_id", booking_pending_id},
-            source=token
-        )
+        if customer:
+
+            card = customer.sources.retrieve(token)
+            if not card:
+                # Add the new card to the stripe customer
+                customer.sources.create(source=token)
+                customer.save()
+
+            # Charge the user's card:
+            charge = stripe.Charge.create(
+                amount=int(booking_pending.price * 100),
+                currency="eur",
+                description="Reservation Aceline Services",
+                # Charge the card
+                # source=customer.default_source,
+                source=card,
+                # Charge the customer
+                customer=customer.id
+            )
+        else:
+            # Charge the user's card:
+            charge = stripe.Charge.create(
+                amount=int(booking_pending.price * 100),
+                currency="eur",
+                description="Reservation Aceline Services",
+                # Charge the card
+                source=token
+            )
+
+        booking_pending.status = "Validé"
+        booking_pending.save()
+
+        create_travel(booking_pending)
 
         request.session['Booking_id'] = None
         return redirect('/booking/succeed/' + str(booking_pending_id))
     else:
         raise Http404("Page non trouvé")
+
+
+def create_travel(booking_to_test):
+    area = get_area(booking_to_test)
+    place_wanted = booking_to_test.passengers
+    estimated_arrive = booking_to_test.arrive_time + datetime.timedelta(seconds=booking_to_test.time_estimated) * 2
+    model_car = booking_to_test.model_choose
+
+    if place_wanted == 0:
+        travels = None
+    else:
+        travels = Travel.objects.filter(start=booking_to_test.arrive_time,
+                                        free_place__gte=place_wanted,
+                                        area=area, airport=booking_to_test.airport,
+                                        free_luggage__gte=booking_to_test.luggage_number)
+
+    # The case with no travel found
+    if not travels:
+        car = free_car(area, booking_to_test.arrive_time, estimated_arrive)
+        travel = Travel.objects.create(start=booking_to_test.arrive_time,
+                                       free_place=model_car.number_place - place_wanted,
+                                       free_luggage=model_car.luggage_number - booking_to_test.luggage_number,
+                                       area=area, airport=booking_to_test.airport,
+                                       car=car,
+                                       end=estimated_arrive)
+    else:
+        travel = travels[0]
+
+        # Update the leave places
+        travel.free_place -= place_wanted
+        travel.free_luggage -= booking_to_test.luggage_number
+
+    travel.bookings.add(booking_to_test)
+
+    if travel.bookings.count() > 1:
+        # Optimise travel with multiples destination
+        compute_travel_multiples(booking_to_test.airport, booking_to_test.arrive_time, travel)
+
+    # update the travel
+    travel.save()
+
+
+def free_car(area, date_start, date_end):
+    car_test = None
+
+    cars = Vehicle.objects.all()
+    for car_test in cars:
+        # We find if we found that the car is busy during this period of time
+        travels = Travel.objects.filter(start__lte=date_start, end__gte=date_start, car=car_test)
+        if travels:
+            continue
+
+        # Testing if we have something between the travel
+        travels = Travel.objects.filter(start__gte=date_start, end__lte=date_end, car=car_test)
+        if travels:
+            continue
+
+        # Testing if this car have not others area assigned this day
+        travels = Travel.objects.filter(start__day=date_start.day, car=car_test).exclude(area=area).exclude(area=None)
+        if travels:
+            continue
+
+        # If we pass all the test we got the good car
+        return car_test
+    return car_test
+
+
+def retrieve_customer_charge(customer):
+    return stripe.Charge.list(customer=customer.id)
 
 
 def booking(request, *args, **kwargs):
@@ -373,7 +490,7 @@ def booking(request, *args, **kwargs):
     return render(request, 'client/booking.html', {'form': form})
 
 
-def renderToPdf(template_src, context_dict={}):
+def render_to_pdf(template_src, context_dict={}):
     template = get_template(template_src)
     html = template.render(context_dict)
     result = BytesIO()
@@ -383,7 +500,7 @@ def renderToPdf(template_src, context_dict={}):
     return None
 
 
-def generatePdf():
+def generate_pdf():
     template = get_template('pdf/invoice.html')
     context = {
         "Date d'achat": "Today",
@@ -397,19 +514,50 @@ def generatePdf():
     }
 
     html = template.render(context)
-    pdf = renderToPdf('pdf/invoice.html', context)
+    pdf = render_to_pdf('pdf/invoice.html', context)
     if pdf:
         response = HttpResponse(pdf, content_type='application/pdf')
         filename = "Invoice_%s.pdf" % "12341231"
         content = "inline; filename='%s'" % filename
         content = "attachment; filename='%s'" % filename
         response['Content-Disposition'] = content
-#        return response
-    return pdf#HttpResponse("Not Found")
+    # return response
+    return pdf  # HttpResponse("Not Found")
 
-def computeDistance(origin, destination):
-    urlApi = "https://maps.googleapis.com/maps/api/directions/json?origin="+origin+"&destination="+destination+"&units=metric&key=AIzaSyCCPv4PqIoLNcenh0WzmLD8NnCpgzkl1lw"
-    urlApi = urlApi.encode('utf8')
-    result = json.load(urllib.urlopen(urlApi))
-    distance = result['routes'][0]['legs'][0]['distance']['text']
-    return distance
+
+def compute_travel(origin, destination, departure_time):
+    raw_url_api = 'https://maps.googleapis.com/maps/api/directions/json?origin=' + origin.encode(
+        'utf-8') + '&destination=' + destination.encode('utf-8') + '&units=metric&key=' + str(
+        settings.GEOPOSITION_GOOGLE_MAPS_API_KEY) + '&departure_time=' + str(int(
+        (departure_time - datetime.datetime(1970, 1, 1, tzinfo=pytz.utc)).total_seconds()))
+
+    print raw_url_api
+    result = json.load(urllib.urlopen(raw_url_api))
+
+    return result['routes'][0]['legs'][0]
+
+
+def compute_travel_multiples(origin, departure_time, travel):
+    raw_url_api = 'https://maps.googleapis.com/maps/api/directions/json?origin=' + origin.encode(
+        'utf-8') + '&destination=' + origin.encode('utf-8') + '&units=metric&key=' + str(
+        settings.GEOPOSITION_GOOGLE_MAPS_API_KEY) + '&departure_time=' + str(int(
+        (departure_time - datetime.datetime(1970, 1, 1,
+                                            tzinfo=pytz.utc)).total_seconds())) + '&waypoints=optimize:true|'
+    stock = []
+    second_estimated = 0
+
+    for booking_test in travel.bookings.all():
+        raw_url_api += booking_test.destination.encode('utf-8') + '|'
+        stock.append(booking_test)
+
+    print raw_url_api
+    result = json.load(urllib.urlopen(raw_url_api))['routes'][0]
+    travel.bookings.clear()
+
+    # sort travel with optimun way
+    for order in result['waypoint_order']:
+        travel.bookings.add(stock[order])
+        second_estimated += result['legs'][order]['duration']['value']
+
+    # update the estimated time
+    travel.end = travel.start + datetime.timedelta(seconds=second_estimated)

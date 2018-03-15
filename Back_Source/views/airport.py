@@ -16,7 +16,8 @@ class AirportBase(generics.GenericAPIView):
     serializer_class = AirportSerializer
     # redirect_unauthenticated_users = False
     # permission_classes = (ClientPermission, )
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
+
     # authentication_classes = (JSONWebTokenAuthentication, )
     # raise_exception = True
 
@@ -36,7 +37,7 @@ class AirportCreate(AirportBase, generics.CreateAPIView):
 
 
 class AirportDetail(AirportBase, generics.RetrieveUpdateDestroyAPIView):
-    pass
+    authentication_classes = [JSONWebTokenAuthentication, ]
+    raise_exception = True
+
     # redirect_field_name = '.'
-
-

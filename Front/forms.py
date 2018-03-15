@@ -88,7 +88,7 @@ class PersonForm(ModelForm):
         password_confirm = cleaned_data.get('password_bis', None)
 
         try:
-            if password is not password_confirm:
+            if not password == password_confirm:
                 self._errors['password'] = self.error_class(['Les mots de passes ne sont pas identiques'])
                 self._errors['password_bis'] = self.error_class(['Les mots de passes ne sont pas identiques'])
                 raise forms.ValidationError('Les mot de passes ne sont pas identique')
@@ -114,10 +114,12 @@ class ClientForm(PersonForm):
         fields = ['first_name', 'last_name', 'mail', 'phone_number', 'age', 'gender', 'status',
                   'address', 'user', 'status', 'username', 'password', 'password_bis']
 
+
 class ContactUsForm(forms.Form):
     name = forms.CharField(max_length=1000, label="Name", required=True)
     email = forms.EmailField(required=True)
     message = forms.CharField(max_length=1000, label="Message", required=True)
+
 
 class ContactProForm(forms.Form):
     nameCompany = forms.CharField(max_length=1000, label="company", required=True)

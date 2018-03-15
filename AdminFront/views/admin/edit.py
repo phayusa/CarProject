@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import redirect
 from django.shortcuts import render
+from django.http import Http404
 
 from Back_Source.models import Client, Driver, BuissnessPartner, Commercial, Booking, Airport
 from Back_Source.models.vehicle import VehicleModel, Vehicle
@@ -12,7 +13,7 @@ from AdminFront.forms import VehicleModelForm, VehicleForm
 
 def client_edit(request, pk):
     if not request.user.is_authenticated():
-        return redirect('/admin/login')
+        raise Http404("Page non trouvé")
 
     if request.method == "POST":
         form = ClientForm(request.POST, instance=Client.objects.get(id=pk))
@@ -32,7 +33,7 @@ def client_edit(request, pk):
 
 def driver_edit(request, pk):
     if not request.user.is_authenticated():
-        return redirect('/admin/login')
+        raise Http404("Page non trouvé")
 
     if request.method == "POST":
         form = DriverForm(request.POST, instance=Driver.objects.get(id=pk))
@@ -52,7 +53,7 @@ def driver_edit(request, pk):
 
 def commercial_edit(request, pk):
     if not request.user.is_authenticated():
-        return redirect('/admin/login')
+        raise Http404("Page non trouvé")
 
     if request.method == "POST":
         form = CommercialForm(request.POST, instance=Commercial.objects.get(id=pk))
@@ -72,7 +73,7 @@ def commercial_edit(request, pk):
 
 def partener_edit(request, pk):
     if not request.user.is_authenticated():
-        return redirect('/admin/login')
+        raise Http404("Page non trouvé")
 
     if request.method == "POST":
         form = PartenerForm(request.POST, instance=BuissnessPartner.objects.get(id=pk))
@@ -92,7 +93,7 @@ def partener_edit(request, pk):
 
 def booking_edit(request, pk):
     if not request.user.is_authenticated():
-        return redirect('/admin/login')
+        raise Http404("Page non trouvé")
 
     if request.method == "POST":
         form = BookingForm(request.POST, instance=Booking.objects.get(id=pk))
@@ -112,7 +113,7 @@ def booking_edit(request, pk):
 
 def airport_edit(request, pk):
     if not request.user.is_authenticated():
-        return redirect('/admin/login')
+        raise Http404("Page non trouvé")
 
     if request.method == "POST":
         form = AirportForm(request.POST, instance=Airport.objects.get(id=pk))
@@ -132,7 +133,7 @@ def airport_edit(request, pk):
 
 def car_model_edit(request, pk):
     if not request.user.is_authenticated():
-        return redirect('/admin/login')
+        raise Http404("Page non trouvé")
 
     if request.method == "POST":
         form = VehicleModelForm(request.POST, instance=VehicleModel.objects.get(id=pk))
@@ -151,7 +152,7 @@ def car_model_edit(request, pk):
 
 def car_edit(request, pk):
     if not request.user.is_authenticated():
-        return redirect('/admin/login')
+        raise Http404("Page non trouvé")
 
     if request.method == "POST":
         form = VehicleForm(request.POST, request.FILES, instance=Vehicle.objects.get(id=pk))

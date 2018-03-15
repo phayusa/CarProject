@@ -3,14 +3,8 @@ from django.core.exceptions import ValidationError
 from rest_framework import generics
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
-from Back_Source.models import Client, BuissnessPartner, Commercial, Operator
-from Back_Source.permissions.person import ClientPermission
+from Back_Source.models import Client, BuissnessPartner, Commercial, Operator, Driver
 from Back_Source.serializers import ClientSerializer
-from rest_framework.renderers import JSONRenderer
-
-from django.http import HttpResponse
-
-import json
 
 
 # Base view for all client manipulations with restrictions
@@ -57,5 +51,25 @@ class ClientCreate(ClientBase, generics.CreateAPIView):
         serializer.save(user=self.request.user)
 
 
-class ClientDetail(ClientBase, generics.RetrieveUpdateDestroyAPIView):
-    pass
+class ClientDetail(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ClientSerializer
+
+    redirect_unauthenticated_users = False
+    authentication_classes = [JSONWebTokenAuthentication, ]
+    raise_exception = True
+
+    def get_queryset(self):
+        if not self.request.user.is_superuser:
+            if BuissnessPartner.objects.filter(user=self.request.user).exists() or Operator.objects.filter(
+                    user=self.request.user).exists():
+                return Client.objects.filter(partner__user=self.request.user)
+            else:
+                if Commercial.objects.filter(user=self.request.user).exists():
+                    commercial = Commercial.objects.filter(user=self.request.user)[0]
+                    return Client.objects.filter(partner=commercial.partner)
+                else:
+                    if Driver.objects.filter(user=self.request.user):
+                        return Client.objects.all()
+                    else:
+                        return None
+        return Client.objects.all()

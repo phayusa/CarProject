@@ -26,10 +26,10 @@ Theme Version: 	2.0.0
                 bProcessing: true,
                 columns: [
                     {data: 'id'},
-                    {data: 'brand'},
-                    {data: 'model'},
-                    {data: 'year'},
+                    {data: 'name'},
                     {data: 'price'},
+                    {data: 'number_place'},
+                    {data: 'child_seat'},
                     {data: 'tt'}
                 ],
                 "columnDefs": [{

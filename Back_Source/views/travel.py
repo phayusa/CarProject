@@ -3,18 +3,17 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
-from Back_Source.models import Travel, Driver
+from Back_Source.models import Travel, Driver, Vehicle
 from Back_Source.permissions.person import DriverPermission, ClientPermission
 from Back_Source.serializers import TravelSerializer
+from django.utils import timezone
 from django.http import *
-
 
 
 class TravelBase(generics.GenericAPIView):
     serializer_class = TravelSerializer
 
     redirect_unauthenticated_users = False
-    permission_classes = [DriverPermission, ClientPermission]
     authentication_classes = [JSONWebTokenAuthentication, ]
     raise_exception = True
 
@@ -37,9 +36,18 @@ class TravelList(TravelBase, generics.ListCreateAPIView):
     def get_queryset(self):
         # if not is_mobile_app_access(self.request):
         #     return HttpResponse("[]")
-        if self.request.user.groups.filter(name='Drivers').exists():
-            return Travel.objects.filter(driver=Driver.objects.filter(user=self.request.user))
-        return Travel.objects.all()
+        # if not self.request.user.is_authentificated:
+        #     return '[]'
+
+        drivers = Driver.objects.filter(user=self.request.user)
+        if drivers:
+            car = Vehicle.objects.filter(driver=drivers[0])
+            # return Travel.objects.filter(car=car,
+            #                              start__day=timezone.now().day)
+            return Travel.objects.filter(car=car, start__day__gte=timezone.now().day)
+        if self.request.user.is_superuser:
+            return Travel.objects.all()
+        return None
 
 
 class TravelCreate(TravelBase, generics.CreateAPIView):

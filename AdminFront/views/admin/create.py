@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import redirect
 from django.shortcuts import render
 
-from AdminFront.forms import ClientForm, DriverForm, CommercialForm, PartenerForm, UserForm
+from AdminFront.forms import ClientForm, DriverForm, CommercialForm, PartenerForm, AirportForm
 from AdminFront.forms import VehicleModelForm, VehicleForm
 
 
@@ -94,7 +94,6 @@ def car_model_create(request):
 
     if request.method == "POST":
         form = VehicleModelForm(request.POST)
-        print request.POST
         if form.is_valid():
             form.save()
             return redirect('/admin/cars/')
@@ -133,5 +132,25 @@ def car_create(request):
                        "form": form, "type": 2, "direct": 3,
                        "title": "Voiture", "active": 5,
                        "file": True})
+    else:
+        return redirect('/')
+
+
+def airport_create(request):
+    if not request.user.is_authenticated():
+        return redirect('/admin/login')
+
+    if request.method == "POST":
+        form = AirportForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/admin/bookings/')
+    else:
+        form = AirportForm()
+    if request.user.is_superuser:
+        return render(request, 'admin_bis/object_edit.html',
+                      {"sections": ["Gestion", "Création Aéroport"],
+                       "form": form, "direct": 2, "title": "Aéroports", "active": 4,
+                       "sub_active": 1, "type": 2})
     else:
         return redirect('/')

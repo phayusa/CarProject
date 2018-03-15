@@ -28,7 +28,7 @@
 <body>
 <section class="body">
 
-    {% include "admin_bis/header.html" with redirect='/operator/'%}
+    {% include "admin_bis/header.html" with redirect='/operator/' %}
 
     <div class="inner-wrapper">
 
@@ -36,7 +36,7 @@
 
         <section role="main" class="content-body">
 
-            {% include 'admin_bis/../common/head_line.html' with Name=title redirect='/operator/'%}
+            {% include 'admin_bis/../common/head_line.html' with Name=title redirect='/operator/' %}
 
             {#            {% if custom %}#}
             {##}
@@ -425,43 +425,36 @@
         async defer></script>
 
 <script>
-    var placeSearch, autocomplete;
+    var autocomplete;
 
     function initAutocomplete() {
         // Create the autocomplete object, restricting the search to geographical
         // location types.
         autocomplete = new google.maps.places.Autocomplete(
-            /** @type {!HTMLInputElement} */(document.getElementById('arrive_adress')),
+            /** @type {!HTMLInputElement} */(document.getElementById('id_destination')),
+            {
+                types: ['geocode'],
+                componentRestrictions: {country: "fr"}
+            });
+
+        // When the user selects an address from the dropdown, populate the address
+        // fields in the form.
+        autocomplete.addListener('place_changed', fillInAddress);
+
+        autocomplete = new google.maps.places.Autocomplete(
+            /** @type {!HTMLInputElement} */(document.getElementById('id_address')),
             {
                 types: ['geocode'],
                 componentRestrictions: {country: "fr"}
             });
         {#            {types: ['geocode']});#}
 
-
-        // When the user selects an address from the dropdown, populate the address
-        // fields in the form.
-        autocomplete.addListener('place_changed', fillInAddress);
     }
 
     function fillInAddress() {
         // Get the place details from the autocomplete object.
         var place = autocomplete.getPlace();
-        document.getElementById("destination_location").value = place.geometry.location;
-        {#        for (var component in componentForm) {#}
-        {#            document.getElementById(component).value = '';#}
-        {#            document.getElementById(component).disabled = false;#}
-        {#        }#}
-        {##}
-        {#        // Get each component of the address from the place details#}
-        {#        // and fill the corresponding field on the form.#}
-        {#        for (var i = 0; i < place.address_components.length; i++) {#}
-        {#            var addressType = place.address_components[i].types[0];#}
-        {#            if (componentForm[addressType]) {#}
-        {#                var val = place.address_components[i][componentForm[addressType]];#}
-        {#                document.getElementById(addressType).value = val;#}
-        {#            }#}
-        {#        }#}
+        document.getElementById("id_destination_location").value = place.geometry.location;
     }
 </script>
 

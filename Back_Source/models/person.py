@@ -8,8 +8,8 @@ from location_field.models.plain import PlainLocationField
 
 # Information for a person as driver or client
 class Person(models.Model):
-    first_name = models.CharField(max_length=200, verbose_name="Nom")
-    last_name = models.CharField(max_length=200, verbose_name="Prénom")
+    first_name = models.CharField(max_length=200, verbose_name="Prénom")
+    last_name = models.CharField(max_length=200, verbose_name="Nom")
     age = models.IntegerField(verbose_name="Age")
     gender = models.CharField(max_length=10, verbose_name="Sexe")
     mail = models.EmailField(blank=True)
@@ -79,6 +79,8 @@ class Commercial(Person):
 # Client information
 class Client(Person):
     payment = models.CharField(max_length=5, blank=True, verbose_name="Type de Payement")
+    # id used used to retrieve the stripe customer (payment information)
+    id_stripe = models.CharField(max_length=1000, blank=True, null=True)
 
     # (null if comming from the base company)
     partner = models.ForeignKey(BuissnessPartner, on_delete=models.CASCADE, default=None, blank=True, null=True)

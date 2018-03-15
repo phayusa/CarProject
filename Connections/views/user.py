@@ -1,7 +1,12 @@
+# -*- coding: utf-8 -*-
+
+
 from django.conf import settings
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
 from django.http import *
+from Back_Source.models.person import Driver
+from Back_Source.models.vehicle import Vehicle
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
@@ -46,7 +51,6 @@ def is_mobile_app_access(request):
 
 @method_decorator(csrf_exempt, name="dispatch")
 class LoginView(APIView):
-    template_name = 'front/index.html'
     authentication_classes = (SessionAuthentication, BasicAuthentication)
     permission_classes = (AllowAny,)
 
@@ -65,9 +69,18 @@ class LoginView(APIView):
             payload = jwt_payload_handler(user)
             token = jwt_encode_handler(payload)
 
-            response = {'user': username}
-            response.update({'token': token})
-            return Response(response, status=status.HTTP_202_ACCEPTED)
+            driver = Driver.objects.filter(user=user)[0]
+            if driver:
+                response = {'user': username}
+                response.update({'token': token})
+                response.update({'fullname': driver.last_name + ' ' + driver.first_name})
+
+                cars = Vehicle.objects.filter(driver=driver)
+                if cars:
+                    response.update({'car': cars[0].id})
+                else:
+                    response.update({'car': -1})
+                return Response(response, status=status.HTTP_202_ACCEPTED)
 
         # return HttpResponseRedirect('/')
         # return HttpResponseRedirect('/register')
@@ -75,7 +88,7 @@ class LoginView(APIView):
         # return render(request, self.template_name)
 
     def get(self, request, **kwargs):
-        return HttpResponseRedirect('/register')
+        raise Http404("Page non trouvée")
 
 
 class LogoutView(TemplateView):
@@ -90,13 +103,6 @@ class LogoutView(TemplateView):
 def logout_android(request):
     logout(request)
     return HttpResponse("Ok")
-
-
-class test(TemplateView):
-    template_name = 'front/booking.html'
-
-    def get(self, request, **kwargs):
-        return render(request, self.template_name)
 
 
 def user_authenticate(request):

@@ -102,41 +102,6 @@
 
             <!-- end: page -->
 
-
-            <section class="card card mb-4 card-collapsed">
-                <header class="card-header">
-                    <div class="card-actions">
-                        <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
-                        {#                        <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
-                    </div>
-
-                    <h2 class="card-title">Commerciaux</h2>
-                </header>
-                <div class="card-body col-md-12">
-                    <table class="table table-bordered table-striped" id="commercial_table"
-                            {#                           data-url="{% static "ajax/ajax-datatables-sample.json" %}">#}
-                           data-url="/db/commercials/" width="100%" cellspacing="0">
-                        <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Nom</th>
-                            <th>Prénom</th>
-                            <th>Téléphone</th>
-                            <th>Mail</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                        </tbody>
-                    </table>
-                    <a class="btn btn-success" href="/admin/commercial/create">Ajouter</a>
-                </div>
-
-            </section>
-
-
             <section class="card card mb-4 card-collapsed">
                 <header class="card-header">
                     <div class="card-actions">
@@ -168,6 +133,42 @@
                     <a class="btn btn-success" href="/admin/partener/create">Ajouter</a>
                 </div>
             </section>
+
+
+{#            <section class="card card mb-4 card-collapsed">#}
+{#                <header class="card-header">#}
+{#                    <div class="card-actions">#}
+{#                        <a href="#" class="card-action card-action-toggle" data-card-toggle></a>#}
+                        {#                        <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>#}
+{#                    </div>#}
+{##}
+{#                    <h2 class="card-title">Commerciaux</h2>#}
+{#                </header>#}
+{#                <div class="card-body col-md-12">#}
+{#                    <table class="table table-bordered table-striped" id="commercial_table"#}
+                            {#                           data-url="{% static "ajax/ajax-datatables-sample.json" %}">#}
+{#                           data-url="/db/commercials/" width="100%" cellspacing="0">#}
+{#                        <thead>#}
+{#                        <tr>#}
+{#                            <th>Id</th>#}
+{#                            <th>Nom</th>#}
+{#                            <th>Prénom</th>#}
+{#                            <th>Téléphone</th>#}
+{#                            <th>Mail</th>#}
+{#                            <th>Status</th>#}
+{#                            <th>Partenaire</th>#}
+{#                            <th>Actions</th>#}
+{#                        </tr>#}
+{#                        </thead>#}
+{##}
+{#                        <tbody>#}
+{#                        </tbody>#}
+{#                    </table>#}
+{#                    <a class="btn btn-success" href="/admin/commercial/create">Ajouter</a>#}
+{#                </div>#}
+{##}
+{#            </section>#}
+
 
         </section>
     </div>

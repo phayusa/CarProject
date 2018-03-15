@@ -4,20 +4,26 @@ from __future__ import unicode_literals
 import datetime
 
 import pytz
-from django.contrib.auth import authenticate, login
-from django.shortcuts import redirect
-from django.shortcuts import render
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from django.contrib.sites.shortcuts import get_current_site
+from django.http import Http404
+from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
 from django.utils.dateparse import parse_datetime
-# from django.utils.timezone import datetime  # important if using timezones
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 
 from AdminFront.forms import BookingCommercialEditForm, BookingCommercialCreateForm, ClientFormNoUser, ClientForm
-from Back_Source.models.person import Client, Commercial, BuissnessPartner
-from Back_Source.models.location import Airport
-from Back_Source.models.vehicle import VehicleModel
+from Back_Source.models import VehicleModel, Client, Airport, Commercial
 from Back_Source.models.booking import BookingCommecial
+from Front.tokens import account_activation_token
+from Front.views import compute_travel
 
-from django.contrib.auth.forms import UserCreationForm
 
+# from django.utils.timezone import datetime  # important if using timezones
+
+# Library for generate PDF
 
 def index(request):
     if not request.user.is_authenticated():
@@ -35,12 +41,13 @@ def index(request):
     if request.method == "POST":
 
         client_form = ClientFormNoUser(request.POST)
-        user_form = UserCreationForm(request.POST)
+        # user_form = UserCreationForm(request.POST)
 
         form_selector = request.POST.get('formselector', None)
         if not form_selector:
             return redirect('')
 
+        # If the client already exist no need to create a new one
         if form_selector == "1":
             client = request.POST.get('client', None)
             if not client:
@@ -51,23 +58,55 @@ def index(request):
             request.POST['status'] = "En cours de validation"
             request.POST['account'] = 5
             request.POST._mutable = False
+        # Else we must create a new client
         elif form_selector == "2":
 
             if client_form.is_valid():
                 client_obj = client_form.save(commit=False)
-                if user_form.is_valid():
-                    user = user_form.save()
-                    client_obj.user = user
-                    client_obj.partner = commercial.partner
-                    client_obj.save()
-                    client = client_obj.id
-                    if not request.POST._mutable:
+                # A temp user is created for the client
+                username = client_obj.first_name + client_obj.last_name
+                # We check if we don t have the same username
+                if User.objects.filter(username=username):
+                    suffix = 1
+                    username_base = username
+                    # We loop until we found a available username
+                    while 1:
+                        username = username_base + str(suffix)
+                        if User.objects.filter(username=username):
+                            suffix += 1
+                        else:
+                            break
+                password = User.objects.make_random_password()
 
-                        request.POST._mutable = True
-                        request.POST['status'] = "En cours de validation"
-                        request.POST['account'] = 5
-                        request.POST['client'] = client_obj
-                        request.POST._mutable = False
+                user = User.objects.create_user(username=username, password=password, email=client_obj.mail)
+                # Set the new user as inactive
+                user.is_active = False
+                user.save()
+
+                # Send an email to the client to create the user
+                current_site = get_current_site(request)
+                subject = 'Aceline Services : Création de compte utilisateur'
+                message = render_to_string('mail/mail_user_creation.html', {
+                    'first_name': client_obj.first_name,
+                    'username': username,
+                    'password': password,
+                    'domain': current_site.domain,
+                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                    'token': account_activation_token.make_token(user),
+                })
+                user.email_user(subject, message)
+
+                # He must active it with an mail
+                client_obj.user = user
+                client_obj.partner = commercial.partner
+                client_obj.save()
+                client = client_obj.id
+                if not request.POST._mutable:
+                    request.POST._mutable = True
+                    request.POST['status'] = "En cours de validation"
+                    request.POST['account'] = 5
+                    request.POST['client'] = client_obj
+                    request.POST._mutable = False
         else:
             return redirect('/')
 
@@ -88,6 +127,16 @@ def index(request):
 
             tmp.client = Client.objects.filter(id=client)[0]
 
+            origin = tmp.airport.address.replace(' ', '+').replace(',', '')
+            destination = tmp.destination.replace(' ', '+').replace(',', '')
+
+            estimation_travel = compute_travel(origin, destination, date_w_timezone)
+            price = float(estimation_travel['distance']['text'].replace(" km", "")) * \
+                    tmp.model_choose.price
+
+            tmp.price = price
+            tmp.time_estimated = int(estimation_travel['duration']['value'])
+
             tmp.save()
             return redirect('/commercial/')
     else:
@@ -106,16 +155,16 @@ def index(request):
                        "airports": Airport.objects.all(), "models": VehicleModel.objects.all(),
                        "custom": True, "clients": clients,
                        "passengers_list": range(1, 7), "luggage_list": range(1, 6), "creation": True,
-                       "direct": 2, "clientForm": client_form, "userForm": user_form})
+                       "direct": 2, "clientForm": client_form})
     else:
         return redirect('/')
 
 
 def edit_booking(request, pk):
     if not request.user.is_authenticated():
-        return redirect('/login/')
+        raise Http404("Page non trouvé")
     if not Commercial.objects.filter(user=request.user).exists():
-        return redirect('/')
+        raise Http404("Page non trouvé")
 
     commercial = Commercial.objects.filter(user=request.user)[0]
     booking = BookingCommecial.objects.filter(id=pk)[0]
@@ -171,9 +220,9 @@ def edit_booking(request, pk):
 
 def clients_list(request):
     if not request.user.is_authenticated():
-        return redirect('/login/')
+        raise Http404("Page non trouvé")
     if not Commercial.objects.filter(user=request.user).exists():
-        return redirect('/')
+        raise Http404("Page non trouvé")
 
     commercial = Commercial.objects.filter(user=request.user)[0]
 

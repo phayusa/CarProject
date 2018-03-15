@@ -28,7 +28,8 @@
     <link rel="stylesheet" href="{% static "static_admin/vendor/select2-bootstrap-theme/select2-bootstrap.min.css" %}"/>
     <link rel="stylesheet" href="{% static "static_admin/vendor/bootstrap-multiselect/bootstrap-multiselect.css" %}"/>
     <link rel="stylesheet" href="{% static "static_admin/vendor/bootstrap-tagsinput/bootstrap-tagsinput.css" %}"/>
-    <link rel="stylesheet" href="{% static "static_admin/vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.css" %}"/>
+    <link rel="stylesheet"
+          href="{% static "static_admin/vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.css" %}"/>
     <link rel="stylesheet" href="{% static "static_admin/vendor/bootstrap-timepicker/css/bootstrap-timepicker.css" %}"/>
     <link rel="stylesheet" href="{% static "static_admin/vendor/dropzone/basic.css" %}"/>
     <link rel="stylesheet" href="{% static "static_admin/vendor/dropzone/dropzone.css" %}"/>
@@ -41,7 +42,7 @@
 <body>
 <section class="body">
 
-    {% include "admin_bis/header.html" with redirect='/commercial/'%}
+    {% include "admin_bis/header.html" with redirect='/commercial/' %}
 
     <div class="inner-wrapper">
 
@@ -49,7 +50,7 @@
 
         <section role="main" class="content-body">
 
-            {% include 'admin_bis/../common/head_line.html' with Name=title redirect='/commercial/'%}
+            {% include 'admin_bis/../common/head_line.html' with Name=title redirect='/commercial/' %}
 
             <!-- start: page -->
             <section class="card">
@@ -412,6 +413,65 @@
 {#<script src="{% static "static_admin/js/datatable/client_manager_datatable.js" %}"></script>#}
 {#<script src="{% static "static_admin/js/examples/examples.modal=s.js" %}"></script>#}
 
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAb1NNSLUT7vzTIezPAqKumMB7wNXa2hMg&libraries=places&callback=initAutocomplete"
+        async defer></script>
+
+<script>
+    var autocomplete;
+    var autoAddress;
+
+
+    function initAutocomplete() {
+
+        var geocoder = new google.maps.Geocoder;
+
+
+        if (document.getElementById('id_destination') !== null) {
+            // Create the autocomplete object, restricting the search to geographical
+            // location types.
+            autocomplete = new google.maps.places.Autocomplete(
+                /** @type {!HTMLInputElement} */(document.getElementById('id_destination')),
+                {
+                    types: ['geocode'],
+                    componentRestrictions: {country: "fr"}
+                });
+
+            // When the user selects an address from the dropdown, populate the address
+            // fields in the form.
+            autocomplete.addListener('place_changed', function () {
+                // Get the place details from the autocomplete object.
+                var place = autocomplete.getPlace();
+                if (place)
+                    document.getElementById("id_destination_location").value = place.geometry.location;
+            });
+        }
+
+        if (document.getElementById('id_address') !== null) {
+            autoAddress = new google.maps.places.Autocomplete(
+                /** @type {!HTMLInputElement} */(document.getElementById('id_address')),
+                {
+                    types: ['geocode'],
+                    componentRestrictions: {country: "fr"},
+                    placeIdOnly: true
+                });
+
+            autoAddress.addListener('place_changed', function () {
+                var placeB = autoAddress.getPlace();
+                geocoder.geocode({'placeId': placeB.place_id}, function (results, status) {
+
+                    if (status !== 'OK') {
+                        return;
+                    }
+
+                    document.getElementById("id_location").value = results[0].geometry.location
+                    document.getElementById("id_location").value = document.getElementById("id_location").value.replace("(", "").replace(")", "")
+                });
+            });
+            {#            autoAddress.addListener('place_changed', fillInAddressB());#}
+        }
+
+    }
+</script>
 
 </body>
 </html>

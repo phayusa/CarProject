@@ -28,7 +28,8 @@
     <link rel="stylesheet" href="{% static "static_admin/vendor/select2-bootstrap-theme/select2-bootstrap.min.css" %}"/>
     <link rel="stylesheet" href="{% static "static_admin/vendor/bootstrap-multiselect/bootstrap-multiselect.css" %}"/>
     <link rel="stylesheet" href="{% static "static_admin/vendor/bootstrap-tagsinput/bootstrap-tagsinput.css" %}"/>
-    <link rel="stylesheet" href="{% static "static_admin/vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.css" %}"/>
+    <link rel="stylesheet"
+          href="{% static "static_admin/vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.css" %}"/>
     <link rel="stylesheet" href="{% static "static_admin/vendor/bootstrap-timepicker/css/bootstrap-timepicker.css" %}"/>
     <link rel="stylesheet" href="{% static "static_admin/vendor/dropzone/basic.css" %}"/>
     <link rel="stylesheet" href="{% static "static_admin/vendor/dropzone/dropzone.css" %}"/>
@@ -42,7 +43,7 @@
 <body>
 <section class="body">
 
-    {% include "admin_bis/header.html" with redirect='/commercial/'%}
+    {% include "admin_bis/header.html" with redirect='/commercial/' %}
 
     <div class="inner-wrapper">
 
@@ -50,7 +51,7 @@
 
         <section role="main" class="content-body">
 
-            {% include 'admin_bis/../common/head_line.html' with Name=title redirect='/commercial/'%}
+            {% include 'admin_bis/../common/head_line.html' with Name=title redirect='/commercial/' %}
 
             <!-- start: page -->
             <section class="card">
@@ -78,7 +79,7 @@
                                     <div class="col-lg-6">
                                         <select data-plugin-selectTwo class="form-control populate" name="client"
                                                 id="id_client">
-{#                                            <option value="None">...</option>#}
+                                            {#                                            <option value="None">...</option>#}
                                             {% for client in clients %}
                                                 <option value="{{ client.id }}"
                                                         {% if client.id == form.client.value %}selected{% endif %}>{{ client }}</option>
@@ -212,7 +213,7 @@
         async defer></script>
 
 <script>
-    var placeSearch, autocomplete;
+    var autocomplete;
 
     function initAutocomplete() {
         // Create the autocomplete object, restricting the search to geographical
@@ -223,32 +224,25 @@
                 types: ['geocode'],
                 componentRestrictions: {country: "fr"}
             });
-        {#            {types: ['geocode']});#}
-
 
         // When the user selects an address from the dropdown, populate the address
         // fields in the form.
         autocomplete.addListener('place_changed', fillInAddress);
+
+        autocomplete = new google.maps.places.Autocomplete(
+            /** @type {!HTMLInputElement} */(document.getElementById('id_address')),
+            {
+                types: ['geocode'],
+                componentRestrictions: {country: "fr"}
+            });
+        {#            {types: ['geocode']});#}
+
     }
 
     function fillInAddress() {
         // Get the place details from the autocomplete object.
         var place = autocomplete.getPlace();
         document.getElementById("id_destination_location").value = place.geometry.location;
-        {#        for (var component in componentForm) {#}
-        {#            document.getElementById(component).value = '';#}
-        {#            document.getElementById(component).disabled = false;#}
-        {#        }#}
-        {##}
-        {#        // Get each component of the address from the place details#}
-        {#        // and fill the corresponding field on the form.#}
-        {#        for (var i = 0; i < place.address_components.length; i++) {#}
-        {#            var addressType = place.address_components[i].types[0];#}
-        {#            if (componentForm[addressType]) {#}
-        {#                var val = place.address_components[i][componentForm[addressType]];#}
-        {#                document.getElementById(addressType).value = val;#}
-        {#            }#}
-        {#        }#}
     }
 </script>
 
