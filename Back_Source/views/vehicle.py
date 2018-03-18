@@ -18,9 +18,6 @@ from geoposition import Geoposition
 
 class VehicleBase(generics.GenericAPIView):
     serializer_class = VehicleSerializer
-    redirect_unauthenticated_users = False
-    authentication_classes = [JSONWebTokenAuthentication, ]
-    raise_exception = True
 
     # Return only the booking of the connected client
     def get_queryset(self):
@@ -48,6 +45,12 @@ class VehicleModelList(VehicleModelBase, generics.ListAPIView):
     pass
 
 
+class VehicleListJson(VehicleBase, generics.ListAPIView):
+    redirect_unauthenticated_users = False
+    authentication_classes = [JSONWebTokenAuthentication, ]
+    raise_exception = True
+
+
 class VehicleList(VehicleBase, generics.ListAPIView):
     pass
 
@@ -65,9 +68,9 @@ class VehicleDetail(VehicleBase, generics.RetrieveUpdateDestroyAPIView):
     def put(self, request, *args, **kwargs):
         return self.partial_update(request, *args, **kwargs)
 
-    # def partial_update(self, request, *args, **kwargs):
-    #     kwargs['partial'] = True
-    #     return self.update(request, *args, **kwargs)
+        # def partial_update(self, request, *args, **kwargs):
+        #     kwargs['partial'] = True
+        #     return self.update(request, *args, **kwargs)
 
 
 def serve_image(request, image):

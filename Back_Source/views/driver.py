@@ -17,9 +17,9 @@ from Back_Source.serializers import DriverSerializer, BookingSerializer
 class DriverBase(generics.GenericAPIView):
     serializer_class = DriverSerializer
 
-    redirect_unauthenticated_users = False
-    authentication_classes = [JSONWebTokenAuthentication, ]
-    raise_exception = True
+    # redirect_unauthenticated_users = False
+    # authentication_classes = [JSONWebTokenAuthentication, ]
+    # raise_exception = True
 
     # Return only the booking of the connected client
     def get_queryset(self):

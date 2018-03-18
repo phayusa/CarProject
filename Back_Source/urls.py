@@ -28,7 +28,7 @@ from views.commercials import CommercialList
 from views.driver import DriverDetail, DriverList, DriverBookings
 from views.parteners import PartenerList
 from views.travel import TravelCreate, TravelDetail, TravelList
-from views.vehicle import VehicleList, VehicleDetail
+from views.vehicle import VehicleList, VehicleDetail, VehicleListJson
 from views.vehicle import VehicleModelList, serve_image, VehicleDriverSetter
 urlpatterns = [
 
@@ -53,6 +53,7 @@ urlpatterns = [
 
     # vehicle URL
     url(r'^vehicles/$', VehicleList.as_view()),
+    url(r'^api/vehicles/$', VehicleListJson.as_view()),
     # url(r'^vehicle/create/$', login_required(VehicleCreate.as_view())),
     url(r'^vehicle/(?P<pk>[0-9]+)/driver/$', VehicleDriverSetter.as_view()),
     url(r'^vehicle/(?P<pk>[0-9]+)/$', VehicleDetail.as_view()),
