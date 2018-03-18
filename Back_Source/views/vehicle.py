@@ -13,12 +13,13 @@ from Back_Source.models import Vehicle, Driver, VehicleModel
 from Back_Source.permissions.person import DriverPermission, GeneralPermission
 from Back_Source.serializers import VehicleSerializer, VehicleModelSerializer
 from ..models import Travel
+from geoposition import Geoposition
 
 
 class VehicleBase(generics.GenericAPIView):
     serializer_class = VehicleSerializer
     redirect_unauthenticated_users = False
-    # authentication_classes = [JSONWebTokenAuthentication, ]
+    authentication_classes = [JSONWebTokenAuthentication, ]
     raise_exception = True
 
     # Return only the booking of the connected client
@@ -56,9 +57,17 @@ class VehicleCreate(VehicleBase, generics.CreateAPIView):
 
 
 class VehicleDetail(VehicleBase, generics.RetrieveUpdateDestroyAPIView):
-    def partial_update(self, request, *args, **kwargs):
-        kwargs['partial'] = True
-        return self.update(request, *args, **kwargs)
+    serializer_class = VehicleSerializer
+    redirect_unauthenticated_users = False
+    authentication_classes = [JSONWebTokenAuthentication, ]
+    raise_exception = True
+
+    def put(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
+
+    # def partial_update(self, request, *args, **kwargs):
+    #     kwargs['partial'] = True
+    #     return self.update(request, *args, **kwargs)
 
 
 def serve_image(request, image):
